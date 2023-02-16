@@ -1,0 +1,358 @@
+﻿@model SalesApp.ViewModel.CustomSaleVM;
+
+@{
+    ViewBag.Title = "Custom Sale";
+
+}
+
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <partial name="~/Views/Shared/Sidebar.cshtml" model="Model" />
+
+        <!-- Page Content  -->
+        <div id="content">
+            <div class="header-container clearfix">
+                <button type="button" id="sidebarCollapse" class="btn btn-info">
+                    <i class="libutton">Menu</i>
+                    @*<i class="las la-align-left"></i>*@
+                </button>
+                <h1><span class="fbold">Sales</span> <span class="fregular">Application</span><p class="profile-name">Welcome : @User.Identity.Name</p></h1>
+                <p class="float-left sale-date-container"><span class="fregular date-head">Sale Date:</span> <span class="fbold date-val">05/05/2020</span></p>
+
+                <div class="account-wrap">
+                    <p class="cart-display-top"><span class="clients-cart-info"><i class="las la-shopping-cart"></i><span class="cart-notify">2</span></span></p>
+                    <div class="account-item clearfix js-item-menu">
+                        <div class="image">
+                            <img src="img/avatar-01.jpg" alt="John Doe" />
+                        </div>
+                        <div class="content-account">
+                            <a class="js-acc-btn" href="#">Parag Tawde</a>
+                        </div>
+                        <div class="account-dropdown js-dropdown">
+                            <div class="info clearfix">
+                                <div class="image">
+                                    <a href="#">
+                                        <img src="img/avatar-01.jpg" alt="John Doe" />
+                                    </a>
+                                </div>
+                                <div class="content-account">
+                                    <h5 class="name">
+                                        <a href="#">Parag Tawde</a>
+                                    </h5>
+                                    <span class="email">Sales executive</span>
+                                </div>
+                            </div>
+                            <div class="account-dropdown__body">
+                                <div class="account-dropdown__item">
+                                    <a href="#">
+                                        <i class="zmdi zmdi-account"></i>Account
+                                    </a>
+                                </div>
+                                <div class="account-dropdown__item">
+                                    <a href="#">
+                                        <i class="zmdi zmdi-settings"></i>Setting
+                                    </a>
+                                </div>
+                                <div class="account-dropdown__item">
+                                    <a href="#">
+                                        <i class="zmdi zmdi-money-box"></i>Billing
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="account-dropdown__footer">
+                                <a href="#">
+                                    <i class="zmdi zmdi-power"></i>Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="main-container">
+                <div class="container-bg clearfix">
+                    <div class="container-header clearfix">
+
+
+                    </div>
+                    <!-- <div class="container-name-cart-info clearfix">
+                  <p class="clients-name-info"><i class="las la-user-circle"></i> Shomayala Arooz</p>
+                  <p class="clients-cart-info hide-mobile"><i class="las la-shopping-cart"></i> You have <span class="fbold">2 items</span> in your Cart</p>
+
+                </div> -->
+
+                    <div class="sale-process-nav">
+                        <ul>
+                            <li class="active">
+                                <a href="#" onclick="manaagetab('1')">
+                                    <span class="nav-icon-container"><i class="las la-shopping-cart"></i></span>
+                                    <span class="nav-txt-container">Add Item</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="active" onclick="manaagetab('4')">
+                                    <span class="nav-icon-container"><i class="las la-credit-card"></i></span>
+                                    <span class="nav-txt-container">Payment</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="active" onclick="manaagetab('2')">
+                                    <span class="nav-icon-container"><i class="as la-user-cog"></i></span>
+                                    <span class="nav-txt-container">CustomerInfo</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="active" onclick="manaagetab('3')">
+                                    <span class="nav-icon-container"><i class="las la-truck"></i></span>
+                                    <span class="nav-txt-container">Stand & Delivery</span>
+                                </a>
+
+                            </li>
+
+                            <li>
+                                <a onclick="manaagetab('5')">
+                                    <span class="nav-icon-container"><i class="las la-print"></i></span>
+                                    <span class="nav-txt-container">Review & Print</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div id="item">
+
+                        <partial name="~/Views/Shared/CustomItem.cshtml" model="Model" />
+
+                    </div>
+
+                    <div id="customer">
+                        <partial name="~/Views/Shared/CustomerDetails.cshtml" model="Model" />
+                    </div>
+                    <div id="stand">
+                        <partial name="~/Views/Shared/standdelivery.cshtml" model="Model" />
+                    </div>
+                    <div id="payment">
+                        <partial name="~/Views/Shared/OrderPayment.cshtml" model="Model" />
+                    </div>
+                    <div id="review">
+                        <partial name="~/Views/Shared/Review.cshtml" model="Model" />
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        <input type="hidden" id="hdnpgno" value="@ViewBag.pgno" />
+        <input type="hidden" asp-for="conversionrate" />
+        <input type="hidden" id="hdnbalance" value="@ViewBag.totalbalance" />
+        @*<input type="hidden" id="cnvrate" value="@Model.conversionrate" />*@
+
+    </div>
+    <div class="overlay"></div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+
+    function GetItemDetails() {
+        var stockid = $('#StockNumber').val();
+           $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetStockDetails", "CashSale")',
+                //contentType: false,
+                //processData: false,
+               data: { "stockid": stockid},
+               success: function (data) {
+                   if (data != null) {
+                       var response = JSON.stringify(data[0]);
+                       if (response != null) {
+                           $('#itemcategory').text(data[0].category);
+                           $('#itemcategory').css('color', 'green');
+                           $('#itemname').text(data[0].itemname);
+                           $('#itemsize').text(data[0].size);
+                           $('#itemstone').text(data[0].marblestone);
+                           $('#itemcolor').text(data[0].marblecolor);
+                           $('#totalvalue').val(data[0].price);
+                           $('#hdntotal').val(data[0].price)
+                           $('#item_desc').val(data[0].category + ',' + data[0].itemname + ',' + data[0].size + ',' + data[0].marblecolor);
+
+                       }
+                       else {
+                           $('#itemcategory').text('No Record Exists!!!');
+                           $('#itemcategory').css('color', 'red');
+                           $('#itemname').text('');
+                           $('#itemsize').text('');
+                           $('#itemstone').text('');
+                           $('#itemcolor').text('');
+                           $('#totalvalue').val('');
+                       }
+                   }
+                   else {
+                       $('#itemcategory').text('No Record Exists!!!');
+                       $('#itemcategory').css('color', 'red');
+                       $('#itemname').text('');
+                       $('#itemsize').text('');
+                       $('#itemstone').text('');
+                       $('#itemcolor').text('');
+                       $('#totalvalue').val('');
+                   }
+
+
+
+                },
+                Error: function (err) {
+                    $('#itemcategory').append(err);
+                  //  debugger;
+                },
+                /* beforeSend: function () {
+                     $(".progress").show();
+                 },
+                 complete: function () {
+                    $(".progress").hide();
+                 }*/
+            });
+
+
+    }
+        function balancecheck(totalbalance) {
+
+            if (totalbalance != '') {
+
+                if (totalbalance > 0) {
+
+                    return false;
+
+                }
+                else { return true; }
+
+            }
+
+        }
+        function manaagetab(id) {
+            var totalbalance = $('#hdnbalance').val();
+            if (id == "1") {
+                $('#item').show();
+                $('#customer').hide();
+                $('#stand').hide();
+                $('#payment').hide();
+                $('#review').hide();
+                
+            }
+            else if (id == "2") {
+                if (balancecheck(totalbalance)) {
+                    $('#customer').show();
+                    $('#item').hide();
+                    $('#stand').hide();
+                    $('#payment').hide();
+                    $('#review').hide();
+                }
+            } else if (id == "3") {
+                if (balancecheck(totalbalance)) {
+                    $('#customer').hide();
+                    $('#item').hide();
+                    $('#stand').show();
+                    $('#payment').hide();
+                    $('#review').hide();
+                }
+            }
+            else if (id == "4") {
+                //if (balancecheck(totalbalance)) {
+                    $('#customer').hide();
+                    $('#item').hide();
+                    $('#stand').hide();
+                    $('#payment').show();
+                    $('#review').hide();
+               // }
+            } else if (id == "5") {
+                if (balancecheck(totalbalance)) {
+                    $('#customer').hide();
+                    $('#item').hide();
+                    $('#stand').hide();
+                    $('#payment').hide();
+                    $('#review').show();
+                }
+            }
+            else { $('#item').show(); }
+
+        }
+
+
+
+
+
+        $(document).ready(function () {
+            debugger;
+            var statesAvailable = $('#hdnpgno').val();
+
+       
+        var queryDict = {};
+        location.search.substr(1).split("&").forEach(function (item) { queryDict[item.split("=")[0]] = item.split("=")[1] })
+
+            if (statesAvailable != 'undefined') {
+
+                if (statesAvailable == "1") {
+                $('#item').show();
+                    $('#customer').hide();
+                    $('#stand').hide();
+                    $('#payment').hide();
+                    $('#review').hide();
+            }
+                else if (statesAvailable == "2") {
+                $('#customer').show();
+                    $('#item').hide();
+                    $('#stand').hide();
+                    $('#payment').hide();
+                    $('#review').hide();
+                } else if (statesAvailable == "3") {
+                    $('#customer').hide();
+                    $('#item').hide();
+                    $('#stand').show();
+                    $('#payment').hide();
+                    $('#review').hide();
+                } else if (statesAvailable == "4") {
+                    $('#customer').hide();
+                    $('#item').hide();
+                    $('#stand').hide();
+                    $('#payment').show();
+                    $('#review').hide();
+                } else if (id == "5") {
+                    $('#customer').hide();
+                    $('#item').hide();
+                    $('#stand').hide();
+                    $('#payment').hide();
+                    $('#review').show();
+                }else { $('#item').show();}
+
+        }
+
+        //$(function () {
+       
+        function getNum(val) {
+            if (isNaN(val)) {
+                return 0;
+            }
+            return val;
+        }
+        $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+        });
+
+        $('#dismiss, .overlay').on('click', function () {
+            $('#sidebar').removeClass('active');
+            $('.overlay-nav').removeClass('active');
+        });
+
+        // $('#sidebarCollapse').on('click', function () {
+        //     $('#sidebar').addClass('active');
+        //     $('.overlay').addClass('active');
+        //     $('.collapse.in').toggleClass('in');
+        //     $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        // });
+
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar, #content').toggleClass('active');
+            $('.overlay-nav').addClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+    });</script>

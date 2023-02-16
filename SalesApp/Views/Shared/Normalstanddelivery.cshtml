@@ -1,0 +1,593 @@
+﻿@model SalesApp.ViewModel.NormalSaleVM;
+
+@{
+    ViewBag.Title = "Stand & Delivery";
+
+}
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<div class="container-fluid customer-info-form">
+
+    <!-- <div class="row">
+       <div class="info-form-header">
+            <h3><i class="las la-wrench"></i> Stand Details</h3>
+          </div>
+    </div> -->
+
+    <div class="row pad-30">
+        <div class="col-lg-12 stand-delivery-tabs-container text-center">
+            @*<input id="tab1" type="radio" name="tabs" checked>
+            <label for="tab1" class="first-label">Stands Info</label>*@
+
+            <input id="tab2" type="radio" name="tabs">
+            <label for="tab2" class="last-label">Delivery Info</label>
+
+
+            <section id="content1" class="text-left" style="display:none">
+                <div class="container-fluid customer-info-form">
+
+                    <!-- <div class="row">
+                       <div class="info-form-header">
+                            <h3><i class="las la-wrench"></i> Stand Details</h3>
+                          </div>
+                    </div> -->
+
+                    @using (Html.BeginForm("AddStandInfo", "AddSale", FormMethod.Post, new { id = "standinfo", onsubmit = "showLoader(this);" }))
+                    {
+                        @Html.AntiForgeryToken()
+                    <div class="row pad-t-10">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-7 col-7">
+
+                            <div class="form-group">
+                                <label for="">Stand</label>
+                                @Html.DropDownListFor(model => model.standcode, Model.standcategory as IEnumerable<SelectListItem>, "Select", new { onchange = "scategory_SelectedIndexChanged()", @class = "form-control", htmlAttributes = new { required = "required" } })
+                                @Html.ValidationMessageFor(model => model.standcode, "", new { @class = "text-danger" })
+                                @*<input type="text" class="form-control" id="StandNumber" asp-for="stockno" placeholder="" onblur="GetItemDetails()">
+                <input type="hidden" id="standid" />*@
+                                @*<input type="text" class="form-control" id="" placeholder="">*@
+
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-5 col-5">
+                            <div class="form-group">
+                                <label for="">Colour</label>
+                                @Html.DropDownListFor(model => model.color, Model.standcolordetails as IEnumerable<SelectListItem>, "Select", new { onchange = "scolor_SelectedIndexChanged()", @class = "form-control", htmlAttributes = new { required = "required" } })
+                                @Html.ValidationMessageFor(model => model.color, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-6">
+                            <div class="form-group">
+                                <label for="">Height(Inch)</label>
+                                <div>
+                                    @Html.DropDownListFor(model => model.height, Model.sizeinheight as IEnumerable<SelectListItem>, "Select", new { onchange = "sheight_SelectedIndexChanged()", @class = "form-control", htmlAttributes = new { } })
+                                    @Html.ValidationMessageFor(model => model.height, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 col-6">
+            <div class="form-group">
+                <label for="">Width</label>
+                <div>
+                    @Html.DropDownListFor(model => model.width, Model.sizeinwidth as IEnumerable<SelectListItem>, "Select", htmlAttributes: new { @class = "form-control", required = "required" })
+                    @Html.ValidationMessageFor(model => model.width, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>*@
+
+
+
+
+                        <div class="col-lg-4 col-md-5 col-sm-5 col-xs-12 col-12">
+                            <label for="add" class="lable-head">Type</label>
+                            <div class="type-group">
+                                @Html.ValidationMessageFor(model => model._saletype, "", new { @class = "text-danger" })
+                                <div class="inputGroup">
+                                    @Html.RadioButtonFor(m => m._saletype, SaleType.CM, new { @name = "radio", @type = "radio", @id = "CashMemo1", htmlAttributes = new { required = "required" } })
+
+
+                                    <label for="CashMemo1" class="cm-lable">C/M</label>
+                                </div>
+                                <div class="inputGroup">
+                                    @Html.RadioButtonFor(m => m._saletype, SaleType.OF, new { @name = "radio", @type = "radio", @id = "OrderForm1", htmlAttributes = new { required = "required" } })
+                                    <label for="OrderForm1" class="of-lable">O/F</label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <input type="hidden" asp-for="orderid" />
+                        <input type="hidden" asp-for="billid" />
+                        <div class="col-lg-3 offset-lg-5 col-md-3 offset-md-4 col-sm-3 col-xs-12 col-12 stand-btn">
+                            <button type="submit" id="btnsubmit" class="btn-blue">Add Stand</button>
+                        </div>
+                        @*<div class="row ">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="description-container desktop-description">
+
+                    <ul>
+                        <li class="mar-r-5"><p class="pad-r-0"><span class="product-name fbold" id="standdesc"> </span></p></li>
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>*@
+
+                    </div>
+                    }
+                    @if (TempData["StandMessage"] != null)
+                    {
+                        var message = (SalesApp.ViewModel.MessageVM)TempData["StandMessage"];
+                        <div style="color:red">
+                            <strong>@message.title</strong>
+                            @message.msg
+                        </div>
+                    }
+                    <div class="row">
+                        <div class="col-lg-12 mar-t-20">
+                            <div class="table-responsive table--no-card m-b-30">
+                                <table class="table table-borderless table-striped table-earning">
+                                    <thead>
+                                        <tr>
+                                            <th>Stand</th>
+                                            <th>Colour</th>
+                                            @*<th class="text-center">Width</th>*@
+                                            <th class="text-center">Height<span class="small-txt-br">(Inch)</span></th>
+                                            <th class="text-center">Action</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.standsaledetails != null)
+                                            @if (Model.standsaledetails.Count() > 0)
+                                            {
+                                                @foreach (var item in Model.standsaledetails)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @if (item.ordertype == "CM")
+                                                            {
+                                                                <p class="table-type CM">@Html.DisplayFor(modelItem => item.ordertype)</p>
+                                                            }
+                                                            else
+                                                            { <p class="table-type of">@Html.DisplayFor(modelItem => item.ordertype)</p>}
+                                                            <p class="table-description">@Html.DisplayFor(modelItem => item.standdesc)</p>
+
+
+                                                            @*<p class="table-type CM">@Html.DisplayFor(modelItem => item.ordertype)</p>*@
+                                                        </td>
+                                                        <td>@Html.DisplayFor(modelItem => item.color)</td>
+                                                        @*<td class="text-center">@Html.DisplayFor(modelItem => item.width)</td>*@
+                                                        <td class="text-center">@Html.DisplayFor(modelItem => item.height)<text>''</text></td>
+                                                        <td class="text-center">
+                                                            @Html.ActionLink("", "DeleteStand", "AddSale", new { itemorderid = item.itemorderid }, new { @class = "delete-item  las la-times" })
+                                                        </td>
+
+
+                                                    </tr>
+
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+                @if (TempData["DeliveryMessage"] != null)
+                {
+                    var message = (SalesApp.ViewModel.MessageVM)TempData["DeliveryMessage"];
+                    <div style="color:red">
+                        <strong>@message.title</strong>
+                        @message.msg
+                    </div>
+                }
+        <section id="content2" class="text-left">
+            @using (Html.BeginForm("AddDeliveryInfo", "AddSale", FormMethod.Post, new { id = "deliveryinfo", name = "deliveryinfo", onsubmit = "showLoader(this);" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="container-fluid customer-info-form">
+                    <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-7 col-xs-12 col-12 port-type-delivery">
+                            <label for="add" class="lable-head">Type</label>
+                            <div class="customer-type-group">
+                                @*<div class="inputGroup">
+                                @Html.RadioButtonFor(m => m._deliverytype, DeliveryType.CashMemo, new { @name = "radio", @type = "radio", @id = "radio-type-01", onclick = "cashSelect();" })
+
+                                <label for="radio-type-01" class="cm-lable">Cash Memo</label>
+                            </div>*@
+                                <div class="inputGroup">
+                                    @Html.RadioButtonFor(m => m._deliverytype, DeliveryType.HomeDelivery, new { @name = "radio", @type = "radio", @id = "radio-type-02", onclick = "homeSelect();" })
+                                    <label for="radio-type-02" class="of-lable">Home Delivery</label>
+                                </div>
+
+                                <div class="inputGroup" id="typePort">
+                                    @Html.RadioButtonFor(m => m._deliverytype, DeliveryType.PortDelivery, new { @name = "radio", @type = "radio", @id = "radio-type-03", onclick = "portSelect();" })
+                                    @*<input id="radio-type-03" name="radio-type" type="radio" onclick="portSelect();">*@
+                                    <label for="radio-type-03" class="pd-lable">Port Delivery</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-7 col-xs-12 col-12 port-type-delivery" id="port-type-container">
+                            <label for="add" class="lable-head">Port</label>
+                            <div class="port-type">
+                                <div class="inputGroup">
+                                    @Html.RadioButtonFor(m => m._porttype, PortType.Seaport, new { @name = "radio", @type = "radio", @id = "seaport", @class = "las la-plane" })
+                                    <label for="seaport"><i class="las la-ship"></i>Seaport</label>
+                                </div>
+                                <div class="inputGroup">
+                                    @Html.RadioButtonFor(m => m._porttype, PortType.Airport, new { @name = "radio", @type = "radio", @id = "airport", @class = "las la-plane" })
+                                    <label for="airport"><i class="las la-plane"></i>Airport</label>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-5 col-xs-12 col-12 port-type-delivery" id="port-type-txt">
+                            <div class="form-group">
+                                <label for="">Port Name</label>
+                                <input asp-for="dinfo.PortName" class="form-control" spellcheck="false" placeholder="" />
+                                @*<input type="text" class="form-control" id="" spellcheck="false" placeholder="">*@
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 col-sm-4">
+                            <div class="form-group">
+                                <label for="">Passport No.</label>
+                                <input asp-for="dinfo.Passport" class="form-control" spellcheck="false" placeholder="" />
+                                @*<input type="text" class="form-control" id="" spellcheck="false" placeholder="">*@
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-md-5 col-sm-4">
+                                            <div class="full-name-init" style="margin-left:-30px">
+                                                <label class="container-init">
+                                                    Other State
+                                                    @*@Html.RadioButtonFor(model => model._titletype, TitleType.Mr, new { @name = "radio", @type = "radio", @id = "Mr" })*@
+                                                    @Html.CheckBoxFor(model => model.dinfo.isotherstate, new { @name = "isotherstate", @type = "checkbox", @id = "isotherstate" })
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                               
+                                            </div>
+
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12 col-12">
+                            <div class="form-group mar-b-5">
+                                <label for="">Delivery Dates</label>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-12 date-input mar-b-20 pad-r-5 pad-m-r-15">
+                                        @*@Html.EditorFor(model => model.dinfo.DeliveryFrom, new { htmlAttributes = new { @class = "form-control" } })*@
+                                        @Html.TextBoxFor(m => m.dinfo.DeliveryFrom, "{0:dd/MM/yyyy}", new { @class = "form-control", placeholder = "", @type = "text" })
+                                        @*@Html.EditorFor(model => model.dinfo.DeliveryFrom, new { value="", htmlAttributes = new { @class = "form-control", placeholder = "", @readonly = "false "  } })*@
+                                        @*<input asp-for="dinfo.DeliveryFrom" asp-format="{0:dd/MM/yyyy}" class="form-control" spellcheck="false" />*@
+
+                                        @*<input type="text" class="form-control" id="datepicker1" placeholder="" class="datepicker" spellcheck="false">*@
+
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-12 date-input mar-b-20 pad-l-5 pad-m-l-15 pad-m-r-15">
+                                        @*<input type="text" class="form-control" id="datepicker2" placeholder="" class="datepicker" spellcheck="false">*@
+                                        @Html.TextBoxFor(m => m.dinfo.DeliveryTo, "{0:dd/MM/yyyy}", new { @class = "form-control", placeholder = "", @type = "text" })
+                                        @*<input asp-for="dinfo.DeliveryTo" asp-format="{0:dd/MM/yyyy}" class="form-control" spellcheck="false" />*@
+
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="disclaimer">Please select dates 20 days from today.</p>
+                            <span style="color:red;font-size:large;font-family:Arial;" id="lbldeliverymsg"></span>
+                        </div>
+                         <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12 col-12">
+                            <div class="form-group mar-b-5">
+                                <label for="">Transport Details</label>
+                                <div class="row">
+                                   
+                                    <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12 col-12">
+                                        
+                                         @Html.TextBoxFor(model => model.dinfo.ewaybill, new { type = "string", @class = "form-control", @style = "text-transform: capitalize;width:100%",@placeholder = "EwayBill No.", htmlAttributes = new { required = "required"  } })
+                                            @Html.ValidationMessageFor(model => model.dinfo.ewaybill, "", new { @class = "text-danger" })
+                                    </div>
+                                    
+                                    <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12 col-12" >
+                                       
+                                          @Html.TextBoxFor(model => model.dinfo.transportname, new { type = "string", @class = "form-control", @style = "text-transform: capitalize;width:100%", @placeholder = "Transport Name" , htmlAttributes = new { required = "required" } })
+                                            @Html.ValidationMessageFor(model => model.dinfo.transportname, "", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+                                  <div class="row">
+                                   
+                                    <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12 col-12">
+                                       
+                                         @Html.TextBoxFor(model => model.dinfo.vehicleno, new { type = "string", @class = "form-control", @style = "text-transform: capitalize;width:100%", @placeholder = "Vehicle No." , htmlAttributes = new { required = "required"} })
+                                            @Html.ValidationMessageFor(model => model.dinfo.vehicleno, "", new { @class = "text-danger" })
+                                    </div>
+                                   
+                                    <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12 col-12">
+                                        
+                                          @Html.TextBoxFor(model => model.dinfo.modeoftransport, new { type = "string", @class = "form-control", @style = "text-transform: capitalize;width:100%", @placeholder = "Transport Mode", htmlAttributes = new { required = "required" } })
+                                            @Html.ValidationMessageFor(model => model.dinfo.modeoftransport, "", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </div>
+
+                    </div>
+
+                    <input type="hidden" asp-for="orderid" />
+
+                </div>
+                
+            }
+        </section>
+
+            </div>
+        </div>
+
+        <div class="row pad-0 mar-0">
+            <div class="col-lg-12 footer-btn text-right pad-rl-20 btns-group">
+                <button class="btn-dark-gray" onclick="manaagetab('2')">Back</button>
+                @*<button class="btn-blue-light">Reset</button>*@
+                <button id="deliverysubmit" class="btn-pink">Save & Continue</button>
+                @*<button onclick="manaagetab('5')" class="btn-dark-gray">Continue</button>*@
+            </div>
+        </div>
+
+        @*<input type="hidden" asp-for="orderid" />*@
+        <input type="hidden" asp-for="standorderid" />
+       
+        <input type="hidden" id="deltypvalue" asp-for="dinfo.DelieveryType" />
+        <input type="hidden" id="saletypvalue" asp-for="standsaletype" />
+        <input type="hidden" id="hdnsection" value="@ViewBag.section" />
+        @*<input type="hidden" asp-for="billid" />*@
+    </div>
+
+
+<script type="text/javascript">
+    function scategory_SelectedIndexChanged() {
+        $('#color').focus();
+        GetStandDetails(this);
+    }
+    function scolor_SelectedIndexChanged() {
+        $('#height').focus();
+    }
+    function sheight_SelectedIndexChanged() {
+        $('#btnsubmit').focus();
+    }
+
+    $("#tab1").click(function () {
+        document.getElementById('content1').style.display = 'block';
+        document.getElementById('content2').style.display = 'none';
+    });
+    $("#tab2").click(function () {
+        document.getElementById('content1').style.display = 'none';
+        document.getElementById('content2').style.display = 'block';
+    });
+    $('#btnsubmit').click(function () {
+
+        if (standcheckitem()) {
+            $('#standinfo').submit();
+        }
+        else { alert('Please select sale type'); return false;}
+
+    });
+    function GetStandDetails(id) {
+        debugger;
+        var option = '';
+        var standid = $('#standcode :selected').val();
+        if (standid != '') {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Stand_wise_details", "AddSale")',
+                //contentType: false,
+                //processData: false,
+                data: { "standid": standid },
+                success: function (data) {
+                    if (data != null) {
+                      //  var selectedValues = new Array();
+                        debugger;
+                       var selectedValues = data[0].label.split(",");
+                        var response = JSON.stringify(data);
+                        if (response != null) {
+                            $("#height").empty();
+                            $("#SeriesId").append('<option value="">--Select--</option>');
+                            for (var i = 0; i < data.length; i++) {
+                                option += '<option value="' + data[i].id + '">' + data[i].label + '</option>';
+                            }
+                            $("#height").append('<option value="">--Select--</option>');
+                            $('#height').append(option)
+                            //$.each(data, function (response) {
+                            //    $("#height").append('<option value"' + data[0].id + '">' + data[0].label + '</option>');
+                            //});
+                            //$(selectedValues).each(function () {
+                            //    $('<option>' + this + '</option>').appendTo('#sizeinheight');
+                            //});
+                            //$.each(selectedValues, function () {
+                                //$("#SeriesId").val(selectedValues);
+                            //});
+                           // $('#SeriesId').val(2);
+
+                        }
+                        else {
+
+                        }
+                    }
+                    else {
+
+                    }
+
+
+
+                },
+                Error: function (err) {
+                    $('#itemcategory').append(err);
+                    //  debugger;
+                },
+                /* beforeSend: function () {
+                     $(".progress").show();
+                 },
+                 complete: function () {
+                    $(".progress").hide();
+                 }*/
+            });
+
+        }
+        }
+    $(document).ready(function () {
+        $('#lbldeliverymsg').val('');
+        document.getElementById('content1').style.display = 'none';
+        document.getElementById('content2').style.display = 'block';
+        var sectionAvailable = $('#hdnsection').val();
+        if (sectionAvailable != 'undefined') {
+
+            if (sectionAvailable == "1") {
+                document.getElementById('content1').style.display = 'none';
+                document.getElementById('content2').style.display = 'block';
+                //$('#content1').show();
+                //$('#content2').hide();
+            }
+            else if (sectionAvailable == "2") {
+                document.getElementById('content1').style.display = 'none';
+                document.getElementById('content2').style.display = 'block';
+            }
+            else {
+                document.getElementById('content1').style.display = 'none';
+                document.getElementById('content2').style.display = 'block';
+            }
+        }
+
+        $("#deliverysubmit").click(function () {
+            debugger;
+            var sstype = $('#saletypvalue').val();
+            var deliveryval = $('#deltypvalue').val();
+            if ($('#radio-type-03').is(":checked")) {
+                if ($('#dinfo_PortName').val() == '') {
+                    $("#lbldeliverymsg").text("Please Enter Port Name.")
+                    $('#dinfo_PortName').focus();
+                    // alert('Please Enter Port Name.');
+                    return false;
+
+                }
+                //  $("#dinfo.PortName").submit();
+            }
+            if (sstype != '') {
+
+                if (sstype == 'OF') {
+
+                    if (deliveryval == 0 || deliveryval == '') {
+                        document.getElementById('content1').style.display = 'none';
+                        document.getElementById('content2').style.display = 'block';
+                        if ($('#radio-type-02').is(":checked") || $('#radio-type-03').is(":checked")) {
+                            //var fdate = $("#dinfo_DeliveryFrom").val();
+                            //var tdate = $("#dinfo_DeliveryFrom").val();
+
+                            var start = $("#dinfo_DeliveryFrom").datepicker("getDate");
+                            var end = $("#dinfo_DeliveryTo").datepicker("getDate");
+                            days = (end - start) / (1000 * 60 * 60 * 24);
+                            if (days < 0) {
+                                $("#lbldeliverymsg").text("Please specify valid date range.")
+                                return false;
+                            }
+                            //if (fdate != null && tdate != null) {
+
+                            //    var days = fdate - tdate;
+
+                            //}
+
+                            $("#deliveryinfo").submit();
+                        }
+                        else {
+                            // alert('Please enter delivery information.')
+                            $("#lbldeliverymsg").text("Please specify delivery information.")
+                            document.getElementById('content1').style.display = 'none';
+                            document.getElementById('content2').style.display = 'block';
+                            $("#tab2").prop("checked", true);
+                        }
+
+                    }
+                    else {
+                        //var fdate = $("#dinfo_DeliveryFrom").val();
+                        //var tdate = $("#dinfo_DeliveryTo").val();
+                        var start = $("#dinfo_DeliveryFrom").datepicker("getDate");
+                        var end = $("#dinfo_DeliveryTo").datepicker("getDate");
+                        days = (end - start) / (1000 * 60 * 60 * 24);
+                        if (days < 0) {
+                            $("#lbldeliverymsg").text("Please specify valid date range.")
+                            return false;
+                        }
+                        $("#deliveryinfo").submit();
+                    }
+
+
+                }
+                else { manaagetab('3') }
+            }
+            else {
+                manaagetab('5')
+            }
+            //$("#deliveryinfo").submit();}
+
+
+        });
+
+        function getNum(val) {
+            if (isNaN(val)) {
+                return 0;
+            }
+            return val;
+        }
+
+        $("#dinfo_DeliveryFrom").datepicker({
+            dateFormat: "dd-mm-yy",
+            minDate: -0,
+
+
+        });
+        $("#dinfo_DeliveryTo").datepicker({
+            dateFormat: "dd-mm-yy",
+            minDate: -0,
+
+
+        });
+
+    });</script>
+
+<script type="text/javascript">
+
+
+
+
+    function portSelect() {
+        document.getElementById('port-type-container').style.display = 'block';
+        document.getElementById('port-type-txt').style.display = 'block';
+
+    }
+    function homeSelect() {
+        document.getElementById('port-type-container').style.display = 'none';
+        document.getElementById('port-type-txt').style.display = 'none';
+
+    }
+    function cashSelect() {
+        document.getElementById('port-type-container').style.display = 'none';
+        document.getElementById('port-type-txt').style.display = 'none';
+
+    }
+    function standcheckitem() {
+
+        if (($("#OrderForm1").prop("checked")) || ($("#CashMemo1").prop("checked"))) {
+            return true;
+        }
+        else
+            return false;
+    }
+</script>

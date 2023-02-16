@@ -1,0 +1,345 @@
+﻿@model SalesApp.ViewModel.NormalSaleVM;
+
+@{
+    ViewBag.Title = "Add Customer Info";
+
+}
+<div class="main-container-pay">
+    <div class="container-bg clearfix">
+        @*<div class="sale-process-nav">
+            <ul>
+                <li>
+                    <a href="add-sale.html">
+                        <span class="nav-icon-container"><i class="las la-shopping-cart"></i></span>
+                        <span class="nav-txt-container">Add Item</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="payment.html">
+                        <span class="nav-icon-container"><i class="las la-credit-card"></i></span>
+                        <span class="nav-txt-container">Payment</span>
+                    </a>
+                </li>
+                <li class="stand-nav">
+                    <a href="stands-delivery.html">
+                        <span class="nav-icon-container"><i class="las la-truck"></i></span>
+                        <span class="nav-txt-container">Stand & Delivery</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="customer-info.html">
+                        <span class="nav-icon-container"><i class="las la-user-cog"></i></span>
+                        <span class="nav-txt-container">Customer Info</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="review.html">
+                        <span class="nav-icon-container"><i class="las la-print"></i></span>
+                        <span class="nav-txt-container">Review & Print</span>
+                    </a>
+                </li>
+
+            </ul>
+        </div>*@
+        @if (TempData["PayMessage"] != null)
+        {
+            var message = (SalesApp.ViewModel.MessageVM)TempData["PayMessage"];
+            <div style="color:red">
+                <strong>@message.title</strong>
+                @message.msg
+            </div>
+        }
+    <div class="container-fluid customer-info-form">
+        @using (Html.BeginForm("AddOrderPayment", "AddSale", FormMethod.Post, new { id = "paymentinfo", onsubmit = "showLoader(this);" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="row pad-rl-20 pad-tb-10">
+                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 col-12 pad-l-0">
+                    <div class="payment-method-container clearfix">
+                        <label for="add" class="lable-head">Payment Methods</label>
+                        <div class="payment-group">
+                            <div class="inputGroup">
+                                @Html.RadioButtonFor(model => model._paymethod, paymethod.Credit, new { @name = "radio", @type = "radio", @id = "radio3", onclick = "creditcard();" })
+
+                                <label for="radio3">Credit Card</label>
+                            </div>
+                            <div class="inputGroup">
+                                @Html.RadioButtonFor(model => model._paymethod, paymethod.Cash, new { @name = "radio", @type = "radio", @id = "radio1", onclick = "cash();" })
+
+                                <label for="radio1">Cash</label>
+                            </div>
+                            <div class="inputGroup">
+                                @Html.RadioButtonFor(model => model._paymethod, paymethod.Later, new { @name = "radio", @type = "radio", @id = "radio4", onclick = "paylater();" })
+
+                                <label for="radio4">Pay Later</label>
+                            </div>
+                            <div class="inputGroup">
+                                @Html.RadioButtonFor(model => model._paymethod, paymethod.Debit, new { @name = "radio", @type = "radio", @id = "radio2", onclick = "debitcard();" })
+
+                                <label for="radio2">Debit Card</label>
+                            </div>
+
+                            <div class="inputGroup">
+                                @Html.RadioButtonFor(model => model._paymethod, paymethod.BT, new { @name = "radio", @type = "radio", @id = "radio5", onclick = "paytm();" })
+                                <label for="radio5">Bank Transfer</label>
+                                @*<label for="radio5"><img src="~/img/paytm.png" /></label>*@
+                            </div>
+                           @* <div class="inputGroup">
+                                @Html.RadioButtonFor(model => model._paymethod, paymethod.Cash_No_Sale, new { @name = "radio", @type = "radio", @id = "radio6", onclick = "paytm();" })
+                                <label for="radio5">Cash(No Sale)</label>
+                               
+                            </div>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-12 summary-container">
+                    <div class="" style="margin-top:20px;">
+                        <!-- <p><span class="fbold fdark conversion-head">Conversion Rate:</span> <span class="fbold conversion-val">USD 76</span></p> -->
+                        <p style="margin-left:-6px"><span class="fbold fdark grand-total-head">Grand Total:</span> <span class="fbold grand-total-val" style="width:209px">@Html.DisplayFor(model => model.grandtotalinr)</span></p>
+                        <p style="margin-left:-6px"><span class="fbold fdark grand-total-head">Discount:</span> <span class="fbold grand-total-val" style="width:209px">@Html.DisplayFor(model => model.discountamout)</span></p>
+                        <p style="margin-left:-6px"><span class="fbold fdark grand-total-head">Taxable Amount:</span> <span class="fbold conversion-val" style="color:blue;width:209px">@Html.DisplayFor(model => model.taxableamount)</span></p>
+                            <p style="margin-left:-6px"><span class="fbold fdark grand-total-head">Tax:</span> <span class="fbold conversion-val" style="color:blue;width:209px">@Html.DisplayFor(model => model.tax)</span></p>
+                            <p style="margin-left:-6px"><span class="fbold fdark conversion-head">Total  Balance:</span> <span class="fbold conversion-val" style="color:blue;width:209px">@Html.DisplayFor(model => model.balinr)</span></p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row pad-rl-20 payment-paylater-container" id="paylater">
+                <div class="col-lg-12 col-md-12 payment-add">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-12 form-group">
+                            <label for="">Payment Type</label>
+                            @Html.DropDownListFor(model => model.paylaterid, Model.paylaterdetails as IEnumerable<SelectListItem>, "Select", new { onchange = "paylater_SelectedIndexChanged()", @class = "form-control", htmlAttributes = new { } })
+                            @Html.ValidationMessageFor(model => model.paylaterid, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 col-12 form-group">
+                            <label for="">Amount(INR)</label>
+                            <div class="amount-input">
+                                @Html.TextBoxFor(model => model.PayLaterAmount, new { type = "number", @class = "form-control", htmlAttributes = new { placeholder = "Enter ..." } })
+                                @Html.ValidationMessageFor(model => model.PayLaterAmount, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12 col-12">
+                            <button type="submit" class="btn-blue">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row pad-rl-20 payment-paylater-container" id="cash">
+                <div class="col-lg-12 col-md-12 payment-add">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-12 form-group">
+                            <label for="">Fx</label>
+                            @Html.DropDownListFor(model => model.currencyid, Model.currencydetails as IEnumerable<SelectListItem>, "Select", new { @class = "form-control", onchange = "cash_SelectedIndexChanged()", htmlAttributes = new { } })
+                            @Html.ValidationMessageFor(model => model.currencyid, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 col-12 form-group">
+                            <label for="">Amount</label>
+                            <div class="">
+                                @Html.TextBoxFor(model => model.CashAmount, new { type = "number", @class = "form-control", htmlAttributes = new { required = "required", placeholder = "Enter ..." } })
+                                @Html.ValidationMessageFor(model => model.CashAmount, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12 col-12">
+                            <button type="submit" class="btn-blue">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row pad-rl-20 payment-paylater-container" id="debitCard">
+                <div class="col-lg-12 col-md-12 payment-add">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-12 form-group">
+                            <label for="">Card Type</label>
+                            @Html.DropDownListFor(model => model.cardiddebit, Model.cardtypedetails as IEnumerable<SelectListItem>, "Select", new { onchange = "debit_SelectedIndexChanged()", @class = "form-control", htmlAttributes = new { } })
+                            @Html.ValidationMessageFor(model => model.cardiddebit, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 col-12 form-group">
+                            <label for="">Amount</label>
+                            <div class="amount-input">
+                                @Html.TextBoxFor(model => model.DebitAmount, new { type = "number", @class = "form-control", htmlAttributes = new { placeholder = "Enter ..." } })
+                                @Html.ValidationMessageFor(model => model.DebitAmount, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12 col-12">
+                            <button type="submit" class="btn-blue">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row pad-rl-20 payment-paylater-container" id="creditCard">
+                <div class="col-lg-12 col-md-12 payment-add">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-12 form-group">
+                            <label for="">Card Type</label>
+                            @Html.DropDownListFor(model => model.cardid, Model.cardtypedetails as IEnumerable<SelectListItem>, "Select", new { onchange = "credit_SelectedIndexChanged()", @class = "form-control", htmlAttributes = new { } })
+                            @Html.ValidationMessageFor(model => model.cardid, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 col-12 form-group">
+                            <label for="">Amount</label>
+                            <div class="amount-input">
+                                @Html.TextBoxFor(model => model.CreditAmount, new { type = "number", @class = "form-control", htmlAttributes = new { placeholder = "Enter ..." } })
+                                @Html.ValidationMessageFor(model => model.CreditAmount, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12 col-12">
+                            <button type="submit" class="btn-blue">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row pad-rl-20 payment-paylater-container" id="paytm">
+                <div class="col-lg-12 col-md-12 payment-add">
+                    <div class="row">
+
+                        @*<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 col-8 form-group">
+            <label for="">Paytm Number</label>
+
+            @Html.TextBoxFor(model => model.PaytmAmount, new { type = "number", htmlAttributes = new { @class = "form-control", placeholder = "Enter ..." } })
+            @Html.ValidationMessageFor(model => model.PaytmAmount, "", new { @class = "text-danger" })
+
+        </div>*@
+                        <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 col-12 form-group">
+                            <label for="">Amount</label>
+                            <div class="amount-input">
+                                @Html.TextBoxFor(model => model.PaytmAmount, new { type = "number", @class = "form-control", htmlAttributes = new { placeholder = "Enter ..." } })
+                                @Html.ValidationMessageFor(model => model.PaytmAmount, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4">
+                            <button type="submit" class="btn-blue">Add Amount</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="hndbalance" value="@ViewBag.totalbalance" />
+            <input type="hidden" asp-for="orderid" />
+            <input type="hidden" asp-for="billid" />
+
+        }
+        <div class="col-lg-12 mar-t-20 pad-0">
+            <div class="table-responsive table--no-card m-b-30">
+                <table class="table table-borderless table-striped table-earning">
+                    <thead>
+
+                        <tr>
+                            <th class="table-desc-col">Payment Mode</th>
+                            <th>Type</th>
+                            <th class="text-center">Amount</th>
+                            <th class="text-center">Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.paymentdetails != null)
+                            @if (Model.paymentdetails.Count() > 0)
+                            {
+                                @foreach (var item in Model.paymentdetails)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.paymode)
+                                        </td>
+                                        <td>@Html.DisplayFor(modelItem => item.paytype)</td>
+                                        @if (item.paymode.ToUpper().Contains("CASH") && item.paytype.ToUpper() != "INR")
+                                        {
+                                            <td class="text-center">@Html.DisplayFor(modelItem => item.symbol)&nbsp;@Html.DisplayFor(modelItem => item.payamount)</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-center">@Html.DisplayFor(modelItem => item.symbol)&nbsp;@Html.DisplayFor(modelItem => item.payamountinr)</td>
+                                        }
+                                        <td class="text-center">
+                                            @Html.ActionLink("", "DeletePayment", "AddSale", new { payid = item.payid }, new { @class = "delete-item  las la-times" })
+                                            @*<a href="" class="delete-item"><i class="las la-times"></i></a>*@
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row pad-0 mar-0">
+                <div class="col-lg-12 footer-btn text-right pad-rl-10 btns-group">
+                    <button type="button" class="btn-dark-gray" onclick="manaagetab('1')">Back</button>
+                    @*<button class="btn-blue-light">Reset</button>*@
+                    @{
+                        string Disabled = "";
+                        if (@ViewBag.totalbalance > 0)
+                        {
+                            Disabled = "disabled";
+                        }
+                    }
+                    @*<button type="button" id="paymentsubmit" class="btn-pink">Continue</button>*@
+                    <button class="btn-pink" id="btncontinue" @Disabled onclick="manaagetab('2')">Save & Continue</button>
+                </div>
+            </div>
+
+        </div>
+
+        </div>
+</div>
+<script  type="text/javascript">
+    function cash_SelectedIndexChanged() {
+        $('#CashAmount').focus();
+    }  
+    function paylater_SelectedIndexChanged() {
+        $('#PayLaterAmount').focus();
+    } 
+    function debit_SelectedIndexChanged() {
+        $('#DebitAmount').focus();
+    } 
+    function credit_SelectedIndexChanged() {
+        $('#CreditAmount').focus();
+    } 
+    function debit_SelectedIndexChanged() {
+        $('#DebitAmount').focus();
+    } 
+    
+    $(document).ready(function () {
+        $("#paymentsubmit").click(function () {
+            $("#paymentinfo").submit();
+        });
+    });
+    function paylater() {
+        document.getElementById('paylater').style.display = 'block';
+        document.getElementById('cash').style.display = 'none';
+        document.getElementById('debitCard').style.display = 'none';
+        document.getElementById('creditCard').style.display = 'none';
+        document.getElementById('paytm').style.display = 'none';
+    }
+    function cash() {
+       
+
+        document.getElementById('paylater').style.display = 'none';
+        document.getElementById('cash').style.display = 'block';
+        document.getElementById('debitCard').style.display = 'none';
+        document.getElementById('creditCard').style.display = 'none';
+        document.getElementById('paytm').style.display = 'none';
+    }
+    function debitcard() {
+        document.getElementById('paylater').style.display = 'none';
+        document.getElementById('cash').style.display = 'none';
+        document.getElementById('debitCard').style.display = 'block';
+        document.getElementById('creditCard').style.display = 'none';
+        document.getElementById('paytm').style.display = 'none';
+    }
+    function creditcard() {
+        document.getElementById('paylater').style.display = 'none';
+        document.getElementById('cash').style.display = 'none';
+        document.getElementById('debitCard').style.display = 'none';
+        document.getElementById('creditCard').style.display = 'block';
+        document.getElementById('paytm').style.display = 'none';
+    }
+    function paytm() {
+        document.getElementById('paylater').style.display = 'none';
+        document.getElementById('cash').style.display = 'none';
+        document.getElementById('debitCard').style.display = 'none';
+        document.getElementById('creditCard').style.display = 'none';
+        document.getElementById('paytm').style.display = 'block';
+    }
+</script>

@@ -1,0 +1,103 @@
+﻿<script src="~/js/vendor/modernizr-3.8.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="~/js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
+<!-- JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<!-- jQuery Custom Scroller CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="~/js/plugins.js"></script>
+<script src="~/js/main.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<nav id="sidebar">
+    <div class="sidebar-header">
+        <a asp-action="Index" asp-controller="Mirror" class="big-logo"><img src=@Url.Content("~/img/big-logo.png") /></a>
+        <a asp-action="Index" asp-controller="Mirror" class="small-logo"><img src=@Url.Content("~/img/small-logo.png") /></a>
+    </div>
+
+    <div class="sidebar-content" style="overflow:auto">
+        <button type="button" id="dismiss" class="btn btn-info">
+            <i class="las la-arrow-left"></i>
+        </button>
+        <div class="profile-setting">
+            <div class="profile-img big-profile" style="width:100px;height:100px;">
+                <img src="http://202.91.72.51/salesapp/images/@ViewBag.profilepic"
+                     style="width:100px;height:100px;"
+                     asp-append-version="true" />
+            </div>
+            @*<div class="profile-info big-profile-image">
+                <p class="profile-name">@ViewBag.UserName</p>
+                <p class="profile-designation">Sales executive</p>
+            </div>*@
+        </div>
+        <ul class="list-unstyled components" id="nav">
+            <li class="active" id="litm">
+                <a href="@Url.Action("Index", "Mirror")"><i class="las la-chart-bar"></i> DashBoard</a>
+                @*@Html.ActionLink("Today's Mirror", "Index", "Mirror", "", new { @class = "las la-chart-bar" })*@
+
+            </li>
+            <li id="liprint">
+                <a href="@Url.Action("Index", "Print")"><i class="las la-print"></i>Re-Print Sale</a>
+
+            </li>
+            <li id="liedit">
+                <a href="@Url.Action("Index", "Edit")"><i class="las la-edit"></i>Edit Sale</a>
+
+            </li>
+            <li id="liresume">
+                <a href="@Url.Action("Temp", "Edit")"><i class="las la-window-restore"></i>Resume Sale</a>
+
+            </li>
+            <li id="lids">
+                <a href="@Url.Action("Index", "AddSale",new { id = 4 })"><i class="las la-dollar-sign"></i>Direct Sale</a>
+
+            </li>
+             <li id="liresume">
+                  <p>
+                    Report
+                    <i class="fas fa-angle-left right"></i>
+
+                </p>
+                 <ul>
+                   <li id="liresume">
+                <a href="@Url.Action("Index", "Report")"><i class="las la-window-restore"></i>Daily Collection</a>
+                </li>
+                 <li id="liresume">
+                <a href="@Url.Action("ItemCostingInit", "Report")"><i class="las la-window-restore"></i>ItemWise Costing</a>
+                </li>
+                </ul>
+            </li>
+            @{
+                if (ViewBag.roletype == "1")
+                {
+                    <li id="lids">
+                        <a href="@Url.Action("Index", "User")">
+
+                            <i class="las la-user-tie"></i>Manage User
+                        </a>
+                    </li>
+                }
+            }
+            <li id="lilogout">
+                <a href="@Url.Action("Index", "Account")">
+
+                    <i class="las la-user-tie"></i>Logout
+                </a>
+            </li>
+            @*<li>
+                    <a href="#homeSubmenu"><i class="las la-toolbox"></i> Add Custom Category</a>
+
+                </li>
+                <li>
+                    <a href="#homeSubmenu"><i class="las la-shapes"></i> Add new item shapes</a>
+
+                </li>*@
+        </ul>
+
+    </div>
+
+
+</nav>
+

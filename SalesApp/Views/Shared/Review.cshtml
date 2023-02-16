@@ -1,0 +1,160 @@
+﻿@model SalesApp.ViewModel.NormalSaleVM;
+
+@{
+    ViewBag.Title = "Review";
+
+}
+<div class="main-container-rev">
+    <div class="container-bg clearfix">
+
+        <div class="container-fluid customer-info-form">
+
+            <!--  <div class="row">
+               <div class="info-form-header">
+                    <h3><i class="las la-user-cog"></i> Customer Information</h3>
+                  </div>
+            </div> -->
+
+            <div class="row pad-rl-40 pad-tb-30 info-container">
+
+                <div class="col-lg-6 col-md-6 col-sm-6">
+
+                    <p class="name-nationality"><span class="fbold name"><i class="las la-user-circle"></i>@Html.DisplayFor(model => model.cinfo.Name)</span><span class="fbold nationality fdark">@Html.DisplayFor(model => model.cinfo.Country)</span></p>
+
+                    <p><span class="fregular flight dblock">Address:</span>  <span class="fbold fdark dblock">@Html.DisplayFor(model => model.cinfo.Address),@Html.DisplayFor(model => model.cinfo.City),@Html.DisplayFor(model => model.cinfo.State),@Html.DisplayFor(model => model.cinfo.Country),@Html.DisplayFor(model => model.cinfo.Zipcode)</span></p>
+                    <p><span class=" fregular flight dblock">Contact Numbers: </span>  <span class="fbold fdark dblock">@Html.DisplayFor(model => model.cinfo.Telephone)</span></p>
+                    <p><span class="fregular flight dblock">Email Address:</span>  <span class="fbold fdark  dblock">@Html.DisplayFor(model => model.cinfo.Email)</span></p>
+                    <p><span class="fregular flight dblock">Passport Number:</span>  <span class=" dblock fbold fdark ">@Html.DisplayFor(model => model.dinfo.Passport)</span></p>
+
+
+
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-6">
+
+                    <!-- <p class="name-nationality"><span class="fbold name">Shomayala Arooz</span><span class="fregular nationality">Australia</span></p>
+                    -->
+                    <p><span class="fregular flight dblock">Delivery Type:</span>  <span class="dblock fbold fdark ">@Html.DisplayFor(model => model.deliverytypevalue)</span></p>
+                    <p><span class="dblock fregular flight ">Port Type:</span>  <span class="dblock fbold fdark">@Html.DisplayFor(model => model.porttypevalue)</span></p>
+                    <p><span class="dblock fregular flight ">Port Name: </span>  <span class="dblock fbold fdark ">@Html.DisplayFor(model => model.dinfo.PortName)</span></p>
+
+                    <p class="expected-date"><span class="dblock fregular flight ">Expected Date:</span>  <!-- <i class="las la-calendar"></i> --><span class="fbold fdark dblock">@Html.DisplayFor(model => model.dinfo.DeliveryFrom) - @Html.DisplayFor(model => model.dinfo.DeliveryTo)</span></p>
+
+                    <p class="inline-txt"><span class="dblock fregular flight ">C.R.</span> <span class="dblock fbold fdark ">@Html.DisplayFor(model => model.conversionrate)</span></p>
+                    <p class="inline-txt"><span class="fregular flight grand-total-head dblock">Grand Total:</span> <span class="fbold grand-total-val dblock"><i class="las la-rupee-sign"></i> @Html.DisplayFor(model => model.grandtotal)</span></p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row pad-rl-20">
+            <div class="col-lg-12 mar-t-20">
+                <div class="table-responsive table--no-card m-b-30">
+                    <table class="table table-borderless table-striped table-earning">
+                        <thead>
+                            <tr>
+                                <th class="table-desc-col">Description</th>
+                                <th class="text-center">Fx</th>
+                                <th class="text-center">INR</th>
+                                <th class="text-center">Action</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.cashsaledetails != null)
+                                @if (Model.cashsaledetails.Count() > 0)
+                                {
+                                    @foreach (var item in Model.cashsaledetails)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <p class="table-description-p">
+                                                    <span class="table-stock-number">A300</span>
+                                                    <span class="table-type of">@Html.DisplayFor(modelItem => item.ordertype)</span>
+                                                </p>
+                                                <p class="table-description-item">@Html.DisplayFor(modelItem => item.itemdesc)</p>
+
+                                            </td>
+
+                                            <td class="text-center"><i class="las la-rupee-sign"></i>  @Html.DisplayFor(modelItem => item.salevalue)</td>
+                                            <td class="text-center"><i class="las la-rupee-sign"></i> @Html.DisplayFor(modelItem => item.salevalueinr)</td>
+                                            <td class="text-center">
+                                                @Html.ActionLink("", "DeleteSale", "CustomSale", new { itemorderid = item.itemorderid }, new { @class = "delete-item  las la-times" })
+                                            </td>
+
+
+                                        </tr>
+                                    }
+                                    }
+
+                                    </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-lg-12 mar-t-20">
+                <div class="table-responsive table--no-card m-b-30">
+                    <table class="table table-borderless table-striped table-earning">
+                        <thead>
+                            <tr>
+                                <th class="table-desc-col">Stand</th>
+                                <th>Colour</th>
+                                <th class="text-center">Width</th>
+                                <th class="text-center">Height<span class="small-txt-br">(Inch)</span></th>
+                                <th class="text-center">Action</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.standsaledetails != null)
+                                @if (Model.standsaledetails.Count() > 0)
+                                {
+                                    @foreach (var item in Model.standsaledetails)
+                                    {
+                            <tr>
+                                <td>
+                                    <p class="table-description">@Html.DisplayFor(modelItem => item.standdesc)</p>
+                                    <p class="table-type CM">@Html.DisplayFor(modelItem => item.ordertype)</p>
+                                </td>
+                                <td>@Html.DisplayFor(modelItem => item.color)</td>
+                                <td class="text-center">@Html.DisplayFor(modelItem => item.width)</td>
+                                <td class="text-center">@Html.DisplayFor(modelItem => item.height)</td>
+                                <td class="text-center">
+                                    @Html.ActionLink("", "DeleteStand", "CustomSale", new { itemorderid = item.itemorderid }, new { @class = "delete-item  las la-times" })
+                                </td>
+
+
+                            </tr>
+
+                                    }
+                                    }
+
+
+
+                                    </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-6 footer-btn text-left pad-l-20 btns-group">
+                @using (Html.BeginForm("ExportToPDF", "CustomSale", FormMethod.Post))
+                {
+                    <button type="submit" class="btn-print"><i class="las la-print"></i> Print</button>
+                }
+
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-6 footer-btn text-right pad-r-20 btns-group">
+                <button class="btn-dark-gray" onclick="manaagetab('3')">Back</button>
+                @Html.ActionLink("Finish", "FinishSale", "CustomSale", new { orderid = Model.orderid }, new { @class = "btn-pink" })
+                @*@Html.ActionLink("Finish", "Index", "Mirror", new { orderId = Model.orderid }, new { @class = "btn-pink" })*@
+                @*<button class="btn-pink">Finish</button>*@
+            </div>
+        </div>
+
+
+
+    </div>
+
+</div>

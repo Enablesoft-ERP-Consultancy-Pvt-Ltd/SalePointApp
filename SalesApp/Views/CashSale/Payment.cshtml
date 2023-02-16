@@ -1,0 +1,317 @@
+﻿@model SalesApp.ViewModel.CashSaleVM;
+@{
+    ViewData["Title"] = "Payment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid customer-info-form">
+
+    <div class="row pad-rl-20 pad-tb-10">
+        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 col-12 pad-l-0">
+            <div class="payment-method-container clearfix">
+                <label for="add" class="lable-head">Payment Methods</label>
+                <div class="payment-group">
+                    <div class="inputGroup">
+                        <input id="radio1" name="radio" type="radio" onclick="cash();">
+                        <label for="radio1">Cash</label>
+                    </div>
+
+                    <div class="inputGroup nonClickble">
+                        <input id="radio2" name="radio" type="radio" onclick="debitCard();">
+                        <label for="radio2">Debit Card</label>
+                    </div>
+
+                    <div class="inputGroup nonClickble">
+                        <input id="radio3" name="radio" type="radio" onclick="creditCard();">
+                        <label for="radio3">Credit Card</label>
+                    </div>
+                    <div class="inputGroup nonClickble">
+                        <input id="radio4" name="radio" type="radio" onclick="paylater();">
+                        <label for="radio4">Pay Later</label>
+                    </div>
+
+                    <div class="inputGroup nonClickble">
+                        <input id="radio5" name="radio" type="radio" onclick="paytm();">
+                        <label for="radio5"><img src="~/img/paytm.png" /></label>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        @{
+            decimal amt = 0;
+            decimal amtInr = 0;
+            foreach (var item in Model.cashsaledetails)
+            {
+                amt += (decimal)item.salevalue;
+                amtInr += (decimal)item.salevalueinr;
+            }
+
+            <input type="hidden" asp-for="orderid" />
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-12 summary-container">
+                <div class="">
+                    <p hidden="hidden"><span class="fbold fdark conversion-head">Conversion Rate:</span> <span class="fbold conversion-val">0</span></p>
+                    <p><span class="fbold fdark conversion-head">Balance:</span> <span class="fbold conversion-val"><i class="las la-rupee-sign"></i> @amt</span></p>
+                    <p><span class="fbold fdark grand-total-head">Grand Total:</span> <span class="fbold grand-total-val"><i class="las la-rupee-sign"></i> @amtInr</span></p>
+                </div>
+            </div>
+        }
+    </div>
+
+    @using (Html.BeginForm("AddPayment", "CashSale"))
+    {
+        <div class="row pad-rl-20 payment-paylater-container" id="cash">
+            <div class="col-lg-12 col-md-12 payment-add">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12 col-12 form-group">
+                        <label for="">Fx</label>
+                        <select id="" class="form-control">
+                            <option selected>Choose...</option>
+                            <option>INR</option>
+                            <option>USD</option>
+                            <option>EUR</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 col-12 form-group">
+                        <label for="">Amount</label>
+                        <div class="">
+                            <input type="text" class="form-control" id="" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-12">
+                        <button type="submit" class="btn-blue">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="row pad-rl-20 payment-paylater-container" id="debitCard">
+        <div class="col-lg-12 col-md-12 payment-add">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-12 form-group">
+                    <label for="">Card Type</label>
+                    <select id="" class="form-control">
+                        <option selected>Choose...</option>
+                        <option>Amex</option>
+                        <option>Visa</option>
+                        <option>Master</option>
+                        <option>diners</option>
+                    </select>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 col-12 form-group">
+                    <label for="">Amount</label>
+                    <div class="amount-input">
+                        <input type="text" class="form-control" id="" placeholder="">
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12 col-12">
+                    <button class="btn-blue">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row pad-rl-20 payment-paylater-container" id="creditCard">
+        <div class="col-lg-12 col-md-12 payment-add">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-12 form-group">
+                    <label for="">Card Type</label>
+                    <select id="" class="form-control">
+                        <option selected>Choose...</option>
+                        <option>Amex</option>
+                        <option>Visa</option>
+                        <option>Master</option>
+                        <option>diners</option>
+                    </select>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 col-12 form-group">
+                    <label for="">Amount</label>
+                    <div class="amount-input">
+                        <input type="text" class="form-control" id="" placeholder="">
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12 col-12">
+                    <button class="btn-blue">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row pad-rl-20 payment-paylater-container" id="paylater">
+        <div class="col-lg-12 col-md-12 payment-add">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-12 form-group">
+                    <label for="">Payment Type</label>
+                    <select id="" class="form-control">
+                        <option selected>Choose...</option>
+                        <option>PDCC</option>
+                        <option>Bank Transfer</option>
+                    </select>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 col-12 form-group">
+                    <label for="">Amount(INR)</label>
+                    <div class="amount-input">
+                        <input type="text" class="form-control" id="" placeholder="">
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12 col-12">
+                    <button class="btn-blue">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row pad-rl-20 payment-paylater-container" id="paytm">
+        <div class="col-lg-12 col-md-12 payment-add">
+            <div class="row">
+
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 col-8 form-group">
+                    <label for="">Paytm Number</label>
+
+                    <input type="text" class="form-control" id="" placeholder="">
+
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4">
+                    <button class="btn-blue">Add Amount</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-lg-12 mar-t-20 pad-0">
+        <div class="table-responsive table--no-card m-b-30">
+            <table class="table table-borderless table-striped table-earning">
+                <thead>
+                    <tr>
+                        <th class="table-desc-col">Payment Mode</th>
+                        <th>Type</th>
+                        <th class="text-center">Amount(INR)</th>
+                        <th class="text-center">Action</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.cashsaledetails != null && Model.cashsaledetails.Count() > 0)
+                    {
+                        @foreach (var item in Model.cashsaledetails)
+                            {
+                                <tr>
+                                    <td>Cash</td>
+                                    <td>INR</td>
+                                    <td class="text-center"><i class="las la-rupee-sign"></i> 200</td>
+                                    <td class="text-center">
+                                        @*<a href="" class="delete-item"><i class="las la-times"></i></a>*@
+                                        @Html.ActionLink("", "DeleteSale", "CashSale", new { orderItemId = item.itemorderid }, new { @class = "delete-item las la-times" })
+                                    </td>
+                                </tr>
+                            }
+                     }
+
+                     </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="row pad-0 mar-0">
+        <div class="col-lg-12 footer-btn text-right pad-rl-10 btns-group">
+            <button class="btn-dark-gray">Back</button>
+            <!-- <button class="btn-blue-light">Reset</button> -->
+            <button class="btn-pink">Finish</button>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/js/vendor/modernizr-3.8.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
+<!-- JS, Popper.js, and jQuery -->
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<!-- jQuery Custom Scroller CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
+<script src="~/js/plugins.js"></script>
+<script src="~/js/main.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+        });
+
+        $('#dismiss, .overlay').on('click', function () {
+            $('#sidebar').removeClass('active');
+            $('.overlay').removeClass('active');
+        });
+
+        // $('#sidebarCollapse').on('click', function () {
+        //     $('#sidebar').addClass('active');
+        //     $('.overlay').addClass('active');
+        //     $('.collapse.in').toggleClass('in');
+        //     $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        // });
+
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar, #content').toggleClass('active');
+            $('.overlay').addClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+    });
+
+
+    $(function () {
+        $("#datepicker1").datepicker({
+            dateFormat: "dd-mm-yy"
+            , duration: "fast"
+        });
+
+        $("#datepicker2").datepicker({
+            dateFormat: "dd-mm-yy"
+            , duration: "fast"
+        });
+    });
+</script>
+
+<script>
+    function paylater() {
+        document.getElementById('paylater').style.display = 'block';
+        document.getElementById('cash').style.display = 'none';
+        document.getElementById('debitCard').style.display = 'none';
+        document.getElementById('creditCard').style.display = 'none';
+        document.getElementById('paytm').style.display = 'none';
+    }
+    function cash() {
+        document.getElementById('paylater').style.display = 'none';
+        document.getElementById('cash').style.display = 'block';
+        document.getElementById('debitCard').style.display = 'none';
+        document.getElementById('creditCard').style.display = 'none';
+        document.getElementById('paytm').style.display = 'none';
+    }
+    function debitCard() {
+        document.getElementById('paylater').style.display = 'none';
+        document.getElementById('cash').style.display = 'none';
+        document.getElementById('debitCard').style.display = 'block';
+        document.getElementById('creditCard').style.display = 'none';
+        document.getElementById('paytm').style.display = 'none';
+    }
+    function creditCard() {
+        document.getElementById('paylater').style.display = 'none';
+        document.getElementById('cash').style.display = 'none';
+        document.getElementById('debitCard').style.display = 'none';
+        document.getElementById('creditCard').style.display = 'block';
+        document.getElementById('paytm').style.display = 'none';
+    }
+    function paytm() {
+        document.getElementById('paylater').style.display = 'none';
+        document.getElementById('cash').style.display = 'none';
+        document.getElementById('debitCard').style.display = 'none';
+        document.getElementById('creditCard').style.display = 'none';
+        document.getElementById('paytm').style.display = 'block';
+    }
+</script>

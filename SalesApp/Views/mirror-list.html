@@ -1,0 +1,297 @@
+﻿<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/main.css">
+
+  <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+  <!--[if IE]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <a href="" class="big-logo"><img src="img/big-logo.png"/></a>
+                <a href="" class="small-logo"><img src="img/small-logo.png"/></a>
+            </div>
+
+            <div class="sidebar-content">
+                    <button type="button" id="dismiss" class="btn btn-info">
+                        <i class="las la-arrow-left"></i>
+                    </button>
+              <div class="profile-setting">
+                <div class="profile-img big-profile">
+                    <img src="img/avatar-01.jpg">
+                </div>
+                <div class="profile-info big-profile-image">
+                  <p class="profile-name">Vikram Solomon</p>
+                  <p class="profile-designation">Sales executive</p>
+                </div>
+              </div>
+              <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="#homeSubmenu"><i class="las la-chart-bar"></i> Dashboard</a>
+                  
+                </li>
+                <li>
+                    <a href="#homeSubmenu"><i class="las la-print"></i> Print Sale</a>
+                  
+                </li>
+                <li>
+                    <a href="#homeSubmenu"><i class="las la-toolbox"></i> Add Custom Category</a>
+                  
+                </li>
+                <li>
+                    <a href="#homeSubmenu"><i class="las la-shapes"></i> Add new item shapes</a>
+                  
+                </li>
+              </ul>
+              
+            </div>
+            
+
+        </nav>
+
+        <!-- Page Content  -->
+        <div id="content">
+              <div class="header-container clearfix">
+                    <button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="las la-align-left"></i>
+                    </button>
+
+                    <h1><span class="fbold">Sales</span> <span class="fregular">Application</span></h1>
+
+                    <div class="account-wrap">
+                                            <div class="account-item clearfix js-item-menu">
+                                                <div class="image">
+                                                    <img src="img/avatar-01.jpg" alt="John Doe" />
+                                                </div>
+                                                <div class="content-account">
+                                                    <a class="js-acc-btn" href="#">Parag Tawde</a>
+                                                </div>
+                                                <div class="account-dropdown js-dropdown">
+                                                    <div class="info clearfix">
+                                                        <div class="image">
+                                                            <a href="#">
+                                                                <img src="img/avatar-01.jpg" alt="John Doe" />
+                                                            </a>
+                                                        </div>
+                                                        <div class="content-account">
+                                                            <h5 class="name">
+                                                                <a href="#">Parag Tawde</a>
+                                                            </h5>
+                                                            <span class="email">Sales executive</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="account-dropdown__body">
+                                                        <div class="account-dropdown__item">
+                                                            <a href="#">
+                                                                <i class="zmdi zmdi-account"></i>Account</a>
+                                                        </div>
+                                                        <div class="account-dropdown__item">
+                                                            <a href="#">
+                                                                <i class="zmdi zmdi-settings"></i>Setting</a>
+                                                        </div>
+                                                        <div class="account-dropdown__item">
+                                                            <a href="#">
+                                                                <i class="zmdi zmdi-money-box"></i>Billing</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="account-dropdown__footer">
+                                                        <a href="#">
+                                                            <i class="zmdi zmdi-power"></i>Logout</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                     </div>
+              </div>
+
+
+
+              <div class="main-container">
+                 <div class="container-bg clearfix">
+                    <div class="container-header clearfix">
+                      <h2>Todays Mirror List</h2>
+                      <div class="header-sales-info">
+                        <!-- <p class="float-left clients-name-info"><i class="las la-user-circle"></i> Shomayala Arooz</p> -->
+                        <!-- <p class="float-left"><span class="fregular">Sale Date:</span> <span class="fbold">05/05/2020</span></p>
+                        <p class="float-right"><span class="fregular">Mirror ID:</span> <span class="fbold">47345</span></p>
+                        <p class="cart-display"><span class="clients-cart-info"><i class="las la-shopping-cart"></i><span class="cart-notify">2</span></span></p> -->
+
+
+                      </div>
+                    </div>
+                    <!-- <div class="container-name-cart-info clearfix">
+                      <p class="clients-name-info"><i class="las la-user-circle"></i> Shomayala Arooz</p>
+                      <p class="clients-cart-info hide-mobile"><i class="las la-shopping-cart"></i> You have <span class="fbold">2 items</span> in your Cart</p>
+                      
+                    </div> -->
+
+
+                    <div class="container-fluid">
+                      <div class="row pad-t-0 pad-rl-20 mar-t-20">
+                        <div class="col-lg-12 pad-0">
+                                <div class="table-responsive table--no-card m-b-30">
+                                    <table class="table table-borderless table-striped table-earning table-main">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">Action</th>
+                                                <th>Demo Person/<br/>Mirror ID</th>
+                                                <th>Language</th>
+                                                <th class="text-center">PAX</th>
+                                                <th>Guide</th>
+                                                <th>Tour Escort</th>
+                                                <th>Company</th>
+                                                <th>Date of Visit</th>
+                                                
+                                                
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                              <td class="text-center action-td"><!-- <a href=""><i class="las la-plus" data-toggle="modal" data-target="#chooseType"></i></a> -->
+                                                <a href="add-cash-sale.html" class="btn btn-primary btn-dark-gray">Add Cash Sale</a>
+                                                <a href="add-sale.html" class="btn btn-primary btn-blue" >Add Sale</a>
+
+
+                                              </td>
+                                              <td>
+                                                <p><span class="fregular heads">Person:</span><span class="fbold val">Girish Arora</span></p>
+                                                <p><span class="fregular heads">Mirror ID:</span><span class="fbold val">52546</span></p>
+                                              </td>
+                                              <td>-</td>
+                                              <td class="text-center">12</td>
+                                              <td>-</td>
+                                              <td>-</td>
+                                              <td>Kuoni</td>
+                                              <td>12/05/2020</td>
+                                              
+                                              
+                                              
+                                              
+                                            </tr>
+
+
+                                            
+
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                    </div>
+
+
+                
+
+
+                      </div>
+
+                 
+                    </div>
+
+
+
+
+
+                    
+                 </div>
+
+
+                 <div class="container-bg clearfix">
+
+
+                   
+                            
+                 </div>
+              </div>
+
+
+         
+
+        </div>
+
+
+    </div>  
+    <div class="overlay-nav"></div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="chooseType" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="js/vendor/modernizr-3.8.0.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
+  <!-- JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<!-- jQuery Custom Scroller CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="js/plugins.js"></script>
+<script src="js/main.js"></script>
+<script type="text/javascript">
+        $(document).ready(function () {
+            $("#sidebar").mCustomScrollbar({
+                theme: "minimal"
+            });
+
+             $('#dismiss, .overlay').on('click', function () {
+                $('#sidebar').removeClass('active');
+                $('.overlay-nav').removeClass('active');
+            });
+
+            // $('#sidebarCollapse').on('click', function () {
+            //     $('#sidebar').addClass('active');
+            //     $('.overlay').addClass('active');
+            //     $('.collapse.in').toggleClass('in');
+            //     $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            // });
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar, #content').toggleClass('active');
+                $('.overlay-nav').addClass('active');
+                $('.collapse.in').toggleClass('in');
+                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            });
+        });
+    </script>
+ 
+</body>
+
+</html>

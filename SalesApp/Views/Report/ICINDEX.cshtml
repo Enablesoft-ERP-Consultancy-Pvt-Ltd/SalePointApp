@@ -1,0 +1,97 @@
+﻿@model SalesApp.ViewModel.ReportVM;
+
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<section class="content">
+    <div class="row">
+        <div class="col-18">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="head-main">ItemWise Costing Report</h2>
+                    <div class="card card-info">
+                        <div class="card-body">
+                            @using (Html.BeginForm("DownloadItemCostingReport", "Report"))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <table id="dataTabledriver" class="">
+                                    <tr>
+                                        <td class="">
+                                            <div class="form-group">
+                                                <label asp-for="fromdate" control-label"></label>
+                                                <input asp-for="fromdate" style="color:red" />
+                                                <span asp-validation-for="fromdate" class="text-danger"></span>
+                                            </div>
+                                        </td>
+                                        <td class="">
+                                            <div class="form-group">
+                                                <label asp-for="Todate" control-label"></label>
+                                                <input asp-for="Todate" style="color:red" />
+                                                <span asp-validation-for="Todate" class="text-danger"></span>
+                                            </div>
+                                        </td>
+                                        @*<td class="">
+                                <div class="form-group">
+                                    @Html.DropDownListFor(model => model.AgentCode, Model._agentuser as IEnumerable<SelectListItem>, "Select")
+                                    @Html.ValidationMessageFor(model => model.AgentCode, "", new { @class = "text-danger" })
+
+                                </div>
+                            </td>*@
+
+                                       
+                                        <td class="">
+                                            <div class="form-group">
+                                                <span class="input-group-append">
+
+                                                    <button type="submit" class="btn btn-info btn-flat" style="background-color:mediumseagreen;">Show</button>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            }
+
+
+                        </div>
+
+
+
+
+                    </div>
+
+                    @*<h3 class="card-title">DataTable with minimal features & hover style</h3>*@
+
+                    <div class="col-md-10">
+
+                    </div>
+                </div>
+                <div class="card-body">
+                    @*<div align="left">
+                        <input type="text" placeholder="search" id="txtsearch" />
+                    </div>*@
+                    @*<table align="left">
+                        <tr>
+                            <td>
+                                @using (Html.BeginForm("DownloadReport", "Report", FormMethod.Post))
+                                {
+                                    <input type="hidden" name="GridHtmlexcel" />
+                                    <input type="submit" id="btnSubmitexcel" value="Excel" />
+                                }
+                            </td>
+                        
+                        </tr>
+
+                    </table>*@
+                    
+                    
+                   
+                </div>
+                   
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>

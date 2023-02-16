@@ -1,0 +1,441 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/main.css">
+
+  <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+  <!--[if IE]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <a href="" class="big-logo"><img src="img/big-logo.png"/></a>
+                <a href="" class="small-logo"><img src="img/small-logo.png"/></a>
+            </div>
+
+            <div class="sidebar-content">
+                    <button type="button" id="dismiss" class="btn btn-info">
+                        <i class="las la-arrow-left"></i>
+                    </button>
+              <div class="profile-setting">
+                <div class="profile-img big-profile">
+                    <img src="img/avatar-01.jpg">
+                </div>
+                <div class="profile-info big-profile-image">
+                  <p class="profile-name">Vikram Solomon</p>
+                  <p class="profile-designation">Sales executive</p>
+                </div>
+              </div>
+              <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="#homeSubmenu"><i class="las la-chart-bar"></i> Dashboard</a>
+                  
+                </li>
+                <li>
+                    <a href="#homeSubmenu"><i class="las la-print"></i> Print Sale</a>
+                  
+                </li>
+                <li>
+                    <a href="#homeSubmenu"><i class="las la-toolbox"></i> Add Custom Category</a>
+                  
+                </li>
+                <li>
+                    <a href="#homeSubmenu"><i class="las la-shapes"></i> Add new item shapes</a>
+                  
+                </li>
+              </ul>
+              
+            </div>
+            
+
+        </nav>
+
+        <!-- Page Content  -->
+        <div id="content">
+              <div class="header-container clearfix">
+                    <button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="las la-align-left"></i>
+                    </button>
+
+                    <h1><span class="fbold">Sales</span> <span class="fregular">Application</span></h1>
+
+                    <div class="account-wrap">
+                                            <div class="account-item clearfix js-item-menu">
+                                                <div class="image">
+                                                    <img src="img/avatar-01.jpg" alt="John Doe" />
+                                                </div>
+                                                <div class="content-account">
+                                                    <a class="js-acc-btn" href="#">Parag Tawde</a>
+                                                </div>
+                                                <div class="account-dropdown js-dropdown">
+                                                    <div class="info clearfix">
+                                                        <div class="image">
+                                                            <a href="#">
+                                                                <img src="img/avatar-01.jpg" alt="John Doe" />
+                                                            </a>
+                                                        </div>
+                                                        <div class="content-account">
+                                                            <h5 class="name">
+                                                                <a href="#">Parag Tawde</a>
+                                                            </h5>
+                                                            <span class="email">Sales executive</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="account-dropdown__body">
+                                                        <div class="account-dropdown__item">
+                                                            <a href="#">
+                                                                <i class="zmdi zmdi-account"></i>Account</a>
+                                                        </div>
+                                                        <div class="account-dropdown__item">
+                                                            <a href="#">
+                                                                <i class="zmdi zmdi-settings"></i>Setting</a>
+                                                        </div>
+                                                        <div class="account-dropdown__item">
+                                                            <a href="#">
+                                                                <i class="zmdi zmdi-money-box"></i>Billing</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="account-dropdown__footer">
+                                                        <a href="#">
+                                                            <i class="zmdi zmdi-power"></i>Logout</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                     </div>
+              </div>
+
+
+
+              <div class="main-container">
+                 <div class="container-bg clearfix">
+                    <div class="container-header clearfix">
+                      <h2>Add Sale</h2>
+                      <div class="header-sales-info">
+                        <p class="float-left clients-name-info"><i class="las la-user-circle"></i> Shomayala Arooz</p>
+                        <p class="float-left"><span class="fregular">Sale Date:</span> <span class="fbold">05/05/2020</span></p>
+                        <p class="float-right"><span class="fregular">Mirror ID:</span> <span class="fbold">47345</span></p>
+                        <p class="cart-display"><span class="clients-cart-info"><i class="las la-shopping-cart"></i><span class="cart-notify">2</span></span></p>
+
+
+                      </div>
+                    </div>
+                 
+
+                    <div class="sale-process-nav">
+                        <ul>
+                          <li>
+                            <a href="add-sale.html">
+                              <span class="nav-icon-container"><i class="las la-shopping-cart"></i></span>
+                              <span class="nav-txt-container">Add Item</span>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="payment.html">
+                              <span class="nav-icon-container"><i class="las la-credit-card"></i></span>
+                              <span class="nav-txt-container">Payment</span>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="stands-delivery.html">
+                              <span class="nav-icon-container"><i class="las la-truck"></i></span>
+                              <span class="nav-txt-container">Stand & Delivery</span>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="customer-info.html">
+                              <span class="nav-icon-container"><i class="las la-user-cog"></i></span>
+                              <span class="nav-txt-container">Customer Info</span>
+                            </a>
+                          </li>
+                          
+                          <li class="active">
+                            <a href="review.html">
+                              <span class="nav-icon-container"><i class="las la-print"></i></span>
+                              <span class="nav-txt-container">Review & Print</span>
+                            </a>
+                          </li>
+                          
+                        </ul>
+                    </div>
+
+                    <div class="container-fluid customer-info-form">
+                    
+                     <!--  <div class="row">
+                         <div class="info-form-header">
+                              <h3><i class="las la-user-cog"></i> Customer Information</h3>
+                            </div>
+                      </div> -->
+
+                      <div class="row pad-rl-40 pad-tb-30 info-container">
+                  
+                          <div class="col-lg-6 col-md-6 col-sm-6">
+                            
+                              <p class="name-nationality"><span class="fbold name"><i class="las la-user-circle"></i>Shomayala Arooz</span><span class="fbold nationality fdark">Australia</span></p>
+
+                              <p><span class="fregular flight dblock">Address:</span>  <span class="fbold fdark dblock">Viabhav Nagar, Agra, Uttar pradesh, India, 400897</span></p>
+                              <p><span class=" fregular flight dblock">Contact Numbers: </span>  <span class="fbold fdark dblock">99803456 / 98902344455</span></p>
+                              <p><span class="fregular flight dblock">Email Address:</span>  <span class="fbold fdark  dblock">Test@test.com</span></p>
+                              <p><span class="fregular flight dblock">Passport Number:</span>  <span class=" dblock fbold fdark ">3421424325235235</span></p>
+
+
+                            
+                          </div>
+
+                          <div class="col-lg-6 col-md-6 col-sm-6">
+                        
+                              <!-- <p class="name-nationality"><span class="fbold name">Shomayala Arooz</span><span class="fregular nationality">Australia</span></p>
+ -->
+                              <p><span class="fregular flight dblock">Delivery Type:</span>  <span class="dblock fbold fdark ">Home Delivery</span></p>
+                              <p><span class="dblock fregular flight ">Port Type:</span>  <span class="dblock fbold fdark">-</span></p>
+                              <p><span class="dblock fregular flight ">Port Name: </span>  <span class="dblock fbold fdark ">-</span></p>
+                              
+                              <p class="expected-date"><span class="dblock fregular flight ">Expected Date:</span>  <!-- <i class="las la-calendar"></i> --><span class="fbold fdark dblock">12/05/2020 - <!-- <i class="las la-calendar"></i> -->17/05/2020</span></p>
+  
+                              <p><span class="dblock fregular flight ">C.R.</span> <span class="dblock fbold fdark ">76</span></p>
+                              <p><span class="fregular flight grand-total-head dblock">Grand Total:</span> <span class="fbold grand-total-val dblock"><i class="las la-rupee-sign"></i> 4000</span></p>
+
+                              
+                          
+                          </div>
+                  
+<a href="" class="print-btn"><i class="las la-print"></i></a>
+                      </div>
+
+
+
+                      
+
+                      
+
+
+
+                      
+                  
+
+                      
+
+
+                     
+
+                     
+                     
+             
+                           
+
+                            
+
+                            
+
+
+
+                           
+                  
+                
+                     
+                    </div>
+
+                      <div class="row pad-rl-20">
+                        <div class="col-lg-12 mar-t-20">
+                                <div class="table-responsive table--no-card m-b-30">
+                                    <table class="table table-borderless table-striped table-earning">
+                                        <thead>
+                                            <tr>
+                                                <th class="table-desc-col">Description</th>
+                                                <th class="text-center">Fx</th>
+                                                <th class="text-center">INR</th>
+                                                <th class="text-center">Action</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                  <p class="table-description-p">
+                                                    <span class="table-stock-number">A300</span>
+                                                    <span class="table-type CM">C/M</span>
+                                                  </p>
+                                                  <p class="table-description-item">Buddha, Sitting Buddha, 0*0*6, White</p>
+                                                
+                                                </td>
+                                
+                                                <td class="text-center"><i class="las la-rupee-sign"></i> 200</td>
+                                                <td class="text-center"><i class="las la-rupee-sign"></i> 200</td>
+                                                <td class="text-center">
+                                                  <a href="" class="delete-item"><i class="las la-times"></i></a>
+                                                </td>
+                                       
+                                               
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                  <p class="table-description-p">
+                                                    <span class="table-stock-number">A300</span>
+                                                    <span class="table-type of">O/F</span>
+                                                  </p>
+                                                  <p class="table-description-item">Buddha, Sitting Buddha, 0*0*6, White</p>
+                                               
+                                                </td>
+                                          
+                                                <td class="text-center"><i class="las la-rupee-sign"></i> 200</td>
+                                                <td class="text-center"><i class="las la-rupee-sign"></i> 200</td>
+                                                <td class="text-center">
+                                                  <a href="" class="delete-item"><i class="las la-times"></i></a>
+                                                </td>
+                                       
+                                               
+                                            </tr>
+
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                        </div>
+
+                   <div class="col-lg-12 mar-t-20">
+                                <div class="table-responsive table--no-card m-b-30">
+                                    <table class="table table-borderless table-striped table-earning">
+                                        <thead>
+                                            <tr>
+                                                <th class="table-desc-col">Stand</th>
+                                                <th>Colour</th>
+                                                <th class="text-center">Width</th>
+                                                <th class="text-center">Height<span class="small-txt-br">(Inch)</span></th>
+                                                <th class="text-center">Action</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                  <p class="table-description">Display Stand</p>
+                                                  <p class="table-type CM">C/M</p>
+                                                </td>
+                                                <td>Black</td>
+                                                <td class="text-center">12</td>
+                                                <td class="text-center">24</td>
+                                                <td class="text-center">
+                                                  <a href="" class="delete-item"><i class="las la-times"></i></a>
+                                                </td>
+                                       
+                                               
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                  <p class="table-description">Marble Stand</p>
+                                                  <p class="table-type of">O/F</p>
+                                                </td>
+                                                <td>Black</td>
+                                                <td class="text-center">12</td>
+                                                <td class="text-center">24</td>
+                                                <td class="text-center">
+                                                  <a href="" class="delete-item"><i class="las la-times"></i></a>
+                                                </td>
+                                       
+                                               
+                                            </tr>
+                                         
+
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 footer-btn text-right pad-rl-10 btns-group">
+                                 <button class="btn-dark-gray">Back</button>
+                          <button class="btn-blue-light">Reset</button>
+                          <button class="btn-pink">Continue</button>
+                              </div>
+                      </div>
+
+
+                    
+                 </div>
+
+              </div>
+
+
+         
+
+        </div>
+
+
+    </div>
+<div class="overlay"></div>
+
+  <script src="js/vendor/modernizr-3.8.0.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
+  <!-- JS, Popper.js, and jQuery -->
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<!-- jQuery Custom Scroller CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script src="js/plugins.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
+  <script src="js/main.js"></script>
+<script type="text/javascript">
+        $(document).ready(function () {
+            $("#sidebar").mCustomScrollbar({
+                theme: "minimal"
+            });
+
+             $('#dismiss, .overlay').on('click', function () {
+                $('#sidebar').removeClass('active');
+                $('.overlay').removeClass('active');
+            });
+
+            // $('#sidebarCollapse').on('click', function () {
+            //     $('#sidebar').addClass('active');
+            //     $('.overlay').addClass('active');
+            //     $('.collapse.in').toggleClass('in');
+            //     $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            // });
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar, #content').toggleClass('active');
+                $('.overlay').addClass('active');
+                $('.collapse.in').toggleClass('in');
+                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            });
+        });
+
+
+        $( function() {
+          $( "#datepicker1").datepicker({
+            dateFormat: "dd-mm-yy"
+            , duration: "fast"
+          });
+
+          $( "#datepicker2").datepicker({
+            dateFormat: "dd-mm-yy"
+            , duration: "fast"
+          });
+        } );
+    </script>
+ 
+</body>
+
+</html>

@@ -1,0 +1,192 @@
+﻿@model SalesApp.ViewModel.CustomSaleVM;
+
+@{
+    ViewBag.Title = "Add Customer Info";
+
+}
+    <div class="container-fluid">
+        <div class="row pad-t-10">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12">
+                <h2 class="head-main">Add Custom Item</h2>
+            </div>
+
+        </div>
+
+
+
+        @using (Html.BeginForm("AddCustomerInfo", "CustomSale", FormMethod.Post, new { id = "customerinfo" }))
+        {
+            @Html.AntiForgeryToken()
+        
+    <div class="container-fluid customer-info-form">
+        @if (TempData["CustomerUserMessage"] != null)
+        {
+            var message = (SalesApp.ViewModel.MessageVM)TempData["CustomerUserMessage"];
+            <div style="color:red">
+                <strong>@message.title</strong>
+                @message.msg
+            </div>
+        }
+
+        <div class="row pad-rl-10 pad-tb-10">
+            <div class="col-lg-6 col-md-6 col-sm-8">
+                <div class="form-group">
+                    <label for="">Full Name</label>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 col-12 pad-r-0">
+                            <div class="full-name-init">
+                                <label class="container-init">Mr.
+
+                                    @Html.RadioButtonFor(model => model._titletype, TitleType.Mr, new { @name = "radio", @type = "radio", @id = "Mr" })
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="container-init">Ms.
+
+
+                                    @Html.RadioButtonFor(model => model._titletype, TitleType.Ms, new { @name = "radio", @type = "radio", @id = "Ms" })
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12 col-12">
+                            @Html.TextBoxFor(model => model.cinfo.Name, new { type = "string", htmlAttributes = new { @class = "form-control", required = "required", placeholder = "Enter ..." } })
+                            @Html.ValidationMessageFor(model => model.cinfo.Name, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-4 form-group">
+                <label for="">Nationality</label>
+                @Html.DropDownListFor(model => model.nationalityid, Model.nationalitydetails as IEnumerable<SelectListItem>, "Select", htmlAttributes: new { @class = "form-control", required = "required" })
+                @Html.ValidationMessageFor(model => model.nationalityid, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row pad-rl-10 pad-tb-10 bg-light-pink">
+            <!-- <div class="col-lg-12">
+          <h4>Address Information</h4>
+        </div> -->
+            <div class="col-lg-6 col-md-6 col-sm-7">
+                <div class="form-group">
+                    <label for="">House No./Street Name</label>
+
+                    @Html.TextBoxFor(model => model.cinfo.Address, new { htmlAttributes = new { @class = "form-control", required = "required", placeholder = "Enter ..." } })
+                    @Html.ValidationMessageFor(model => model.cinfo.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <d[0]iv class="col-lg-3 col-md-3 col-sm-5">
+                <div class="form-group">
+                    <label for="">Country</label>
+                    @Html.DropDownListFor(model => model.countryid, Model.countrydetails as IEnumerable<SelectListItem>, "Select", htmlAttributes: new { @class = "form-control", required = "required" })
+                    @Html.ValidationMessageFor(model => model.countryid, "", new { @class = "text-danger" })
+                </div>
+            </d[0]iv>
+            <div class="col-lg-3 col-md-3 col-sm-4">
+                <div class="form-group">
+                    <label for="">State</label>
+                    @Html.TextBoxFor(model => model.cinfo.State, new { htmlAttributes = new { @class = "form-control", required = "required", placeholder = "Enter ..." } })
+                    @Html.ValidationMessageFor(model => model.cinfo.State, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4">
+                <div class="form-group">
+                    <label for="">City</label>
+                    @Html.TextBoxFor(model => model.cinfo.City, new { htmlAttributes = new { @class = "form-control", required = "required", placeholder = "Enter ..." } })
+                    @Html.ValidationMessageFor(model => model.cinfo.City, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-sm-4">
+                <div class="form-group">
+                    <label for="">Zip Code</label>
+                    @Html.TextBoxFor(model => model.cinfo.Zipcode, new { htmlAttributes = new { @class = "form-control", required = "required", placeholder = "Enter ..." } })
+                    @Html.ValidationMessageFor(model => model.cinfo.Zipcode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div class="row pad-rl-10 pad-tb-10 bg-light-pink mar-t-10">
+            <!-- <div class="col-lg-12">
+          <h4>Contact Information</h4>
+        </div> -->
+            <div class="col-lg-3 col-md-3 col-sm-6">
+                <div class="form-group">
+                    <label for="">Tel.No.</label>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-4 col-4 pad-r-0">
+                            @Html.TextBoxFor(model => model.cinfo.TeleCountryCode, new { type = "number", min = "0", step = "0.01", htmlAttributes = new { @class = "form-control", required = "required", placeholder = "++" } })
+                            @Html.ValidationMessageFor(model => model.cinfo.TeleCountryCode, "", new { @class = "text-danger" })
+
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-sm-8 col-xs-8 col-8">
+                            @Html.TextBoxFor(model => model.cinfo.Telephone, new { type = "number", min = "0", step = "0.01", htmlAttributes = new { @class = "form-control", required = "required", placeholder = "++" } })
+                            @Html.ValidationMessageFor(model => model.cinfo.Telephone, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6">
+                <div class="form-group">
+                    <label for="">Mobile No.</label>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-4 col-4 pad-r-0">
+                            @Html.TextBoxFor(model => model.cinfo.MobCountryCode, new { type = "number", min = "0", step = "0.01", htmlAttributes = new { @class = "form-control", required = "required", placeholder = "+1" } })
+                            @Html.ValidationMessageFor(model => model.cinfo.MobCountryCode, "", new { @class = "text-danger" })
+
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-sm-8 col-xs-8 col-8">
+                            @Html.TextBoxFor(model => model.cinfo.Mobile, new { type = "number", min = "0", step = "0.01", htmlAttributes = new { @class = "form-control", required = "required", placeholder = "+1" } })
+                            @Html.ValidationMessageFor(model => model.cinfo.Mobile, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label for="">Email</label>
+                    <div class="email-input">
+                        @Html.TextBoxFor(model => model.cinfo.Email, new { htmlAttributes = new { @class = "form-control", required = "required", placeholder = "+1" } })
+                        @Html.ValidationMessageFor(model => model.cinfo.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <input type="hidden" asp-for="orderid" />
+
+        <!-- <div class="row">
+       <div class="info-form-header">
+            <h3><i class="las la-truck"></i>Delivery Information</h3>
+          </div>
+    </div> -->
+
+
+    </div>
+
+            
+
+
+                <div class="row pad-rl-10 pad-tb-10">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 text-right pad-rl-20 btns-group">
+
+                        <button class="btn-dark-gray" onclick="manaagetab('4')">Back</button>
+                        <button class="btn-blue-light">Reset</button>
+                        <button type="submit" class="btn-dark-gray">Save</button>
+                        <button type="button" class="btn-pink" onclick="manaagetab('3')">Continue</button>
+
+                    </div>
+                </div>
+           }
+
+        </div>

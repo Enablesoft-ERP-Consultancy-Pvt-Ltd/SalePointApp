@@ -1,0 +1,556 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/main.css">
+
+  <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+  <!--[if IE]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <a href="" class="big-logo"><img src="img/big-logo.png"/></a>
+                <a href="" class="small-logo"><img src="img/small-logo.png"/></a>
+            </div>
+
+            <div class="sidebar-content">
+                    <button type="button" id="dismiss" class="btn btn-info">
+                        <i class="las la-arrow-left"></i>
+                    </button>
+              <div class="profile-setting">
+                <div class="profile-img big-profile">
+                    <img src="img/avatar-01.jpg">
+                </div>
+                <div class="profile-info big-profile-image">
+                  <p class="profile-name">Vikram Solomon</p>
+                  <p class="profile-designation">Sales executive</p>
+                </div>
+              </div>
+              <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="#homeSubmenu"><i class="las la-chart-bar"></i> Dashboard</a>
+                  
+                </li>
+                <li>
+                    <a href="#homeSubmenu"><i class="las la-print"></i> Print Sale</a>
+                  
+                </li>
+                <li>
+                    <a href="#homeSubmenu"><i class="las la-toolbox"></i> Add Custom Category</a>
+                  
+                </li>
+                <li>
+                    <a href="#homeSubmenu"><i class="las la-shapes"></i> Add new item shapes</a>
+                  
+                </li>
+              </ul>
+              
+            </div>
+            
+
+        </nav>
+
+        <!-- Page Content  -->
+        <div id="content">
+              <div class="header-container clearfix">
+                    <button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="las la-align-left"></i>
+                    </button>
+
+                    <h1><span class="fbold">Sales</span> <span class="fregular">Application</span></h1>
+
+                    <div class="account-wrap">
+                                            <div class="account-item clearfix js-item-menu">
+                                                <div class="image">
+                                                    <img src="img/avatar-01.jpg" alt="John Doe" />
+                                                </div>
+                                                <div class="content-account">
+                                                    <a class="js-acc-btn" href="#">Parag Tawde</a>
+                                                </div>
+                                                <div class="account-dropdown js-dropdown">
+                                                    <div class="info clearfix">
+                                                        <div class="image">
+                                                            <a href="#">
+                                                                <img src="img/avatar-01.jpg" alt="John Doe" />
+                                                            </a>
+                                                        </div>
+                                                        <div class="content-account">
+                                                            <h5 class="name">
+                                                                <a href="#">Parag Tawde</a>
+                                                            </h5>
+                                                            <span class="email">Sales executive</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="account-dropdown__body">
+                                                        <div class="account-dropdown__item">
+                                                            <a href="#">
+                                                                <i class="zmdi zmdi-account"></i>Account</a>
+                                                        </div>
+                                                        <div class="account-dropdown__item">
+                                                            <a href="#">
+                                                                <i class="zmdi zmdi-settings"></i>Setting</a>
+                                                        </div>
+                                                        <div class="account-dropdown__item">
+                                                            <a href="#">
+                                                                <i class="zmdi zmdi-money-box"></i>Billing</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="account-dropdown__footer">
+                                                        <a href="#">
+                                                            <i class="zmdi zmdi-power"></i>Logout</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                     </div>
+              </div>
+
+
+
+              <div class="main-container">
+                 <div class="container-bg clearfix">
+                    <div class="container-header clearfix">
+                      <h2>Add Sale</h2>
+                      <div class="header-sales-info">
+                       <!--  <p class="float-left clients-name-info"><i class="las la-user-circle"></i> Shomayala Arooz</p> -->
+                        <p class="float-left"><span class="fregular">Sale Date:</span> <span class="fbold">05/05/2020</span></p>
+                        <p class="float-right"><span class="fregular">Mirror ID:</span> <span class="fbold">47345</span></p>
+                        <p class="cart-display"><span class="clients-cart-info"><i class="las la-shopping-cart"></i><span class="cart-notify">2</span></span></p>
+
+
+                      </div>
+                    </div>
+                    
+
+                    <div class="sale-process-nav">
+                        <ul>
+                          <li>
+                            <a href="add-sale.html">
+                              <span class="nav-icon-container"><i class="las la-shopping-cart"></i></span>
+                              <span class="nav-txt-container">Add Item</span>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="payment.html">
+                              <span class="nav-icon-container"><i class="las la-credit-card"></i></span>
+                              <span class="nav-txt-container">Payment</span>
+                            </a>
+                          </li>
+                          <li class="active">
+                            <a href="stands-delivery.html">
+                              <span class="nav-icon-container"><i class="las la-truck"></i></span>
+                              <span class="nav-txt-container">Stand & Delivery</span>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="customer-info.html">
+                              <span class="nav-icon-container"><i class="las la-user-cog"></i></span>
+                              <span class="nav-txt-container">Customer Info</span>
+                            </a>
+                          </li>
+                          
+                          <li>
+                            <a href="review.html">
+                              <span class="nav-icon-container"><i class="las la-print"></i></span>
+                              <span class="nav-txt-container">Review & Print</span>
+                            </a>
+                          </li>
+                          
+                        </ul>
+                    </div>
+
+                    <div class="container-fluid customer-info-form">
+                    
+                      <!-- <div class="row">
+                         <div class="info-form-header">
+                              <h3><i class="las la-wrench"></i> Stand Details</h3>
+                            </div>
+                      </div> -->
+
+                      <div class="row pad-30">
+            <div class="col-lg-12 stand-delivery-tabs-container text-center">
+                <input id="tab1" type="radio" name="tabs" checked>
+                <label for="tab1" class="first-label">Stands Info</label>
+                    
+                <input id="tab2" type="radio" name="tabs">
+                <label for="tab2" class="last-label">Delivery Info</label>
+
+
+                <section id="content1" class="text-left">
+                  <div class="container-fluid customer-info-form">
+                    
+                      <!-- <div class="row">
+                         <div class="info-form-header">
+                              <h3><i class="las la-wrench"></i> Stand Details</h3>
+                            </div>
+                      </div> -->
+
+                      <div class="row pad-t-10">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-7 col-7">
+                          <div class="form-group">
+                              <label for="">Stand</label>
+                              <input type="text" class="form-control" id="" placeholder="">
+                              
+                          </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-5 col-5">
+                          <div class="form-group">
+                              <label for="">Colour</label>
+                              <input type="text" class="form-control" id="" placeholder="">
+                              
+                          </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-6">
+                          <div class="form-group">
+                              <label for="">Height(Inch)</label>
+                              <div class="width-input">
+                                <input type="text" class="form-control" id="" placeholder="">
+                              </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 col-6">
+                          <div class="form-group">
+                              <label for="">Width</label>
+                              <div class="height-input">
+                                <input type="text" class="form-control" id="" placeholder="">
+                              </div>
+                          </div>
+                        </div>
+
+                  
+
+                    
+                          <div class="col-lg-4 col-md-5 col-sm-5 col-xs-12 col-12 type-delivery clearfix">
+                                <label for="add" class="lable-head">Type</label>
+                                <div class="type-group">
+                                  <div class="inputGroup">
+                                    <input id="radio1" name="radio" type="radio">
+                                    <label for="radio1" class="cm-lable">C/M</label>
+                                  </div>
+
+                                  <div class="inputGroup">
+                                    <input id="radio3" name="radio" type="radio">
+                                    <label for="radio3" class="pd-lable">O/F</label>
+                                  </div>
+                                  
+                                </div>
+                          </div>
+
+                          <div class="col-lg-3 offset-lg-5 col-md-3 offset-md-4 col-sm-3 col-xs-12 col-12 stand-btn">
+                            <button class="btn-blue">Add Stand</button>
+                          </div>
+
+
+                        </div>
+
+                      <div class="row">
+                          <div class="col-lg-12 mar-t-20">
+                                <div class="table-responsive table--no-card m-b-30">
+                                    <table class="table table-borderless table-striped table-earning">
+                                        <thead>
+                                            <tr>
+                                                <th>Stand</th>
+                                                <th>Colour</th>
+                                                <th class="text-center">Width</th>
+                                                <th class="text-center">Height(Inch)</th>
+                                                <th class="text-center">Action</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                  <p class="table-description">Display Stand</p>
+                                                  <p class="table-type CM">C/M</p>
+                                                </td>
+                                                <td>Black</td>
+                                                <td class="text-center">12</td>
+                                                <td class="text-center">24</td>
+                                                <td class="text-center">
+                                                  <a href="" class="delete-item"><i class="las la-times"></i></a>
+                                                </td>
+                                       
+                                               
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                  <p class="table-description">Marble Stand</p>
+                                                  <p class="table-type of">O/F</p>
+                                                </td>
+                                                <td>Black</td>
+                                                <td class="text-center">12</td>
+                                                <td class="text-center">24</td>
+                                                <td class="text-center">
+                                                  <a href="" class="delete-item"><i class="las la-times"></i></a>
+                                                </td>
+                                       
+                                               
+                                            </tr>
+                                         
+
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                   </div>
+
+                      </div>
+
+
+
+
+                      
+                  
+
+                      
+
+
+                     
+
+                     
+                     
+             
+                           
+
+                            
+
+                            
+
+
+
+                           
+                  
+                
+                     
+                    </div>
+                  
+
+                    
+
+                    
+
+                  
+                </section>
+                <section id="content2" class="text-left">
+                    <div class="container-fluid customer-info-form">
+                        <div class="row pad-t-10">
+                        <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12 col-12 customer-type-delivery clearfix">
+                                <label for="add" class="lable-head">Type</label>
+                                <div class="customer-type-group">
+                                  <div class="inputGroup">
+                                    <input id="radio-type-01" name="radio-type" type="radio">
+                                    <label for="radio-type-01" class="cm-lable">Cash Memo</label>
+                                  </div>
+                                  <div class="inputGroup">
+                                    <input id="radio-type-02" name="radio-type" type="radio">
+                                    <label for="radio-type-02" class="of-lable">Home Delivery</label>
+                                  </div>
+
+                                  <div class="inputGroup" id="typePort">
+                                    <input id="radio-type-03" name="radio-type" type="radio" onclick="portSelect();">
+                                    <label for="radio-type-03" class="pd-lable">Port Delivery</label>
+                                  </div>
+                                  
+                                </div>
+                                
+                          </div>
+                        </div>
+
+                         <div class="row">
+
+                          <div class="col-lg-6 col-md-6 col-sm-7 col-xs-12 col-12 port-type-delivery" id="port-type-container">
+                            <label for="add" class="lable-head">Port</label>
+                            <div class="port-type">
+                                <div class="inputGroup">
+                                  <input id="seaport" name="radio-port" type="radio">
+                                  <label for="seaport"><i class="las la-ship"></i>Seaport</label>
+                                </div>
+                                <div class="inputGroup">
+                                  <input id="airport" name="radio-port" type="radio">
+                                  <label for="airport"><i class="las la-plane"></i>Airport</label>
+                                </div>
+
+                                
+                              </div>
+                          </div>
+                          <div class="col-lg-6 col-md-6 col-sm-5 col-xs-12 col-12 port-type-delivery" id="port-type-txt">
+                            <div class="form-group">
+                                              <label for="">Port Name</label>
+                                           
+                                            <input type="text" class="form-control" id="" spellcheck="false" placeholder="">
+                              
+                                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-lg-5 col-md-5 col-sm-4">
+                            <div class="form-group">
+                                <label for="">Passport Number</label>
+                                    <input type="text" class="form-control" id="" spellcheck="false" placeholder="">
+                            </div>
+                          </div>
+
+                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12 col-12">
+                          <div class="form-group mar-b-5">
+                              <label for="">Delivery Dates</label>
+                                <div class="row">
+                                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-12 date-input mar-b-20 pad-r-5 pad-m-r-15">
+                                    <input type="text" class="form-control" id="datepicker1" placeholder="" class="datepicker" spellcheck="false">
+
+                                  </div>
+                                 
+                                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-12 date-input mar-b-20 pad-l-5 pad-m-l-15 pad-m-r-15">
+                                    <input type="text" class="form-control" id="datepicker2" placeholder="" class="datepicker" spellcheck="false">
+                                    
+                                  </div>
+                                </div>
+                          </div>
+                          <p class="disclaimer">Please select dates 20 days from today.</p>
+                        </div>
+                      </div>
+
+
+                    </div>
+                </section>
+            </div>
+          </div>
+
+                     
+
+                      <div class="row pad-0 mar-0">
+                              <div class="col-lg-12 footer-btn text-right pad-rl-10 btns-group">
+                                 <button class="btn-dark-gray">Back</button>
+                          <button class="btn-blue-light">Reset</button>
+                          <button class="btn-pink">Continue</button>
+                              </div>
+                            </div>
+
+
+
+                      
+                  
+
+                      
+
+
+                     
+
+                     
+                     
+             
+                           
+
+                            
+
+                            
+
+
+
+                           
+                  
+                
+                     
+                    </div>
+
+
+
+
+                    
+                 </div>
+
+       
+
+              </div>
+
+
+         
+
+        </div>
+
+
+    </div>
+<div class="overlay"></div>
+
+  <script src="js/vendor/modernizr-3.8.0.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
+  <!-- JS, Popper.js, and jQuery -->
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<!-- jQuery Custom Scroller CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script src="js/plugins.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
+  <script src="js/main.js"></script>
+<script type="text/javascript">
+        $(document).ready(function () {
+            $("#sidebar").mCustomScrollbar({
+                theme: "minimal"
+            });
+
+             $('#dismiss, .overlay').on('click', function () {
+                $('#sidebar').removeClass('active');
+                $('.overlay').removeClass('active');
+            });
+
+            // $('#sidebarCollapse').on('click', function () {
+            //     $('#sidebar').addClass('active');
+            //     $('.overlay').addClass('active');
+            //     $('.collapse.in').toggleClass('in');
+            //     $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            // });
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar, #content').toggleClass('active');
+                $('.overlay').addClass('active');
+                $('.collapse.in').toggleClass('in');
+                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            });
+        });
+
+
+        $( function() {
+          $( "#datepicker1").datepicker({
+            dateFormat: "dd-mm-yy"
+            , duration: "fast"
+          });
+
+          $( "#datepicker2").datepicker({
+            dateFormat: "dd-mm-yy"
+            , duration: "fast"
+          });
+        } );
+
+
+              function portSelect(){
+  document.getElementById('port-type-container').style.display = 'block';
+  document.getElementById('port-type-txt').style.display = 'block';
+
+}
+    </script>
+ 
+</body>
+
+</html>

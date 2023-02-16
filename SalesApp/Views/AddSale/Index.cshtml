@@ -1,0 +1,641 @@
+﻿@model SalesApp.ViewModel.NormalSaleVM;
+
+@{
+    ViewBag.Title = "Cash Sale";
+
+}
+<script>
+    var showLoader = function (form) {
+        $("<div />").css({
+            'position': 'fixed',
+            'left': 0,
+            'right': 0,
+            'bottom': 0,
+            'top': 50,
+            'background': '#0020ff36',
+            'z-index': '99',
+            'text-align': 'center'
+        }).appendTo($("body"))
+            .append(
+                $("<img />").attr("src", "https://mir-s3-cdn-cf.behance.net/project_modules/disp/35771931234507.564a1d2403b3a.gif")
+            );
+    }
+</script>
+<script>
+    //$('#psection').on('blur', 'input[id^="PAgentID_List"] ', function () {
+    //    GetSeriesDetails(this);
+    //});
+    $(document).ready(function () {
+       
+        var statesAvailable = $('#hdnpgno').val();
+
+
+        var queryDict = {};
+        location.search.substr(1).split("&").forEach(function (item) { queryDict[item.split("=")[0]] = item.split("=")[1] })
+
+        if (statesAvailable != 'undefined') {
+
+            if (statesAvailable == "1") {
+                $('#item').show();
+                $('#customer').hide();
+                $('#stand').hide();
+                $('#payment').hide();
+                $('#review').hide();
+                //  $('#menu2').hide();
+
+                $('#l_item').addClass('active');
+                $('#l_customer').removeClass('active');
+                $('#l_stand').removeClass('active');
+                $('#l_pay').removeClass('active');
+                $('#l_review').removeClass('active');
+
+            }
+            else if (statesAvailable == "2") {
+                $('#customer').hide();
+                $('#item').hide();
+                $('#stand').show();
+                $('#payment').hide();
+                $('#review').hide();
+                //  $('#menu2').show();
+
+                $('#l_customer').removeClass('active');
+                $('#l_item').removeClass('active');
+                $('#l_stand').addClass('active');
+                $('#l_pay').removeClass('active');
+                $('#l_review').removeClass('active');
+            } else if (statesAvailable == "3") {
+                $('#customer').show();
+                $('#item').hide();
+                $('#stand').hide();
+                $('#payment').hide();
+                $('#review').hide();
+                //$('#content2').hide();
+                //$('#content1').show();
+                //   $('#menu2').show();
+                $('#l_customer').addClass('active');
+                $('#l_item').removeClass('active');
+                $('#l_stand').removeClass('active');
+                $('#l_pay').removeClass('active');
+                $('#l_review').removeClass('active');
+            } else if (statesAvailable == "4") {
+                $('#customer').hide();
+                $('#item').hide();
+                $('#stand').hide();
+                $('#payment').show();
+                $('#review').hide();
+                // $('#menu2').show();
+                $('#l_pay').addClass('active');
+                $('#l_customer').removeClass('active');
+                $('#l_stand').removeClass('active');
+                $('#l_item').removeClass('active');
+                $('#l_review').removeClass('active');
+            } else if (statesAvailable == "5") {
+                $('#customer').hide();
+                $('#item').hide();
+                $('#stand').hide();
+                $('#payment').hide();
+                $('#review').show();
+                //$('#menu2').show();
+                $('#l_review').addClass('active');
+                $('#l_customer').removeClass('active');
+                $('#l_stand').removeClass('active');
+                $('#l_item').removeClass('active');
+                $('#l_pay').removeClass('active');
+            }
+            else if (statesAvailable == "6") {
+                $('#customer').hide();
+                $('#item').hide();
+                $('#stand').hide();
+                $('#payment').hide();
+                $('#review').show();
+                //$('#menu2').show();
+
+                $('#l_review').addClass('active');
+                $('#l_customer').removeClass('active');
+                $('#l_stand').removeClass('active');
+                $('#l_item').removeClass('active');
+                $('#l_pay').removeClass('active');
+            }
+            else {
+                $('#item').show();
+                // $('#menu2').hide();
+                $('#l_item').addClass('active');
+                $('#l_customer').removeClass('active');
+                $('#l_stand').removeClass('active');
+                $('#l_pay').removeClass('active');
+                $('#l_review').removeClass('active');
+            }
+
+        }
+
+        //$(function () {
+        //    $('#conversionrate').blur(function () {
+        //        var rate = getNum(parseFloat($('#conversionrate').val()));
+        //        var price = getNum(parseFloat($('#hdntotal').val()));
+        //        var calculatefinal = (price)/(rate);
+
+        //        var finalinvoice = Math.round(calculatefinal * 100) / 100;
+        //        if (!isNaN(finalinvoice)) {
+        //            $('#totalvalue').val(finalinvoice);
+        //        }
+
+        //    });
+        //});
+        function getNum(val) {
+            if (isNaN(val)) {
+                return 0;
+            }
+            return val;
+        }
+
+    });
+
+</script>
+
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <partial name="~/Views/Shared/Sidebar.cshtml" />
+
+    <!-- Page Content  -->
+    <div id="content">
+
+
+        <partial name="~/Views/Shared/_headerNormal.cshtml" model="Model" />
+
+
+        <div class="main-container">
+            <div class="container-bg clearfix">
+                <div class="container-header clearfix"></div>
+
+                <div class="sale-process-nav" id="menu2">
+                    <ul>
+                        <li id="l_item" class="active">
+                            <a href="#" onclick="manaagetab('1')">
+                                <span class="nav-icon-container"><i class="las la-shopping-cart"></i></span>
+                                <span class="nav-txt-container">Add Item</span>
+                            </a>
+                        </li>
+                        <li id="l_pay">
+                            <a class="active" onclick="manaagetab('4')">
+                                <span class="nav-icon-container"><i class="las la-credit-card"></i></span>
+                                <span class="nav-txt-container">Payment</span>
+                            </a>
+                        </li>
+
+                        <li id="l_stand">
+                            <a class="active" onclick="manaagetab('2')">
+                                <span class="nav-icon-container"><i class="las la-truck"></i></span>
+                                <span class="nav-txt-container">Delivery</span>
+                            </a>
+
+                        </li>
+                        <li id="l_customer">
+                            <a class="active" onclick="manaagetab('3')">
+                                <span class="nav-icon-container"><i class="las la-user-cog"></i></span>
+                                <span class="nav-txt-container">Customer Info</span>
+                            </a>
+                        </li>
+                        <li id="l_review">
+                            <a onclick="manaagetab('5')">
+                                <span class="nav-icon-container"><i class="las la-print"></i></span>
+                                <span class="nav-txt-container">Review & Print</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <!-- <div class="container-name-cart-info clearfix">
+                  <p class="clients-name-info"><i class="las la-user-circle"></i> Shomayala Arooz</p>
+                  <p class="clients-cart-info hide-mobile"><i class="las la-shopping-cart"></i> You have <span class="fbold">2 items</span> in your Cart</p>
+
+                </div> -->
+
+                <div class="container-fluid">
+
+
+                    <!--
+                    <a href="" class="btn-create"><i class="las la-plus"></i></a>
+                    <a href="" class="btn-scan"><i class="las la-qrcode"></i></a> -->
+
+
+
+                    <div id="item">
+
+                        <partial name="~/Views/Shared/NormalSaleItem.cshtml" model="Model" />
+
+                    </div>
+
+                    <div id="customer">
+                        <partial name="~/Views/Shared/NormalCustomerDetails.cshtml" model="Model" />
+                    </div>
+                    <div id="stand">
+                        <partial name="~/Views/Shared/Normalstanddelivery.cshtml" model="Model" />
+                    </div>
+                    <div id="payment">
+                        <partial name="~/Views/Shared/NormalOrderPayment.cshtml" model="Model" />
+                    </div>
+                    <div id="review" style="margin-top:-30px;">
+                        <partial name="~/Views/Shared/NormalReview.cshtml" model="Model" />
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="container-bg clearfix">
+
+
+
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <input type="hidden" id="hdnpgno" value="@ViewBag.pgno" />
+    <input type="hidden" id="hdnbalance" value="@ViewBag.totalbalance" />
+
+    <input type="hidden" asp-for="conversionrate" />
+    <input type="hidden" asp-for="mirrorid" />
+</div>
+<div class="overlay"></div>
+
+<script src="~/js/instascan.min.js"></script>
+@*<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js" rel="nofollow"></script>*@
+
+<script src="~/js/plugins.js"></script>
+<script src="~/js/main.js"></script>
+
+<script type="text/javascript">
+    function sentenceCase(str) {
+        if ((str === null) || (str === ''))
+            return "";
+        else
+            str = str.toString();
+
+        return str.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
+    }
+    function GetItemDetails() {
+        var stockid = $('#stockno').val();
+        if (stockid != '') {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetStockDetails", "AddSale")',
+                //contentType: false,
+                //processData: false,
+                data: { "stockid": stockid },
+                success: function (data) {
+                    if (data != null) {
+                        var response = JSON.stringify(data[0]);
+                        var desc,show;
+                        if (response != null) {
+                            if (data[0].stockid.substr(0, 2) == "EW") {
+
+
+                                desc = data[0].category + ',' + 'ALABASTER, SIZE :   ' + data[0].size;
+                                show = data[0].category + '/' + 'ALABASTER, SIZE : ' + data[0].size;
+                            }
+                            else if ((data[0].stockid.substr(0, 2) == "EG")) {
+
+                                desc = data[0].marblecolor + ',' + 'MARBLE,' + data[0].category + ', SIZE : ' + data[0].size;
+                                show = data[0].marblecolor + '/' + 'MARBLE/' + data[0].category + ', SIZE : ' + data[0].size;
+
+                            }
+                            else {
+                                if (data[0].category != null) {
+                                    desc='';
+                                    show = '';
+                                    //desc = data[0].category + ',';
+                                    //show = data[0].category + '/';
+                                    //$('#itemcategory').text(data[0].category + '/');
+                                   // $('#itemcategory').css('color', 'green');
+                                }
+                               // else { $('#itemcategory').text(''); }
+                                if (data[0].itemname != null) {
+                                   // $('#itemname').text(data[0].itemname + '/');
+                                    desc += data[0].itemname + ',';
+                                    show += data[0].itemname + '/';
+                                }
+                              //  else { $('#itemname').text(''); }
+                                
+                                if (data[0].marblestone != null) {
+                                    show += data[0].marblestone + '/';
+                                   // $('#itemstone').text(data[0].marblestone + '/');
+                                }
+                              //  else { $('#itemstone').text(''); }
+                                if (data[0].shape != null) {
+                                    //desc += data[0].shape + ',';
+                                    //show += data[0].shape + '/';
+                                  //  $('#itemshape').text(data[0].shape + '/');
+                                }
+                               // else { $('#itemshape').text(''); }
+                                if (data[0].marblecolor != null) {
+                                    desc += data[0].marblecolor + ',';
+                                    show += data[0].marblecolor + '/';
+                                    //$('#itemcolor').text(data[0].marblecolor + '/');
+                                }
+                                if (data[0].size != null) {
+                                    desc += data[0].size + ',';
+                                    show += data[0].size + '/';
+                                    //   $('#itemsize').text(data[0].size + '/');
+                                }
+                                //else { $('#itemsize').text(''); }
+                               
+                              //  else { $('#itemcolor').text(''); }
+                            }
+                            // $('#totalvalue').val(data[0].price);
+                            debugger;
+                            if (data[0].marblecolor != null) {
+                                $('#hdntotal').val(data[0].price + '/')
+                                $('#totalvalue').val(data[0].price)
+                            }
+                            else { 
+                            
+                              $('#hdntotal').val("0" + '/')
+                                $('#totalvalue').val(0)
+                            
+                            }
+                            debugger;
+                            if (data[0].finishedid != null) {
+                                $('#finishedid').val(data[0].finishedid)
+                               
+                            }
+                              if (data[0].hsncode != null) {
+                                $('#hsncode').val(data[0].hsncode)
+                               
+                            }
+                            $('#item_desc').val(desc);
+                            $('#itemname').text(show);
+                          
+                            $('#elephantid').val(data[0].stockid);
+
+                        }
+                        else {
+                            $('#itemname').text('Either this stock is packed or stock does not exists!!!');
+                            $('#itemname').css('color', 'red');
+                           // $('#itemname').text('');
+                            //$('#itemsize').text('');
+                            //$('#itemstone').text('');
+                            //$('#itemcolor').text('');
+                            $('#totalvalue').val('');
+                        }
+                    }
+                    else {
+                        $('#itemname').text('This stock does not exist!');
+                        $('#itemname').css('color', 'red');
+                        //$('#itemname').text('');
+                        //$('#itemsize').text('');
+                        //$('#itemstone').text('');
+                        //$('#itemcolor').text('');
+                        //$('#totalvalue').val('');
+                    }
+
+
+
+                },
+                Error: function (err) {
+                    $('#itemcategory').append(err);
+                    //  debugger;
+                },
+                /* beforeSend: function () {
+                     $(".progress").show();
+                 },
+                 complete: function () {
+                    $(".progress").hide();
+                 }*/
+            });
+
+        }
+    }
+
+    $(document).ready(function () {
+
+        $("stockno").focus(function () {
+            //code code and more code
+        }).blur();
+        //$('#saveitem').click(function () {
+        //    debugger;
+        //    if (checkitem()) {
+        //        $('#addsale').submit();
+        //    }
+
+        //});
+        $("#CSale").hide();
+        $("#NSale").show();
+        $("#qrcodearea").hide();
+        $("#camfile").hide();
+        $("#preview").hide();
+        $("#backtocustomsale").hide();
+        $("#customsale").hide();
+        $("#normalsale").click(function () {
+            $("#camfile").trigger('click');
+        });
+
+        //Stand delivery doc ready
+
+
+        //Customer details doc ready
+
+
+        //$(function () {
+        //    $('#conversionrate').blur(function () {
+        //        var rate = getNum(parseFloat($('#conversionrate').val()));
+        //        var price = getNum(parseFloat($('#hdntotal').val()));
+        //        var calculatefinal = (price)/(rate);
+
+        //        var finalinvoice = Math.round(calculatefinal * 100) / 100;
+        //        if (!isNaN(finalinvoice)) {
+        //            $('#totalvalue').val(finalinvoice);
+        //        }
+
+        //    });
+        //});
+        function getNum(val) {
+            if (isNaN(val)) {
+                return 0;
+            }
+            return val;
+        }
+        //$("#sidebar").mCustomScrollbar({
+        //    theme: "minimal"
+        //});
+
+        $('#dismiss, .overlay').on('click', function () {
+            $('#sidebar').removeClass('active');
+            $('.overlay-nav').removeClass('active');
+        });
+
+        // $('#sidebarCollapse').on('click', function () {
+        //     $('#sidebar').addClass('active');
+        //     $('.overlay').addClass('active');
+        //     $('.collapse.in').toggleClass('in');
+        //     $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        // });
+
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar, #content').toggleClass('active');
+            $('.overlay-nav').addClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+    });
+
+    function balancecheck(totalbalance) {
+
+        if (totalbalance != '') {
+
+            if (totalbalance > 0) {
+
+                return false;
+
+            }
+            else { return true;}
+
+        }
+
+    }
+    function manaagetab(id) {
+
+       
+        var totalbalance = $('#hdnbalance').val();
+        var pgno = $('#hdnpgno').val();
+         if (id == "1") {
+             //if (checkitem() && pgno==1) {
+                 $('#item').show();
+                 $('#customer').hide();
+                 $('#stand').hide();
+                 $('#payment').hide();
+                 $('#review').hide();
+                // $('#menu2').show();
+                 $('#l_item').addClass('active');
+                 $('#l_customer').removeClass('active');
+                 $('#l_stand').removeClass('active');
+                 $('#l_pay').removeClass('active');
+                 $('#l_review').removeClass('active');
+            // }
+
+         }
+         else if (id == "2") {
+             if (balancecheck(totalbalance)) {
+                 $('#customer').hide();
+                 $('#item').hide();
+                 $('#stand').show();
+                 $('#payment').hide();
+                 $('#review').hide();
+           //      $('#menu2').show();
+                 $('#l_customer').removeClass('active');
+                 $('#l_item').removeClass('active');
+                 $('#l_stand').addClass('active');
+                 $('#l_pay').removeClass('active');
+                 $('#l_review').removeClass('active');
+             }
+         } else if (id == "3") {
+             if (balancecheck(totalbalance)) {
+                 $('#customer').show();
+                 $('#item').hide();
+                 $('#stand').hide();
+                 $('#payment').hide();
+                 $('#review').hide();
+            //     $('#menu2').show();
+                 $('#l_customer').addClass('active');
+                 $('#l_item').removeClass('active');
+                 $('#l_stand').removeClass('active');
+                 $('#l_pay').removeClass('active');
+                 $('#l_review').removeClass('active');
+             }
+         }
+         else if (id == "4") {
+             //if (balancecheck(totalbalance)) {
+             $('#customer').hide();
+             $('#item').hide();
+             $('#stand').hide();
+             $('#payment').show();
+             $('#review').hide();
+         //   $('#menu2').show();
+             $('#l_pay').addClass('active');
+             $('#l_customer').removeClass('active');
+             $('#l_stand').removeClass('active');
+             $('#l_item').removeClass('active');
+             $('#l_review').removeClass('active');
+             // }
+         } else if (id == "5") {
+             if (balancecheck(totalbalance)) {
+                 $('#customer').hide();
+                 $('#item').hide();
+                 $('#stand').hide();
+                 $('#payment').hide();
+                 $('#review').show();
+              //   $('#menu2').show();
+                 $('#l_review').addClass('active');
+                 $('#l_customer').removeClass('active');
+                 $('#l_stand').removeClass('active');
+                 $('#l_item').removeClass('active');
+                 $('#l_pay').removeClass('active');
+             }
+         }
+         else if (id == "6") {
+             $('#customer').hide();
+             $('#item').hide();
+             $('#stand').hide();
+             $('#payment').hide();
+             $('#review').show();
+             //$('#menu2').show();
+
+             $('#l_review').addClass('active');
+             $('#l_customer').removeClass('active');
+             $('#l_stand').removeClass('active');
+             $('#l_item').removeClass('active');
+             $('#l_pay').removeClass('active');
+         }
+         else {
+             $('#item').show();
+            // $('#menu2').show();
+             $('#l_item').addClass('active');
+             $('#l_customer').removeClass('active');
+             $('#l_stand').removeClass('active');
+             $('#l_pay').removeClass('active');
+             $('#l_review').removeClass('active');
+         }
+     }
+
+
+
+    function validateEmail(email) {
+        var regex = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        if (regex.test(email)){
+        //Email valid. Procees to test if it's from the right domain (Second argument is to check that the string ENDS with this domain, and that it doesn't just contain it)
+        if (email.indexOf("@@gmail.com", email.length - "@@hotmail.com".length) !== -1) {
+            //VALID
+            return true;
+        }
+        else { return false;}
+    }
+}
+    function IsEmail(email) {
+        if (email != '') {
+            var regex = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+            if (!regex.test(email)) {
+              //  alert('Invalid Email');
+               // $(this).focus();
+                return false;
+
+
+            } else {
+                if ((email.indexOf("@@gmail.com", email.length - "@@gmail.com".length) !== -1) || (email.indexOf("@@hotmail.com", email.length - "@@hotmail.com".length) !== -1) || (email.indexOf("@@aol.com", email.length - "@@aol.com".length) !== -1) || (email.indexOf("@@outlook.com", email.length - "@@outlook.com".length) !== -1) || (email.indexOf("@@yahoo.com", email.length - "@@yahoo.com".length) !== -1)) {
+                    //VALID
+                    return true;
+                }
+                else {
+
+                    return false;
+                }
+                return true;
+            }
+        }
+        else { return true;}
+}
+
+
+
+</script>

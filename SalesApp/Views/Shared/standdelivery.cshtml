@@ -1,0 +1,440 @@
+﻿@model SalesApp.ViewModel.CustomSaleVM;
+
+@{
+    ViewBag.Title = "Stand & Delivery";
+
+}
+    <div class="container-fluid customer-info-form">
+
+        <!-- <div class="row">
+       <div class="info-form-header">
+            <h3><i class="las la-wrench"></i> Stand Details</h3>
+          </div>
+    </div> -->
+
+        <div class="row pad-30">
+            <div class="col-lg-12 stand-delivery-tabs-container text-center">
+                <input id="tab1" type="radio" name="tabs" checked>
+                <label for="tab1" class="first-label">Stands Info</label>
+
+                <input id="tab2" type="radio" name="tabs">
+                <label for="tab2" class="last-label">Delivery Info</label>
+
+
+                <section id="content1" class="text-left">
+                    <div class="container-fluid customer-info-form">
+
+                        <!-- <div class="row">
+                       <div class="info-form-header">
+                            <h3><i class="las la-wrench"></i> Stand Details</h3>
+                          </div>
+                    </div> -->
+                        @using (Html.BeginForm("AddStandInfo", "CustomSale", FormMethod.Post, new { id = "standinfo" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="row pad-t-10">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-7 col-7">
+
+                                    <div class="form-group">
+                                        <label for="">Stand</label>
+                                        @Html.DropDownListFor(model => model.standcode, Model.standcategory as IEnumerable<SelectListItem>, "Select", htmlAttributes: new { @class = "form-control", required = "required" })
+                                        @Html.ValidationMessageFor(model => model.standcode, "", new { @class = "text-danger" })
+                                        @*<input type="text" class="form-control" id="StandNumber" asp-for="stockno" placeholder="" onblur="GetItemDetails()">
+                                        <input type="hidden" id="standid" />*@
+                                        @*<input type="text" class="form-control" id="" placeholder="">*@
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-5 col-5">
+                                    <div class="form-group">
+                                        <label for="">Colour</label>
+                                        @Html.DropDownListFor(model => model.color, Model.standcolordetails as IEnumerable<SelectListItem>, "Select", htmlAttributes: new { @class = "form-control", required = "required" })
+                                        @Html.ValidationMessageFor(model => model.color, "", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-6">
+                                    <div class="form-group">
+                                        <label for="">Height(Inch)</label>
+                                        <div>
+                                            @Html.DropDownListFor(model => model.height, Model.sizeinheight as IEnumerable<SelectListItem>, "Select", htmlAttributes: new { @class = "form-control", required = "required" })
+                                            @Html.ValidationMessageFor(model => model.height, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 col-6">
+                                    <div class="form-group">
+                                        <label for="">Width</label>
+                                        <div>
+                                            @Html.DropDownListFor(model => model.width, Model.sizeinwidth as IEnumerable<SelectListItem>, "Select", htmlAttributes: new { @class = "form-control", required = "required" })
+                                            @Html.ValidationMessageFor(model => model.width, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>*@
+
+
+
+
+                                <div class="col-lg-4 col-md-5 col-sm-5 col-xs-12 col-12 type-delivery clearfix">
+                                    <label for="add" class="lable-head">Type</label>
+                                    <div class="type-group">
+                                        <div class="inputGroup">
+                                            @Html.RadioButtonFor(m => m._saletype, SaleType.CM, new { @name = "radio", @type = "radio", @id = "CashMemos" })
+
+
+                                            <label for="CashMemos" class="cm-lable">C/M</label>
+                                        </div>
+                                        <div class="inputGroup">
+                                            @Html.RadioButtonFor(m => m._saletype, SaleType.OF, new { @name = "radio", @type = "radio", @id = "OrderForms" })
+                                            <label for="OrderForms" class="of-lable">O/F</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <input type="hidden" asp-for="orderid" />
+                                <div class="col-lg-3 offset-lg-5 col-md-3 offset-md-4 col-sm-3 col-xs-12 col-12 stand-btn">
+                                    <button type="submit" class="btn-blue">Add Stand</button>
+                                </div>
+                                @*<div class="row ">
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <div class="description-container desktop-description">
+
+                                            <ul>
+                                                <li class="mar-r-5"><p class="pad-r-0"><span class="product-name fbold" id="standdesc"> </span></p></li>
+
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>*@
+
+                            </div>
+                        }
+                        @if (TempData["UserMessage"] != null)
+                        {
+                            var message = (SalesApp.ViewModel.MessageVM)TempData["UserMessage"];
+                            <div style="color:red">
+                                <strong>@message.title</strong>
+                                @message.msg
+                            </div>
+                        }
+                        <div class="row">
+                            <div class="col-lg-12 mar-t-20">
+                                <div class="table-responsive table--no-card m-b-30">
+                                    <table class="table table-borderless table-striped table-earning">
+                                        <thead>
+                                            <tr>
+                                                <th>Stand</th>
+                                                <th>Colour</th>
+                                                @*<th class="text-center">Width</th>*@
+                                                <th class="text-center">Height<span class="small-txt-br">(Inch)</span></th>
+                                                <th class="text-center">Action</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model.standsaledetails != null)
+                                                @if (Model.standsaledetails.Count() > 0)
+                                                {
+                                                    @foreach (var item in Model.standsaledetails)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                <p class="table-description">@Html.DisplayFor(modelItem => item.standdesc)</p>
+
+                                                                @if (item.ordertype == "CM")
+                                                                {
+                                                                    <p class="table-type CM">@Html.DisplayFor(modelItem => item.ordertype)</p>
+                                                                }
+                                                                else
+                                                                { <p class="table-type of">@Html.DisplayFor(modelItem => item.ordertype)</p>}
+
+                                                                @*<p class="table-type CM">@Html.DisplayFor(modelItem => item.ordertype)</p>*@
+                                                            </td>
+                                                            <td>@Html.DisplayFor(modelItem => item.color)</td>
+                                                            @*<td class="text-center">@Html.DisplayFor(modelItem => item.width)</td>*@
+                                                            <td class="text-center">@Html.DisplayFor(modelItem => item.height)</td>
+                                                            <td class="text-center">
+                                                                @Html.ActionLink("", "DeleteStand", "CustomSale", new { itemorderid = item.itemorderid }, new { @class = "delete-item  las la-times" })
+                                                            </td>
+
+
+                                                        </tr>
+
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                    <section id="content2" class="text-left">
+                        @using (Html.BeginForm("AddDeliveryInfo", "CustomSale", FormMethod.Post, new { id = "deliveryinfo" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="container-fluid customer-info-form">
+                                <div class="row pad-t-10">
+                                    <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12 col-12 customer-type-delivery clearfix">
+                                        <label for="add" class="lable-head">Type</label>
+                                        <div class="customer-type-group">
+                                            <div class="inputGroup">
+                                                @Html.RadioButtonFor(m => m._deliverytype, DeliveryType.CashMemo, new { @name = "radio", @type = "radio", @id = "radio-type-01", onclick = "cashSelect();" })
+
+                                                <label for="radio-type-01" class="cm-lable">Cash Memo</label>
+                                            </div>
+                                            <div class="inputGroup">
+                                                @Html.RadioButtonFor(m => m._deliverytype, DeliveryType.HomeDelivery, new { @name = "radio", @type = "radio", @id = "radio-type-02", onclick = "homeSelect();" })
+                                                <label for="radio-type-02" class="of-lable">Home Delivery</label>
+                                            </div>
+
+                                            <div class="inputGroup" id="typePort">
+                                                @Html.RadioButtonFor(m => m._deliverytype, DeliveryType.PortDelivery, new { @name = "radio", @type = "radio", @id = "radio-type-03", onclick = "portSelect();" })
+                                                @*<input id="radio-type-03" name="radio-type" type="radio" onclick="portSelect();">*@
+                                                <label for="radio-type-03" class="pd-lable">Port Delivery</label>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-lg-6 col-md-6 col-sm-7 col-xs-12 col-12 port-type-delivery" id="port-type-container">
+                                        <label for="add" class="lable-head">Port</label>
+                                        <div class="port-type">
+                                            <div class="inputGroup">
+                                                @Html.RadioButtonFor(m => m._porttype, PortType.Seaport, new { @name = "radio", @type = "radio", @id = "seaport", @class = "las la-plane" })
+                                                <label for="seaport"><i class="las la-ship"></i>Seaport</label>
+                                            </div>
+                                            <div class="inputGroup">
+                                                @Html.RadioButtonFor(m => m._porttype, PortType.Airport, new { @name = "radio", @type = "radio", @id = "airport", @class = "las la-plane" })
+                                                <label for="airport"><i class="las la-plane"></i>Airport</label>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-5 col-xs-12 col-12 port-type-delivery" id="port-type-txt">
+                                        <div class="form-group">
+                                            <label for="">Port Name</label>
+                                            <input asp-for="dinfo.PortName" class="form-control" spellcheck="false" placeholder="" />
+                                            @*<input type="text" class="form-control" id="" spellcheck="false" placeholder="">*@
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-5 col-md-5 col-sm-4">
+                                        <div class="form-group">
+                                            <label for="">Passport Number</label>
+                                            <input asp-for="dinfo.Passport" class="form-control" spellcheck="false" placeholder="" />
+                                            @*<input type="text" class="form-control" id="" spellcheck="false" placeholder="">*@
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12 col-12">
+                                        <div class="form-group mar-b-5">
+                                            <label for="">Delivery Dates</label>
+                                            <div class="row">
+                                                <div class="">
+                                                    <input asp-for="dinfo.DeliveryFrom" class="form-control" spellcheck="false" />
+
+                                                    @*<input type="text" class="form-control" id="datepicker1" placeholder="" class="datepicker" spellcheck="false">*@
+
+                                                </div>
+
+                                                <div class="">
+                                                    @*<input type="text" class="form-control" id="datepicker2" placeholder="" class="datepicker" spellcheck="false">*@
+                                                    <input asp-for="dinfo.DeliveryTo" class="form-control" spellcheck="false" />
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="disclaimer">Please select dates 20 days from today.</p>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" asp-for="orderid" />
+                            </div>
+                        }
+                    </section>
+
+                </div>
+            </div>
+          
+            <div class="row pad-0 mar-0">
+                <div class="col-lg-12 footer-btn text-right pad-rl-20 btns-group">
+                    <button class="btn-dark-gray" onclick="manaagetab('2')">Back</button>
+                    <button class="btn-blue-light">Reset</button>
+                    <button id="deliverysubmit" class="btn-pink">Continue</button>
+                </div>
+            </div>
+
+            @*<input type="hidden" asp-for="orderid" />*@
+            <input type="hidden" asp-for="standorderid" />
+        </div>
+
+    <script type="text/javascript">
+
+    function GetItemDetails() { 
+        var stockid = $('#StockNumber').val();
+           $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetStandDetails", "CashSale")',
+                //contentType: false,
+                //processData: false,
+               data: { "stockid": stockid},
+               success: function (data) {
+                   if (data != null) {
+                       var response = JSON.stringify(data[0]);
+                       if (response != null) {
+                           $('#standid').val(data[0].stockid);
+                           $('#standdesc').val(data[0].itemname); 
+                           //$('#itemcategory').css('color', 'green');
+                           //$('#itemname').text(data[0].itemname);
+                           //$('#itemsize').text(data[0].size);
+                           //$('#itemstone').text(data[0].marblestone);
+                           //$('#itemcolor').text(data[0].marblecolor);
+                           //$('#totalvalue').val(data[0].price);
+                           //$('#hdntotal').val(data[0].price)
+                           //$('#item_desc').val(data[0].category + ',' + data[0].itemname + ',' + data[0].size + ',' + data[0].marblecolor);
+
+                       }
+                       else {
+                           $('#standdesc').text('Not in stock!!!');
+                           $('#standdesc').css('color', 'red');
+                           //$('#itemname').text('');
+                           //$('#itemsize').text('');
+                           //$('#itemstone').text('');
+                           //$('#itemcolor').text('');
+                           //$('#totalvalue').val('');
+                           $('#standid').val('');
+                       }
+                   }
+                   else {
+                       $('#standdesc').text('Not in stock!!!');
+                       $('#standdesc').css('color', 'red');
+                       //$('#itemname').text('');
+                       //$('#itemsize').text('');
+                       //$('#itemstone').text('');
+                       //$('#itemcolor').text('');
+                       //$('#totalvalue').val('');
+                       $('#standid').val('');
+                   }
+
+
+
+                },
+                Error: function (err) {
+                    $('#itemcategory').append(err);
+                  //  debugger;
+                },
+                /* beforeSend: function () {
+                     $(".progress").show();
+                 },
+                 complete: function () {
+                    $(".progress").hide();
+                 }*/
+            });
+
+
+    }
+
+    $(document).ready(function () {
+        $("#deliverysubmit").click(function () {
+            $("#deliveryinfo").submit();
+        });
+       
+        function getNum(val) {
+            if (isNaN(val)) {
+                return 0;
+            }
+            return val;
+        }
+        $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+        });
+
+        $('#dismiss, .overlay').on('click', function () {
+            $('#sidebar').removeClass('active');
+            $('.overlay-nav').removeClass('active');
+        });
+
+        // $('#sidebarCollapse').on('click', function () {
+        //     $('#sidebar').addClass('active');
+        //     $('.overlay').addClass('active');
+        //     $('.collapse.in').toggleClass('in');
+        //     $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        // });
+
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar, #content').toggleClass('active');
+            $('.overlay-nav').addClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+    });</script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#sidebar").mCustomScrollbar({
+                theme: "minimal"
+            });
+
+            $('#dismiss, .overlay').on('click', function () {
+                $('#sidebar').removeClass('active');
+                $('.overlay').removeClass('active');
+            });
+
+            // $('#sidebarCollapse').on('click', function () {
+            //     $('#sidebar').addClass('active');
+            //     $('.overlay').addClass('active');
+            //     $('.collapse.in').toggleClass('in');
+            //     $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            // });
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar, #content').toggleClass('active');
+                $('.overlay').addClass('active');
+                $('.collapse.in').toggleClass('in');
+                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            });
+        });
+
+
+        $(function () {
+            $("#datepicker1").datepicker({
+                dateFormat: "dd-mm-yy"
+                , duration: "fast"
+            });
+
+            $("#datepicker2").datepicker({
+                dateFormat: "dd-mm-yy"
+                , duration: "fast"
+            });
+        });
+
+        function portSelect() {
+            document.getElementById('port-type-container').style.display = 'block';
+            document.getElementById('port-type-txt').style.display = 'block';
+
+        }
+        function homeSelect() {
+            document.getElementById('port-type-container').style.display = 'none';
+            document.getElementById('port-type-txt').style.display = 'none';
+
+        }
+        function portSelect() {
+            document.getElementById('port-type-container').style.display = 'block';
+            document.getElementById('port-type-txt').style.display = 'block';
+
+        }
+    </script>

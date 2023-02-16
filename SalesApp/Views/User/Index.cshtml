@@ -1,0 +1,220 @@
+﻿@model IEnumerable<SalesApp.ViewModel.UserLoginVM>;
+
+@{
+    ViewBag.Title = "Add Customer Info";
+
+}
+@*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
+<div class="wrapper">
+
+    <partial name="../Shared/Sidebar.cshtml" />
+    <div id="content">
+        <div class="header-container clearfix">
+            <button type="button" id="sidebarCollapse" class="btn btn-info">
+                <i class="libutton">Menu</i>
+                @*<i class="las la-align-left"></i>*@
+            </button>
+
+            <h1><span class="fbold">Sales</span> <span class="fregular">Application</span><p class="profile-name">Welcome : @User.Identity.Name</p></h1>
+
+
+        </div>
+        <div class="main-container">
+            <div class="container-bg clearfix">
+                <div class="container-fluid">
+                    <div class="main-container-cus">
+                        <div class="container-bg clearfix">
+                            <div class="card-header">
+                                <button type="button" onclick="CreateView()" href="javascript:void(0)" style="background-color:khaki;" class="btn btn-info btn-flat">Create New </button>
+                                @*<h3 class="card-title">DataTable with minimal features & hover style</h3>*@
+                            </div>
+                            @using (Html.BeginForm("AddUser", "User", FormMethod.Post, new { id = "customerinfo", onsubmit = "showLoader(this);" }))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <div class="container-fluid customer-info-form">
+                                    @* @if (TempData["CustomerUserMessage"] != null)
+                                {
+                                var message = (SalesApp.ViewModel.MessageVM)TempData["CustomerUserMessage"];
+                                <div style="color:red">
+                                <strong>@message.title</strong>
+                                @message.msg
+                                </div>
+                                }*@
+                                    <table id="example2" class="table table-bordered table-hover">
+                                        <thead>
+                                        <th>Name</th>
+                                        <th>Password</th>
+                                        <th>Role</th>
+                                        <th>Action</th>
+                                        </thead>
+
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.UserName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.UserPass)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.RoleName)
+                                                    </td>
+                                                    <td>
+                                                        <a onclick="getEditView(@item.UserId)" href="javascript:void(0)">Edit|</a>
+                                                        @*<a onclick="deleteuser(@item.UserId)" href="javascript:void(0)">Delete</a>*@
+                                                        @*@Html.ActionLink("Edit", "Edit", new { id = item.StaffID })*@
+
+                                                        @Html.ActionLink("Delete", "GetUserDeleted", new { id = item.UserId })
+
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                    @*  <div class="row pad-rl-10 pad-tb-10">
+                                <div class="col-lg-6 col-md-6 col-sm-8">
+                                <div class="form-group">
+                                <label for="">User Name</label>
+                                <div class="row">
+
+                                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12 col-12" style="margin-left:-21px">
+                                @Html.TextBoxFor(model => model.UserName, new { type = "string", @class = "form-control", @style = "text-transform: capitalize;width:126%", htmlAttributes = new { required = "required", placeholder = "Enter ..." } })
+                                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+
+                                </div>
+                                </div>
+
+                                </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-8">
+                                <div class="form-group">
+                                <label for="">Password</label>
+                                <div class="row">
+
+                                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12 col-12" style="margin-left:-21px">
+                                @Html.TextBoxFor(model => model.UserPass, new { type = "string", @class = "form-control", @style = "text-transform: capitalize;width:126%", htmlAttributes = new { required = "required", placeholder = "Enter ..." } })
+                                @Html.ValidationMessageFor(model => model.UserPass, "", new { @class = "text-danger" })
+
+                                </div>
+                                </div>
+
+                                </div>
+                                </div>
+
+                                </div>*@
+
+                                    @*   <input type="hidden" asp-for="UserId" />*@
+                                    @* <input type="hidden" asp-for="billid" />*@
+
+                                    <!-- <div class="row">
+                                       <div class="info-form-header">
+                                            <h3><i class="las la-truck"></i>Delivery Information</h3>
+                                          </div>
+                                    </div> -->
+
+
+                                </div>
+
+
+
+
+                                <div class="row pad-rl-10 pad-tb-10">
+                                    <span style="color:red;font-size:large;font-family:Arial;" id="lblmsg"></span>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 text-right pad-rl-20 btns-group">
+
+                                        @* <button type="button" class="btn-dark-gray" onclick="manaagetab('4')">Back</button>*@
+                                        @*<button type="button" class="btn-blue-light">Reset</button>*@
+                                        @*  <button id="custsubmit" class="btn-pink">Save</button>*@
+                                        @*<button type="button" class="btn-pink" onclick="manaagetab('3')">Continue</button>*@
+
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <div style="background-color:khaki">
+                    <div id="CDiv" class="col-md-6">
+                    </div>
+
+                    <div id="EditDiv" class="col-md-6">
+                    </div>
+                </div>
+
+
+                @*<div id="pagingDiv">@Html.Raw(ViewBag.Paging)</div>*@
+                @*<br />
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                @Html.pa PagedListPager(Model, Page_No => Url.Action("Index",
+                new { Page_No, Sorting_Order = ViewBag.CurrentSortOrder, Filter_Value = ViewBag.FilterValue }))*@
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#sidebar").mCustomScrollbar({
+                    theme: "minimal"
+                });
+
+                $('#dismiss, .overlay').on('click', function () {
+                    $('#sidebar').removeClass('active');
+                    $('.overlay-nav').removeClass('active');
+                });
+
+                // $('#sidebarCollapse').on('click', function () {
+                //     $('#sidebar').addClass('active');
+                //     $('.overlay').addClass('active');
+                //     $('.collapse.in').toggleClass('in');
+                //     $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+                // });
+
+                $('#sidebarCollapse').on('click', function () {
+                    $('#sidebar, #content').toggleClass('active');
+                    $('.overlay-nav').addClass('active');
+                    $('.collapse.in').toggleClass('in');
+                    $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+                });
+            });</script>
+
+
+        <script type="text/javascript">
+            function CreateView() {
+
+                $.post("@Url.Action("ShowCreatePartailView", "User")", function (data) {
+                    if (data) {
+                        $('#CDiv').html('');
+                        $('#EditDiv').html('');
+                        $('#CDiv').append(data);
+                    }
+                });
+
+            }
+
+            function getEditView(id) {
+
+                $.post("@Url.Action("ShowEditPartailView", "User")", { id: id }, function (data) {
+                    if (data) {
+                        $('#CDiv').html('');
+                        $('#EditDiv').html('');
+                        $('#EditDiv').append(data);
+                    }
+                });
+            }
+            @*function deleteuser(id) {
+                $.post("@Url.Action("GetUserDeleted", "User")", {id: id}, function(data) {
+                $("final").submit();
+                });
+
+                }*@
+        </script>
+    </div>
+</div>

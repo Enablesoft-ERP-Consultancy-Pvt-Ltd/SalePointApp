@@ -1,0 +1,550 @@
+﻿@model SalesApp.ViewModel.CashSaleVM;
+
+@{
+    ViewBag.Title = "Cash Sale";
+
+}
+
+
+@*<script src="~/js/instascan.min.js" rel="nofollow"></script>*@
+<style>
+    #preview {
+        width: 800px;
+        height: 300px;
+        margin: 0px auto;
+    }
+</style>
+<script>
+    var showLoader = function (form) {
+        $("<div />").css({
+            'position': 'fixed',
+            'left': 0,
+            'right': 0,
+            'bottom': 0,
+            'top': 50,
+            'background': '#0020ff36',
+            'z-index': '99',
+            'text-align': 'center'
+        }).appendTo($("body"))
+            .append(
+                $("<img />").attr("src", "https://mir-s3-cdn-cf.behance.net/project_modules/disp/35771931234507.564a1d2403b3a.gif")
+            );
+    }
+</script>
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <partial name="~/Views/Shared/Sidebar.cshtml" />
+
+    <!-- Page Content  -->
+    <div id="content">
+        <partial name="~/Views/Shared/_header.cshtml" model="Model" />
+
+
+
+        <div class="main-container">
+            <div class="container-bg clearfix">
+                <div class="container-header clearfix">
+                    @*<h2>Add Cash Sale</h2>
+                        <div class="header-sales-info">*@
+                    <!-- <p class="float-left clients-name-info"><i class="las la-user-circle"></i> Shomayala Arooz</p> -->
+                    @*<p class="float-left"><span class="fregular">Sale Date:</span> <span class="fbold">@Html.DisplayFor(model => model.mirrordate)</span></p>
+                        <p class="float-right"><span class="fregular">Mirror ID:</span> <span class="fbold">@Html.DisplayFor(model => model.mirrorid)</span></p>
+                        <p class="cart-display"><span class="clients-cart-info"><i class="las la-shopping-cart"></i><span class="cart-notify">@Html.DisplayFor(model => model.itemcount)</span></span></p>*@
+
+
+                </div>
+
+                <!-- <div class="container-name-cart-info clearfix">
+                  <p class="clients-name-info"><i class="las la-user-circle"></i> Shomayala Arooz</p>
+                  <p class="clients-cart-info hide-mobile"><i class="las la-shopping-cart"></i> You have <span class="fbold">2 items</span> in your Cart</p>
+
+                </div> -->
+
+                <div class="container-fluid">
+
+
+                    <!--
+                    <a href="" class="btn-create"><i class="las la-plus"></i></a>
+                    <a href="" class="btn-scan"><i class="las la-qrcode"></i></a> -->
+                    <video id="preview"></video>
+                    @using (Html.BeginForm("AddSale", "CashSale", FormMethod.Post, new { id = "addsale", name = "addsale" ,onsubmit = "showLoader(this);" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="row pad-t-10">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-12">
+                                <a href="#" id="scanitem" class="scan-btn-n"><i class="las la-qrcode"></i> Scan Item</a>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-12">
+
+                                <input type="text" class="form-control" id="StockNumber" asp-for="stockno" required placeholder="Stock No." onblur="GetItemDetails()">
+                                <input type="hidden" asp-for="item_desc" />
+
+                            </div>
+                            @*<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-12">
+                                    <a href="" class="custom-btn-n"><i class="las la-plus"></i> Add Custom Item</a>
+                                </div>*@
+                        </div>
+
+                        <div class="row pad-rl-20 pad-tb-10">
+                            <input type="hidden" asp-for="mirrorid" />
+
+                            <div class="col-lg-12 col-md-12 full-width-col pad-0">
+                                <div class="container-fluid pad-0">
+                                    <div class="row">
+
+                                        <!--  <div class="col-lg-12 hide-desktop text-right">
+                                          <div class="scanner-image">
+                                            <img src="img/scan.png"/>
+                                          </div>
+                                        </div> -->
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+
+                                            <div class="description-container mobile-description">
+                                                <!-- <h5>Description</h5> -->
+                                                <!-- <p><span class="fbold product-name">Buddha</span> <span class="fregular product-info">Sitting Buddha</span></p> -->
+                                                <ul>
+                                                    <li class="mar-r-5"><p class="pad-r-0"><span class="product-name fbold" id="itemcategory1"> </span><span class="fregular" id="itemname1"> Sitting Buddha</span><span class="divide">/</span><span class="fbold" id="itemsize1">0*0*6</span><span class="divide">/</span><span class="fbold" id="itemstone1">Marble</span><span class="divide">/</span><span class="fbold" id="itemcolor1">White</span></p></li>
+
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        @*<div class="col-lg-6 col-md-6 col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="Qty">Special Addition</label>
+                                                    <input type="text" class="form-control" asp-for="customspecialaddition" id="Qty" placeholder="">
+                                                </div>
+                                            </div>*@
+                                        @*<div class="col-lg-2 col-md-2 col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="Qty">Quantity</label>
+                                                    <input type="text" class="form-control" asp-for="quantity" id="Qty" value="1" readonly="readonly" placeholder="">
+                                                </div>
+                                            </div>*@
+                                        @*<div class="col-lg-3 col-md-3 col-sm-4 addition-addon clearfix">
+                                            <label for="add" class="lable-head">Type</label>*@
+                                        @*<div class="type-group">
+                                            <div class="inputGroup">
+                                                <input asp-for="_saletype" checked="checked" id="CashMemo" name="radio" type="radio" value="CM" />*@
+                                        @*@Html.RadioButtonFor(m => m._saletype, "CM", new { @checked = "checked", @name = "radio", @type = "radio", @id = "CashMemo" })*@
+                                        @*<label for="CashMemo" class="cm-lable">C/M</label>
+                                            </div>*@
+                                        @*<div class="inputGroup">
+                                                @Html.RadioButtonFor(m => m._saletype, SaleType.OF, new { @name = "radio", @type = "radio", @id = "OrderForm" })
+                                                <label for="OrderForm" class="of-lable">O/F</label>
+                                            </div>*@
+
+                                        @*</div>*@
+                                        @*</div>*@
+                                    </div>
+
+                                    <div class="row ">
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <div class="description-container desktop-description">
+                                                <!-- <h5>Description</h5> -->
+                                                <!-- <p><span class="fbold product-name">Buddha</span> <span class="fregular product-info">Sitting Buddha</span></p> -->
+                                                <ul>
+                                                    <li class="mar-r-5">
+                                                        <p class="pad-r-0"><span class="product-name fbold" id="itemcategory"> </span><span class="fregular" id="itemname"> </span><span class="fbold" id="itemsize"></span><span class="fbold" id="itemstone"></span><span class="fbold" id="itemcolor"></span></p>
+
+                                                    </li>
+
+
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<div class="row mar-b-10">
+                                            <div class="col-lg-6 addition-add-new clearfix">
+                                                <label for="add" class="lable-head">Add</label>
+                                                <div class="addition-add-input">
+
+                                                        @for (int i = 0; i < Model.specialadditions.Count(); i++)
+                                                        {
+                                                            <div class="inputGroup">
+
+                                                                <input asp-for="specialadditions[i].Selected" type="checkbox" id="option@(i)">
+                                                                <label for="option@(i)" asp-for="specialadditions[i].Text">@Model.specialadditions[i].Text</label>
+                                                                <input type="hidden" asp-for="specialadditions[i].Value" />
+                                                                <input type="hidden" asp-for="specialadditions[i].Text" />
+                                                            </div>
+
+
+
+                                                        }
+
+                                                </div>
+                                            </div>
+
+                                        </div>*@
+                                    <div class="row mar-b-10">
+                                        <div class="form-group col-lg-3 col-md-3 col-sm-3 col-xs-6 col-6">
+                                            <label for="Currecny">Fx</label>
+                                            @Html.DropDownListFor(model => model.currencyid, Model.currencydetails as IEnumerable<SelectListItem>, "Select", new { onchange = "SelectedIndexChanged()", @class = "form-control", htmlAttributes = new { required = "required" } })
+                                            @Html.ValidationMessageFor(model => model.currencyid, "", new { @class = "text-danger" })
+
+                                            <div>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-3 col-md-3 col-sm-3 col-xs-6 col-6">
+                                            @*<label for="ConversionRate">Conv. Rate</label>*@
+                                            @Html.LabelFor(model => model.conversionrate)
+                                            @Html.TextBoxFor(model => model.conversionrate, new { type = "number", min = "", step = "0.0001", @class = "form-control", required = "required", placeholder = "Enter ..." })
+                                            @Html.ValidationMessageFor(model => model.conversionrate, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="ConversionRate" placeholder="">*@
+                                        </div>
+                                        <div class="form-group col-lg-3 col-md-3 col-sm-3 col-xs-6 col-6">
+                                            @Html.LabelFor(model => model.totalvalue)
+
+
+                                            <div class="total-inra">
+                                                @Html.TextBoxFor(model => model.totalvalue, new { type = "number", min = "", step = "1", @class = "form-control", required = "required", placeholder = "Enter ..." })
+                                                @Html.ValidationMessageFor(model => model.totalvalue, "", new { @class = "text-danger" })
+                                                @*<input type="hidden" id="hdntotal" value="@Model.totalvalue" />*@
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-lg-3 text-right col-md-3 col-sm-3 col-xs-6 col-6">
+                                            <button class="btn-blue">Add Item</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="hdntotal" value="@Model.grandtotal" />
+                        <input type="hidden" asp-for="orderid" />
+                        <input type="hidden" asp-for="elephantid" />
+
+                    }
+
+
+                    @*<partial name="PartialOrderList.cshtml" />*@
+                    @if (TempData["CashMessage"] != null)
+                    {
+                        var message = (SalesApp.ViewModel.MessageVM)TempData["CashMessage"];
+                        <div style="color:red">
+                            <strong>@message.title</strong>
+                            <strong>@message.msg</strong>
+                        </div>
+                    }
+
+                    <div class="row pad-t-0 pad-rl-20">
+                        <div class="col-lg-12 pad-0">
+                            <div class="table-responsive table--no-card m-b-30">
+                                <table class="table table-borderless table-striped table-earning">
+                                    <thead>
+                                        <tr>
+                                            <th>Description</th>
+                                            <th>Fx</th>
+                                            <th>INR</th>
+                                            <th class="text-center">Action</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @if (Model.cashsaledetails != null)
+                                        {
+                                            @if (Model.cashsaledetails.Count() > 0)
+                                            {
+                                                @if (Model.cashsaledetails[0].salevalueinr >= 0)
+                                                {
+                                                    @foreach (var item in Model.cashsaledetails)
+                                                    {
+                                                        <tr>
+                                                            <td class="table-description-td">
+                                                                <p class="table-description-p">
+                                                                    <span class="table-stock-number">@Html.DisplayFor(modelItem => item.stockid)</span>
+                                                                    @*<span class="table-type CM">@Html.DisplayFor(modelItem => item.ordertype)</span>*@
+                                                                </p>
+                                                                <p class="table-description-item">@Html.DisplayFor(modelItem => item.itemdesc)</p>
+                                                            </td>
+                                                            <td>@Html.DisplayFor(modelItem => item.symbol)&nbsp;@Html.DisplayFor(modelItem => item.salevalue)</td>
+                                                            <td><i class="las la-rupee-sign"></i> @Html.DisplayFor(modelItem => item.salevalueinr)</td>
+                                                            <td class="text-center">
+
+                                                                @Html.ActionLink("", "DeleteSale", "CashSale", new { orderItemId = item.itemorderid }, new { @class = "delete-item  las la-times" })
+
+
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        @*<tr>
+                                                <td class="table-description-td">
+                                                    <p class="table-description-p">
+                                                        <span class="table-stock-number">A300</span>
+                                                        <span class="table-type CM">C/M</span>
+                                                    </p>
+                                                    <p class="table-description">Buddha, Sitting Buddha, 0*0*6, White</p>
+
+                                                </td>
+
+                                                <td><i class="las la-rupee-sign"></i> 200</td>
+                                                <td><i class="las la-rupee-sign"></i> 200</td>
+                                                <td class="text-center">
+                                                    <a href="" class="delete-item"><i class="las la-times"></i></a>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>
+
+
+                                                    <p>
+                                                        <span class="table-stock-number">A300</span>
+                                                        <span class="table-type of">O/F</span>
+                                                    </p>
+
+                                                    <p class="table-description">Buddha, Sitting Buddha, 0*0*6, White</p>
+
+                                                </td>
+
+                                                <td><i class="las la-rupee-sign"></i> 200</td>
+                                                <td><i class="las la-rupee-sign"></i> 200</td>
+                                                <td class="text-center">
+                                                    <a href="" class="delete-item"><i class="las la-times"></i></a>
+                                                </td>
+
+
+                                            </tr>*@
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-12 text-right">
+                            <p class="grand-total"><span class="fregular head">Grand Total:</span> <span class="fbold val">@Html.DisplayFor(model => model.grandtotal)</span></p>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row pad-0 mar-0">
+                        <div class="col-lg-12 footer-btn text-right pad-rl-40">
+                            @*<button class="btn-pink">Finish</button>*@
+                            @Html.ActionLink("Finish", "FinishSale", "CashSale", new { orderId = Model.orderid }, new { @class = "btn-pink", onclick = "return checkitem();" })
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="container-bg clearfix">
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+
+</div>
+<div class="overlay"></div>
+
+<script src="~/js/vendor/modernizr-3.8.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="~/js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
+<!-- JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<!-- jQuery Custom Scroller CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="~/js/plugins.js"></script>
+<script src="~/js/main.js"></script>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/instascan.min.js"></script>
+@*<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js" rel="nofollow"></script>*@
+
+
+
+
+<script type="text/javascript">
+    function SelectedIndexChanged() {
+        $('#conversionrate').focus();
+    }
+    function showcamera() {
+        let scanner = new Instascan.Scanner({ video: document.getElementById('preview'), mirror: false });
+        scanner.addListener('scan', function (content) {
+            //  console.log(content);
+            $('#StockNumber').val(content);
+            scanner.stop();
+            $('#preview').hide();
+            $('#StockNumber').focus();
+        });
+        window.addEventListener("orientationchange", async (event) => {
+            await scanner.stop();
+            scanner.start(cameras[0]);
+        });
+        Instascan.Camera.getCameras().then(function (cameras) {
+            if (cameras.length > 0) {
+                scanner.start(cameras[1]);
+              //  cameras.setDisplayOrientation(90);
+            } else {
+                console.error('No cameras found.');
+            }
+        }).catch(function (e) {
+            console.error(e);
+        });
+    }
+    function sentenceCase(str) {
+        if ((str === null) || (str === ''))
+            return "";
+        else
+            str = str.toString();
+
+        return str.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
+    }
+    function GetItemDetails() {
+        var stockid = $('#StockNumber').val();
+        if (stockid != '') {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetStockDetails", "CashSale")',
+                //contentType: false,
+                //processData: false,
+                data: { "stockid": stockid },
+                success: function (data) {
+                    if (data != null) {
+                        var response = JSON.stringify(data[0]);
+                        if (response != null) {
+                            if (data[0].category != null) {
+                                $('#itemcategory').text(data[0].category + '/');
+                                $('#itemcategory').css('color', 'green');
+                            }
+                            else { $('#itemcategory').text(''); }
+                            if (data[0].itemname != null) {
+                                $('#itemname').text(data[0].itemname + '/');
+                            }
+                            else { $('#itemname').text(''); }
+                            if (data[0].size != null) {
+                                $('#itemsize').text(data[0].size + '/');
+                            }
+                            else { $('#itemsize').text(''); }
+                            if (data[0].marblestone != null) {
+                                $('#itemstone').text(data[0].marblestone + '/');
+                            }
+                            else { $('#itemstone').text(''); }
+                            if (data[0].marblecolor != null) {
+
+                                $('#itemcolor').text(data[0].marblecolor + '/');
+                            }
+                            else { $('#itemcolor').text(''); }
+                            //$('#itemcategory').text(data[0].category);
+                            //$('#itemcategory').css('color', 'green');
+                            //$('#itemname').text(data[0].itemname);
+                            //$('#itemsize').text(data[0].size);
+                            //$('#itemstone').text(data[0].marblestone);
+                            //$('#itemcolor').text(data[0].marblecolor);
+                            // $('#totalvalue').val(data[0].price);
+                            //   $('#hdntotal').val(data[0].price)
+                          //  $('#StockNumber').val('');
+                           // $('#item_desc').val(data[0].category + ',' + data[0].itemname + ',' + data[0].size + ',' + data[0].marblecolor);
+                            $('#item_desc').val(sentenceCase(data[0].category) + ',' + sentenceCase(data[0].itemname) + ',' + data[0].size + ',' + sentenceCase(data[0].marblecolor));
+                            $('#elephantid').val(data[0].stockid);
+
+                        }
+                        else {
+                            $('#itemcategory').text('Either this stock is packed or stock does not exists!!!');
+                            $('#itemcategory').css('color', 'red');
+                            $('#itemname').text('');
+                            $('#StockNumber').val('');
+                            $('#itemsize').text('');
+                            $('#itemstone').text('');
+                            $('#itemcolor').text('');
+                            $('#totalvalue').val('');
+                        }
+                    }
+                    else {
+                        $('#itemcategory').text('Either this stock is packed or stock does not exists!!!');
+                        $('#itemcategory').css('color', 'red');
+                        $('#itemname').text('');
+                        $('#itemsize').text('');
+                        $('#StockNumber').val('');
+                        $('#itemstone').text('');
+                        $('#itemcolor').text('');
+                        $('#totalvalue').val('');
+                    }
+
+
+
+                },
+                Error: function (err) {
+                    $('#itemcategory').append(err);
+                    //  debugger;
+                },
+                /* beforeSend: function () {
+                     $(".progress").show();
+                 },
+                 complete: function () {
+                    $(".progress").hide();
+                 }*/
+            });
+            $("currencyid").focus()
+        }
+
+    }
+    function checkitem() {
+        debugger;
+        var oid = $('#hdntotal').val();
+        if (oid == 0) {
+
+            alert("Please enter Stock Details,Before Finishing!!.");
+            return false;
+        }
+        else
+            return true;
+    }
+    $(document).ready(function () {
+        $("StockNumber").focus(function () {
+            //code code and more code
+        }).blur();
+        $("#preview").hide();
+        function getNum(val) {
+            if (isNaN(val)) {
+                return 0;
+            }
+            return val;
+        }
+       /* $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+        }); */
+
+        $('#dismiss, .overlay').on('click', function () {
+            $('#sidebar').removeClass('active');
+            $('.overlay-nav').removeClass('active');
+        });
+
+        // $('#sidebarCollapse').on('click', function () {
+        //     $('#sidebar').addClass('active');
+        //     $('.overlay').addClass('active');
+        //     $('.collapse.in').toggleClass('in');
+        //     $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        // });
+
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar, #content').toggleClass('active');
+            $('.overlay-nav').addClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+        $("#scanitem").click(function () {
+
+          //  $("#qrcodearea").show();
+            $("#preview").show();
+            showcamera();
+        });
+    });</script>
