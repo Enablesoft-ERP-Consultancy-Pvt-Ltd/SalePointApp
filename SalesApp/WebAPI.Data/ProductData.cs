@@ -9,6 +9,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using SalesApp.Models;
 using SalesApp.Models.Product;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using DocumentFormat.OpenXml.Drawing.Diagrams;
 
 namespace SalesApp.WebAPI.Data
 {
@@ -188,17 +193,17 @@ namespace SalesApp.WebAPI.Data
             ServiceResponse<IEnumerable<ProductModel>> obj = new ServiceResponse<IEnumerable<ProductModel>>();
             using (var connection = new SqlConnection(configuration.GetConnectionString("DBConnectionString").ToString()))
             {
-                string sql = @"SELECT IPM.ITEM_FINISHED_ID, ICM.CATEGORY_NAME, IM.ITEM_NAME, ISNULL(Q.QualityName, '') QualityName, ISNULL(D.DesignName, '') DesignName, ISNULL(C.ColorName, '') ColorName,   
-ISNULL(SC.ShadeColorName, '') ShadeColorName, ISNULL(S.ShapeName, '') ShapeName, ISNULL(SZ.SizeMtr, '') SizeMtr, ISNULL(SZ.SizeFt, '') SizeFt, Quality_Id QualityId,   
-Color_Id ColorId, design_Id designId, Size_Id SizeId, Shape_Id ShapeId, IsNull(SZ.SizeInch, '') SizeInch, Replace(IsNull(SZ.SizeMtr, '') + 'x' + Str(IsNull(HeightMtr, '')), ' ', '') LWHMtr,   
-Replace(IsNull(SZ.SizeFt, '') + 'x' + Str(IsNull(HeightFt, '')), ' ', '') LWHFt, Replace(IsNull(SZ.SizeInch, '') + 'x' + Str(IsNull(HeightInch, '')), ' ', '') LWHInch,   
-Shadecolor_Id ShadecolorId, ICM.CATEGORY_ID, IM.ITEM_ID, Isnull(AreaFt, 0) AreaFt, Isnull(AreaMtr, 0) AreaMtr, IPM.ProductCode, IsNull(SZ.WidthFt, 0) WidthFt,   
-IsNull(SZ.LengthFt, 0) LengthFt, IsNull(SZ.HeightFt, 0) HeightFt, IsNull(SZ.WidthMtr, 0) WidthMtr, IsNull(SZ.LengthMtr, 0) LengthMtr, IsNull(SZ.HeightMtr, 0) HeightMtr,   
+                string sql = @"SELECT IPM.ITEM_FINISHED_ID as ItemFinishId, ICM.CATEGORY_NAME as CategoryName, IM.ITEM_NAME as ItemName, ISNULL(Q.QualityName, '') QualityName, ISNULL(D.DesignName, '') DesignName, 
+ISNULL(C.ColorName, '') ColorName,ISNULL(SC.ShadeColorName, '') ShadeColorName, ISNULL(S.ShapeName, '') ShapeName, ISNULL(SZ.SizeMtr, '') SizeMtr, ISNULL(SZ.SizeFt, '') SizeFt, 
+IPM.Quality_Id as QualityId,IPM.Color_Id ColorId, IPM.design_Id DesignId, IPM.Size_Id SizeId, IPM.Shape_Id ShapeId,IPM.Shadecolor_Id ShadeColorId,ICM.CATEGORY_ID as CategoryId,
+IM.ITEM_ID as ItemId,IPM.ProductCode, IsNull(SZ.WidthFt, 0) WidthFt,   
+IsNull(SZ.LengthFt, 0) LengthFt, IsNull(SZ.HeightFt, 0) HeightFt,
+IsNull(SZ.WidthMtr, 0) WidthMtr, IsNull(SZ.LengthMtr, 0) LengthMtr, IsNull(SZ.HeightMtr, 0) HeightMtr,   
 IsNull(ProdSizeFt, 0) ProdSizeFt, IsNull(ProdSizeMtr, 0) ProdSizeMtr, IsNull(ProdAreaFt, 0) ProdAreaFt, IsNull(ProdAreaMtr, 0) ProdAreaMtr,   
 IsNull(ProdLengthMtr, 0) ProdLengthMtr, IsNull(ProdLengthFt, 0) ProdLengthFt, IsNull(ProdWidthMtr, 0) ProdWidthMtr, IsNull(ProdWidthFt, 0) ProdWidthFt, Isnull(AreaInch, 0) AreaInch, ICM.HSCODE,   
 ipm.status, FlagFixWeight, IPM.MasterCompanyId, IPM.Description, isnull(SZ.Actualfullareasqyd, 0) Actualfullareasqyd, ISNULL(IM.KATIWITHEXPORTSIZE, 0) KATIWITHEXPORTSIZE, Q.Hscode HSNCode,   
 Isnull(IM.ITEM_CODE, '') ItemCode, IsNull(SZ.WidthInch, 0) WidthINCH, IsNull(SZ.LengthINCH, 0) LengthINCH, IsNull(SZ.HeightINCH, 0) HeightINCH, IsNull(Q.QualityCode, '')  QualityCode ,  
-isnull(D.DesignCode,'') DesignCode,isnull(C.ColorCode,'') ColorCode,isnull(SZ.SizeCode,'') SizeCode, ICM.PoufTypeCategory, IM.CUSHIONTYPEITEM, UTM.UnitTypeID, UTM.UnitType   
+isnull(D.DesignCode,'') DesignCode,isnull(C.ColorCode,'') ColorCode,isnull(SZ.SizeCode,'') SizeCode, ICM.PoufTypeCategory, IM.CUSHIONTYPEITEM, UTM.UnitTypeID as UnitTypeId, UTM.UnitType   
 FROM ITEM_PARAMETER_MASTER IPM(Nolock) JOIN ITEM_MASTER IM(Nolock) ON IM.ITEM_ID = IPM.ITEM_ID   
 JOIN UNIT_TYPE_MASTER UTM(Nolock) ON UTM.UnitTypeID = IM.UnitTypeID   
 JOIN ITEM_CATEGORY_MASTER ICM(Nolock) ON ICM.CATEGORY_ID = IM.CATEGORY_ID   
@@ -213,36 +218,37 @@ Where IPM.MasterCompanyId=@StoreId;";
                 var objItem = (from usr in result
                                select new ProductModel
                                {
-                                   //UserId = usr.UserId,
-                                   //UserType = usr.UserType,
-                                   //Name = new NameClass
-                                   //{
-                                   //    FirstName = usr.FirstName,
-                                   //    MiddleName = usr.MiddleName,
-                                   //    LastName = usr.LastName,
-                                   //},
-                                   //Supervisor = new NameClass
-                                   //{
-                                   //    FirstName = usr.SuprFName,
-                                   //    MiddleName = usr.SuprMName,
-                                   //    LastName = usr.SuprLName,
-                                   //},
-                                   //CellPhone = usr.CellPhone,
-                                   //Email = usr.Email,
-                                   //HomePhone = usr.HomePhone,
-                                   //EmergPhone = usr.EmgPhone,
-                                   //EmergContact = usr.EmgPhone,
-
-                                   //Address = new AddressView()
-                                   //{
-                                   //    LocationDetail = usr.Address,
-                                   //    Owner = usr.Owner,
-                                   //    FlatNo = usr.FlatNo,
-                                   //    Country = usr.Country,
-                                   //    State = usr.State,
-                                   //    City = usr.City,
-                                   //    ZipCode = usr.ZipCode,
-                                   //},
+                                   ItemFinishId = usr.ItemFinishId,
+                                   QualityId = usr.QualityId,
+                                   ColorId = usr.ColorId,
+                                   DesignId = usr.DesignId,
+                                   ShapeId = usr.ShapeId,
+                                   ShadecolorId = usr.ShadecolorId,
+                                   CategoryId = usr.CategoryId,
+                                   ItemId = usr.ItemId,
+                                   ProductCode = usr.ProductCode,
+                                   CategoryName = usr.CategoryName,
+                                   ItemName = usr.ItemName,
+                                   QualityName = usr.QualityName,
+                                   DesignName = usr.DesignName,
+                                   ColorName = usr.ColorName,
+                                   ShadeColorName = usr.ShadeColorName,
+                                   ShapeName = usr.ShapeName,
+                                   HSNCode = usr.HSNCode,
+                                   QualityCode = usr.QualityCode,
+                                   DesignCode = usr.DesignCode,
+                                   ColorCode = usr.ColorCode,
+                                   SizeCode = usr.SizeCode,
+                                   Width = usr.UserId,
+                                   Length = usr.UserId,
+                                   Height = usr.UserId,
+                                   Status = usr.UserId,
+                                   FlagFixWeight = usr.FlagFixWeight,
+                                   StoreId = usr.MasterCompanyId,
+                                   Description = usr.Description,
+                                   UnitTypeId = usr.UnitTypeId,
+                                   UnitType = usr.UnitType,
+                            
                                });
                 obj.Data = objItem;
                 obj.Result = obj.Data.Count() > 0 ? true : false;
