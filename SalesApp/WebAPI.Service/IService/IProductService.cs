@@ -1,20 +1,14 @@
 ﻿
-using SalesApp.Models;
-using SalesApp.Models.Product;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using SalesApp.Models.Product;
+using SalesApp.Models;
 
-namespace SalesApp.WebAPI.Data.IData
+namespace SalesApp.WebAPI.Service.IService
 {
-
-    public interface IProductData
+    public interface IProductService
     {
-
-
-
         Task<ServiceResponse<IEnumerable<ProductModel>>> GetProductList(int StoreId);
-
-
     }
 }

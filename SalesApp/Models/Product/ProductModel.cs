@@ -26,11 +26,11 @@
         public double Width { get; set; }
         public double Length { get; set; }
         public double Height { get; set; }
-        public short Status { get; set; }
+        public int Status { get; set; }
         double FlagFixWeight { get; set; }
-        public string StoreId { get; set; }
+        public int StoreId { get; set; }
         public string Description { get; set; }
-        public string UnitTypeId { get; set; }
+        public int UnitTypeId { get; set; }
         public string UnitType { get; set; }
     }
 }

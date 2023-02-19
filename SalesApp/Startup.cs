@@ -16,6 +16,10 @@ using Microsoft.EntityFrameworkCore.Design;
 using System.Globalization;
 using Microsoft.Extensions.Logging;
 using System.IO;
+using SalesApp.WebAPI.Service;
+using SalesApp.WebAPI.Data.IData;
+using SalesApp.WebAPI.Data;
+using SalesApp.WebAPI.Service.IService;
 
 namespace SalesApp
 {
@@ -74,6 +78,14 @@ namespace SalesApp
             services.AddScoped<IEditRepository, EditRepository>();
             services.AddScoped<IReportRepository, ReportRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+
+
+
+
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IProductData, ProductData>();
+
+
             //services.AddScoped<ILoginRepository, LoginRepository>();
             services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddDirectoryBrowser();

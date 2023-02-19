@@ -193,17 +193,45 @@ namespace SalesApp.WebAPI.Data
             ServiceResponse<IEnumerable<ProductModel>> obj = new ServiceResponse<IEnumerable<ProductModel>>();
             using (var connection = new SqlConnection(configuration.GetConnectionString("DBConnectionString").ToString()))
             {
-                string sql = @"SELECT IPM.ITEM_FINISHED_ID as ItemFinishId, ICM.CATEGORY_NAME as CategoryName, IM.ITEM_NAME as ItemName, ISNULL(Q.QualityName, '') QualityName, ISNULL(D.DesignName, '') DesignName, 
-ISNULL(C.ColorName, '') ColorName,ISNULL(SC.ShadeColorName, '') ShadeColorName, ISNULL(S.ShapeName, '') ShapeName, ISNULL(SZ.SizeMtr, '') SizeMtr, ISNULL(SZ.SizeFt, '') SizeFt, 
-IPM.Quality_Id as QualityId,IPM.Color_Id ColorId, IPM.design_Id DesignId, IPM.Size_Id SizeId, IPM.Shape_Id ShapeId,IPM.Shadecolor_Id ShadeColorId,ICM.CATEGORY_ID as CategoryId,
-IM.ITEM_ID as ItemId,IPM.ProductCode, IsNull(SZ.WidthFt, 0) WidthFt,   
-IsNull(SZ.LengthFt, 0) LengthFt, IsNull(SZ.HeightFt, 0) HeightFt,
-IsNull(SZ.WidthMtr, 0) WidthMtr, IsNull(SZ.LengthMtr, 0) LengthMtr, IsNull(SZ.HeightMtr, 0) HeightMtr,   
-IsNull(ProdSizeFt, 0) ProdSizeFt, IsNull(ProdSizeMtr, 0) ProdSizeMtr, IsNull(ProdAreaFt, 0) ProdAreaFt, IsNull(ProdAreaMtr, 0) ProdAreaMtr,   
-IsNull(ProdLengthMtr, 0) ProdLengthMtr, IsNull(ProdLengthFt, 0) ProdLengthFt, IsNull(ProdWidthMtr, 0) ProdWidthMtr, IsNull(ProdWidthFt, 0) ProdWidthFt, Isnull(AreaInch, 0) AreaInch, ICM.HSCODE,   
-ipm.status, FlagFixWeight, IPM.MasterCompanyId, IPM.Description, isnull(SZ.Actualfullareasqyd, 0) Actualfullareasqyd, ISNULL(IM.KATIWITHEXPORTSIZE, 0) KATIWITHEXPORTSIZE, Q.Hscode HSNCode,   
-Isnull(IM.ITEM_CODE, '') ItemCode, IsNull(SZ.WidthInch, 0) WidthINCH, IsNull(SZ.LengthINCH, 0) LengthINCH, IsNull(SZ.HeightINCH, 0) HeightINCH, IsNull(Q.QualityCode, '')  QualityCode ,  
-isnull(D.DesignCode,'') DesignCode,isnull(C.ColorCode,'') ColorCode,isnull(SZ.SizeCode,'') SizeCode, ICM.PoufTypeCategory, IM.CUSHIONTYPEITEM, UTM.UnitTypeID as UnitTypeId, UTM.UnitType   
+                string sql = @"SELECT IPM.ITEM_FINISHED_ID as ItemFinishId,
+
+IPM.Quality_Id as QualityId,
+IPM.Color_Id ColorId, 
+IPM.design_Id DesignId, 
+IPM.Size_Id SizeId,
+IPM.Shape_Id ShapeId,
+IPM.Shadecolor_Id ShadeColorId,
+ICM.CATEGORY_ID as CategoryId,
+IM.ITEM_ID as ItemId,
+IPM.ProductCode, 
+ICM.CATEGORY_NAME as CategoryName, 
+IM.ITEM_NAME as ItemName, 
+ISNULL(Q.QualityName, '') QualityName, 
+ISNULL(D.DesignName, '') DesignName, 
+ISNULL(C.ColorName, '') ColorName,
+ISNULL(SC.ShadeColorName, '') ShadeColorName, 
+ISNULL(S.ShapeName, '') ShapeName, 
+Q.Hscode HSNCode, 
+Isnull(IM.ITEM_CODE, '') ItemCode, 
+IsNull(Q.QualityCode, '')  QualityCode ,  
+isnull(D.DesignCode,'') DesignCode,
+isnull(C.ColorCode,'') ColorCode,
+isnull(SZ.SizeCode,'') SizeCode, 
+ISNULL(SZ.SizeMtr, '') SizeMtr, 
+ISNULL(SZ.SizeFt, '') SizeFt, 
+IsNull(SZ.WidthInch, 0) WidthINCH,
+IsNull(SZ.LengthINCH, 0) LengthINCH, 
+IsNull(SZ.HeightINCH, 0) HeightINCH, 
+ipm.status as Status, 
+IPM.MasterCompanyId,
+IPM.Description, 
+IsNull(ProdSizeFt, 0) ProdSizeFt, 
+IsNull(ProdSizeMtr, 0) ProdSizeMtr, 
+IsNull(ProdAreaFt, 0) ProdAreaFt, 
+IsNull(ProdAreaMtr, 0) ProdAreaMtr,   
+IsNull(ProdLengthMtr, 0) ProdLengthMtr,
+UTM.UnitTypeID as UnitTypeId, 
+UTM.UnitType 
 FROM ITEM_PARAMETER_MASTER IPM(Nolock) JOIN ITEM_MASTER IM(Nolock) ON IM.ITEM_ID = IPM.ITEM_ID   
 JOIN UNIT_TYPE_MASTER UTM(Nolock) ON UTM.UnitTypeID = IM.UnitTypeID   
 JOIN ITEM_CATEGORY_MASTER ICM(Nolock) ON ICM.CATEGORY_ID = IM.CATEGORY_ID   
@@ -218,14 +246,14 @@ Where IPM.MasterCompanyId=@StoreId;";
                 var objItem = (from usr in result
                                select new ProductModel
                                {
-                                   ItemFinishId = usr.ItemFinishId,
-                                   QualityId = usr.QualityId,
-                                   ColorId = usr.ColorId,
-                                   DesignId = usr.DesignId,
-                                   ShapeId = usr.ShapeId,
-                                   ShadecolorId = usr.ShadecolorId,
-                                   CategoryId = usr.CategoryId,
-                                   ItemId = usr.ItemId,
+                                   ItemFinishId = usr.ItemFinishId ,
+                                   QualityId = usr.QualityId != null ? usr.QualityId : 0,
+                                   ColorId = usr.ColorId != null ? usr.ColorId : 0,
+                                   DesignId = usr.DesignId != null ? usr.DesignId : 0,
+                                   ShapeId = usr.ShapeId != null ? usr.ShapeId : 0,
+                                   ShadecolorId = usr.ShadecolorId != null ? usr.ShadecolorId : 0,
+                                   CategoryId = usr.CategoryId != null ? usr.CategoryId : 0,
+                                   ItemId = usr.ItemId != null ? usr.ItemId : 0,
                                    ProductCode = usr.ProductCode,
                                    CategoryName = usr.CategoryName,
                                    ItemName = usr.ItemName,
@@ -239,16 +267,15 @@ Where IPM.MasterCompanyId=@StoreId;";
                                    DesignCode = usr.DesignCode,
                                    ColorCode = usr.ColorCode,
                                    SizeCode = usr.SizeCode,
-                                   Width = usr.UserId,
-                                   Length = usr.UserId,
-                                   Height = usr.UserId,
-                                   Status = usr.UserId,
-                                   FlagFixWeight = usr.FlagFixWeight,
+                                   Width = usr.WidthINCH,
+                                   Length = usr.LengthINCH,
+                                   Height = usr.HeightINCH,
+                                   Status = usr.Status,
                                    StoreId = usr.MasterCompanyId,
                                    Description = usr.Description,
-                                   UnitTypeId = usr.UnitTypeId,
+                                   UnitTypeId = usr.UnitTypeId != null ? usr.UnitTypeId : 0,
                                    UnitType = usr.UnitType,
-                            
+
                                });
                 obj.Data = objItem;
                 obj.Result = obj.Data.Count() > 0 ? true : false;

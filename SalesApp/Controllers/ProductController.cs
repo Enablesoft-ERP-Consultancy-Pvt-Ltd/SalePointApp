@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SalesApp.Models.Product;
+using SalesApp.Models;
+using SalesApp.WebAPI.Service.IService;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,14 +13,23 @@ namespace SalesApp.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
+        private readonly IProductService prodSrv;
+        public ProductController(IProductService _prodSrv)
+        {
+            prodSrv = _prodSrv;
+        }
 
-        //[HttpGet("getUser/{userType}")]
-        //[ProducesResponseType(typeof(ServiceResponse<List<AccountUserModel>>), StatusCodes.Status200OK)]
-        //[ProducesResponseType(typeof(ServiceResponse<List<AccountUserModel>>), StatusCodes.Status400BadRequest)]
-        //public async Task<IActionResult> GetUser(int userType)
-        //{
-        //    return Ok(await accountSrv.GetUser(userType));
-        //}
+        [HttpGet("getProductList/{StoreId}")]
+        [ProducesResponseType(typeof(ServiceResponse<List<ProductModel>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceResponse<List<ProductModel>>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetProductList(int StoreId)
+        {
+            return Ok(await prodSrv.GetProductList(StoreId));
+        }
+
+
+  
+
 
 
 

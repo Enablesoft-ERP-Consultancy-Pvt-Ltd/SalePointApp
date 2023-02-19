@@ -7,6 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entiti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesApp", "SalesApp\SalesApp.csproj", "{63A587C9-FAFD-45D1-81F3-CC308F93DA78}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{5E78B357-7410-46A5-B955-FC555A725858}"
+	ProjectSection(SolutionItems) = preProject
+		C:\Users\rakesh\Downloads\SalesApp\SalesApp\bin\Release\netcoreapp3.1\ClosedXML.dll = C:\Users\rakesh\Downloads\SalesApp\SalesApp\bin\Release\netcoreapp3.1\ClosedXML.dll
+		C:\Users\rakesh\Downloads\SalesApp\SalesApp\bin\Release\netcoreapp3.1\DocumentFormat.OpenXml.dll = C:\Users\rakesh\Downloads\SalesApp\SalesApp\bin\Release\netcoreapp3.1\DocumentFormat.OpenXml.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
