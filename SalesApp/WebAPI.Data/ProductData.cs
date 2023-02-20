@@ -193,8 +193,9 @@ namespace SalesApp.WebAPI.Data
             ServiceResponse<IEnumerable<ProductModel>> obj = new ServiceResponse<IEnumerable<ProductModel>>();
             using (var connection = new SqlConnection(configuration.GetConnectionString("DBConnectionString").ToString()))
             {
-                string sql = @"SELECT top 3 IPM.ITEM_FINISHED_ID as ItemFinishId,
-
+                string sql = @"SELECT distinct IM.ITEM_ID as ItemId,
+IM.ITEM_NAME as ItemName, 
+IPM.ITEM_FINISHED_ID as ItemFinishId,
 IPM.Quality_Id as QualityId,
 IPM.Color_Id ColorId, 
 IPM.design_Id DesignId, 
@@ -202,10 +203,8 @@ IPM.Size_Id SizeId,
 IPM.Shape_Id ShapeId,
 IPM.Shadecolor_Id ShadeColorId,
 ICM.CATEGORY_ID as CategoryId,
-IM.ITEM_ID as ItemId,
 IPM.ProductCode, 
 ICM.CATEGORY_NAME as CategoryName, 
-IM.ITEM_NAME as ItemName, 
 ISNULL(Q.QualityName, '') QualityName, 
 ISNULL(D.DesignName, '') DesignName, 
 ISNULL(C.ColorName, '') ColorName,
@@ -213,8 +212,7 @@ ISNULL(SC.ShadeColorName, '') ShadeColorName,
 ISNULL(S.ShapeName, '') ShapeName, 
 Q.Hscode HSNCode, 
 Isnull(IM.ITEM_CODE, '') ItemCode, 
-IsNull(Q.QualityCode, '')  QualityCode ,  
-
+IsNull(Q.QualityCode, '')  QualityCode,  
 ISNULL(SZ.SizeMtr, '') SizeMtr, 
 ISNULL(SZ.SizeFt, '') SizeFt, 
 IsNull(SZ.WidthInch, 0) WidthINCH,
@@ -229,20 +227,25 @@ IsNull(ProdAreaFt, 0) ProdAreaFt,
 IsNull(ProdAreaMtr, 0) ProdAreaMtr,   
 IsNull(ProdLengthMtr, 0) ProdLengthMtr,
 UTM.UnitTypeID as UnitTypeId, 
-UTM.UnitType 
-FROM ITEM_PARAMETER_MASTER IPM(Nolock) JOIN ITEM_MASTER IM(Nolock) ON IM.ITEM_ID = IPM.ITEM_ID   
-JOIN UNIT_TYPE_MASTER UTM(Nolock) ON UTM.UnitTypeID = IM.UnitTypeID   
-JOIN ITEM_CATEGORY_MASTER ICM(Nolock) ON ICM.CATEGORY_ID = IM.CATEGORY_ID   
+UTM.UnitType,
+tblImg.PHOTO,tblImg.Remarks,
+stock.StockNo,stock.TStockNo,
+ISNULL(stock.Price, 0 ) AS Price
+
+FROM  ITEM_MASTER IM(Nolock) Inner Join ITEM_PARAMETER_MASTER IPM(Nolock) ON IM.ITEM_ID = IPM.ITEM_ID 
+inner join CarpetNumber stock(Nolock) ON IPM.ITEM_FINISHED_ID  = stock.Item_Finished_Id  
+JOIN ITEM_CATEGORY_MASTER ICM(Nolock) ON IM.CATEGORY_ID  = ICM.CATEGORY_ID  
+JOIN UNIT_TYPE_MASTER UTM(Nolock) ON IM.UnitTypeID  = UTM.UnitTypeID
 LEFT JOIN Quality Q(Nolock) ON Q.QualityId = IPM.QUALITY_ID   
 LEFT JOIN Design D(Nolock) ON D.DesignId = IPM.DESIGN_ID   
 LEFT JOIN Color C(Nolock) ON C.ColorId = IPM.COLOR_ID   
 LEFT JOIN ShadeColor SC(Nolock) ON SC.ShadecolorId = IPM.SHADECOLOR_ID   
 LEFT JOIN Shape S(Nolock) ON S.ShapeId = IPM.SHAPE_ID   
 LEFT JOIN Size SZ(Nolock) ON SZ.SizeId = IPM.SIZE_ID
-;";
+LEFT JOIN MAIN_ITEM_IMAGE tblImg(Nolock) ON IPM.ITEM_FINISHED_ID = tblImg.FINISHEDID Where IPM.MasterCompanyId=@StoreId and stock.CurrentProStatus=1;";
                 //isnull(D.DesignCode,'') DesignCode,
                 //isnull(C.ColorCode,'') ColorCode,
-                //isnull(SZ.SizeCode,'') SizeCode,
+                //isnull(SZ.SizeCode,'') SizeCode, 
                 //
                 var result = (await connection.QueryAsync(sql, new { @StoreId = StoreId }));
 
@@ -280,7 +283,9 @@ LEFT JOIN Size SZ(Nolock) ON SZ.SizeId = IPM.SIZE_ID
                                    Description = itmGroup.FirstOrDefault().Description,
                                    UnitTypeId = itmGroup.FirstOrDefault().UnitTypeId != null ? itmGroup.FirstOrDefault().UnitTypeId : 0,
                                    UnitType = itmGroup.FirstOrDefault().UnitType,
-                                   ProductImages = itmGroup.Where(x => x.ImagePath != null).Select(x => (string)x.ImagePath),
+                                   ProductImages = itmGroup.Where(x => x.ImagePath != null).Select(x => (string)x.ImagePath).ToList(),
+                                   Price = itmGroup != null ? itmGroup.FirstOrDefault().Price : 0,
+                                   Stocks = itmGroup.Select(x => (long)x.StockNo).ToList(),
 
                                });
                 obj.Data = objItem;

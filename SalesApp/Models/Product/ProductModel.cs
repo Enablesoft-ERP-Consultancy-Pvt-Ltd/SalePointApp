@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using DocumentFormat.OpenXml.Vml;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SalesApp.Models.Product
 {
@@ -34,8 +36,16 @@ namespace SalesApp.Models.Product
         public string Description { get; set; }
         public int UnitTypeId { get; set; }
         public string UnitType { get; set; }
+        public decimal Price { get; set; }
+        public IList<string> ProductImages { get; set; }
+        public IList<long> Stocks { get; set; }
 
 
-        public IEnumerable<string> ProductImages { get; set; }
+        public int Quantity
+        {
+            get { return Stocks.Count(); }
+        }
+
     }
+
 }
