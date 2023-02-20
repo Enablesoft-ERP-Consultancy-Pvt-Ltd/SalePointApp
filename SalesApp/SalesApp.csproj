@@ -52,17 +52,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="ClosedXML">
-      <HintPath>C:\Users\rakesh\Downloads\SalesApp\SalesApp\bin\Release\netcoreapp3.1\ClosedXML.dll</HintPath>
-    </Reference>
-    <Reference Include="DocumentFormat.OpenXml">
-      <HintPath>C:\Users\rakesh\Downloads\SalesApp\SalesApp\bin\Release\netcoreapp3.1\DocumentFormat.OpenXml.dll</HintPath>
-    </Reference>
+    <None Include="SalesApp.csproj" />
+    <None Include="SalesApp.csproj.user" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="SalesApp.csproj" />
-    <None Include="SalesApp.csproj.user" />
+    <Reference Include="ClosedXML">
+      <HintPath>..\..\IExproERP\IExproERP\Library\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml">
+      <HintPath>..\..\IExproERP\IExproERP\Library\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

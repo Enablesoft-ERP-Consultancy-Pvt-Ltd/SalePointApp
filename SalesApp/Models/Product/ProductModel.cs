@@ -1,4 +1,6 @@
-﻿namespace SalesApp.Models.Product
+﻿using System.Collections.Generic;
+
+namespace SalesApp.Models.Product
 {
     public class ProductModel
     {
@@ -32,5 +34,8 @@
         public string Description { get; set; }
         public int UnitTypeId { get; set; }
         public string UnitType { get; set; }
+
+
+        public IEnumerable<string> ProductImages { get; set; }
     }
 }

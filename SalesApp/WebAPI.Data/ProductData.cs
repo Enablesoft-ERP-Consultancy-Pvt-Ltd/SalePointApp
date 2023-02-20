@@ -193,7 +193,7 @@ namespace SalesApp.WebAPI.Data
             ServiceResponse<IEnumerable<ProductModel>> obj = new ServiceResponse<IEnumerable<ProductModel>>();
             using (var connection = new SqlConnection(configuration.GetConnectionString("DBConnectionString").ToString()))
             {
-                string sql = @"SELECT IPM.ITEM_FINISHED_ID as ItemFinishId,
+                string sql = @"SELECT top 3 IPM.ITEM_FINISHED_ID as ItemFinishId,
 
 IPM.Quality_Id as QualityId,
 IPM.Color_Id ColorId, 
@@ -214,9 +214,7 @@ ISNULL(S.ShapeName, '') ShapeName,
 Q.Hscode HSNCode, 
 Isnull(IM.ITEM_CODE, '') ItemCode, 
 IsNull(Q.QualityCode, '')  QualityCode ,  
-isnull(D.DesignCode,'') DesignCode,
-isnull(C.ColorCode,'') ColorCode,
-isnull(SZ.SizeCode,'') SizeCode, 
+
 ISNULL(SZ.SizeMtr, '') SizeMtr, 
 ISNULL(SZ.SizeFt, '') SizeFt, 
 IsNull(SZ.WidthInch, 0) WidthINCH,
@@ -241,40 +239,48 @@ LEFT JOIN Color C(Nolock) ON C.ColorId = IPM.COLOR_ID
 LEFT JOIN ShadeColor SC(Nolock) ON SC.ShadecolorId = IPM.SHADECOLOR_ID   
 LEFT JOIN Shape S(Nolock) ON S.ShapeId = IPM.SHAPE_ID   
 LEFT JOIN Size SZ(Nolock) ON SZ.SizeId = IPM.SIZE_ID
-Where IPM.MasterCompanyId=@StoreId;";
+;";
+                //isnull(D.DesignCode,'') DesignCode,
+                //isnull(C.ColorCode,'') ColorCode,
+                //isnull(SZ.SizeCode,'') SizeCode,
+                //
                 var result = (await connection.QueryAsync(sql, new { @StoreId = StoreId }));
-                var objItem = (from usr in result
+
+                var objItem = (from itm in result
+                               group itm by new { itm.ItemFinishId } into itmGroup
+                               orderby itmGroup.Key.ItemFinishId descending
                                select new ProductModel
                                {
-                                   ItemFinishId = usr.ItemFinishId ,
-                                   QualityId = usr.QualityId != null ? usr.QualityId : 0,
-                                   ColorId = usr.ColorId != null ? usr.ColorId : 0,
-                                   DesignId = usr.DesignId != null ? usr.DesignId : 0,
-                                   ShapeId = usr.ShapeId != null ? usr.ShapeId : 0,
-                                   ShadecolorId = usr.ShadecolorId != null ? usr.ShadecolorId : 0,
-                                   CategoryId = usr.CategoryId != null ? usr.CategoryId : 0,
-                                   ItemId = usr.ItemId != null ? usr.ItemId : 0,
-                                   ProductCode = usr.ProductCode,
-                                   CategoryName = usr.CategoryName,
-                                   ItemName = usr.ItemName,
-                                   QualityName = usr.QualityName,
-                                   DesignName = usr.DesignName,
-                                   ColorName = usr.ColorName,
-                                   ShadeColorName = usr.ShadeColorName,
-                                   ShapeName = usr.ShapeName,
-                                   HSNCode = usr.HSNCode,
-                                   QualityCode = usr.QualityCode,
-                                   DesignCode = usr.DesignCode,
-                                   ColorCode = usr.ColorCode,
-                                   SizeCode = usr.SizeCode,
-                                   Width = usr.WidthINCH,
-                                   Length = usr.LengthINCH,
-                                   Height = usr.HeightINCH,
-                                   Status = usr.Status,
-                                   StoreId = usr.MasterCompanyId,
-                                   Description = usr.Description,
-                                   UnitTypeId = usr.UnitTypeId != null ? usr.UnitTypeId : 0,
-                                   UnitType = usr.UnitType,
+                                   ItemFinishId = itmGroup.Key.ItemFinishId != null ? itmGroup.Key.ItemFinishId : 0,
+                                   QualityId = itmGroup.FirstOrDefault().QualityId != null ? itmGroup.FirstOrDefault().QualityId : 0,
+                                   ColorId = itmGroup.FirstOrDefault().ColorId != null ? itmGroup.FirstOrDefault().ColorId : 0,
+                                   DesignId = itmGroup.FirstOrDefault().DesignId != null ? itmGroup.FirstOrDefault().DesignId : 0,
+                                   ShapeId = itmGroup.FirstOrDefault().ShapeId != null ? itmGroup.FirstOrDefault().ShapeId : 0,
+                                   ShadecolorId = itmGroup.FirstOrDefault().ShadecolorId != null ? itmGroup.FirstOrDefault().ShadecolorId : 0,
+                                   CategoryId = itmGroup.FirstOrDefault().CategoryId != null ? itmGroup.FirstOrDefault().CategoryId : 0,
+                                   ItemId = itmGroup.FirstOrDefault().ItemId != null ? itmGroup.FirstOrDefault().ItemId : 0,
+                                   ProductCode = itmGroup.FirstOrDefault().ProductCode,
+                                   CategoryName = itmGroup.FirstOrDefault().CategoryName,
+                                   ItemName = itmGroup.FirstOrDefault().ItemName,
+                                   QualityName = itmGroup.FirstOrDefault().QualityName,
+                                   DesignName = itmGroup.FirstOrDefault().DesignName,
+                                   ColorName = itmGroup.FirstOrDefault().ColorName,
+                                   ShadeColorName = itmGroup.FirstOrDefault().ShadeColorName,
+                                   ShapeName = itmGroup.FirstOrDefault().ShapeName,
+                                   HSNCode = itmGroup.FirstOrDefault().HSNCode,
+                                   QualityCode = itmGroup.FirstOrDefault().QualityCode,
+                                   //DesignCode = itmGroup.FirstOrDefault().DesignCode,
+                                   //ColorCode = itmGroup.FirstOrDefault().ColorCode,
+                                   //SizeCode = itmGroup.FirstOrDefault().SizeCode,
+                                   Width = itmGroup.FirstOrDefault().WidthINCH,
+                                   Length = itmGroup.FirstOrDefault().LengthINCH,
+                                   Height = itmGroup.FirstOrDefault().HeightINCH,
+                                   Status = itmGroup.FirstOrDefault().Status != null ? itmGroup.FirstOrDefault().Status : 0,
+                                   StoreId = itmGroup.FirstOrDefault().MasterCompanyId != null ? itmGroup.FirstOrDefault().MasterCompanyId : 0,
+                                   Description = itmGroup.FirstOrDefault().Description,
+                                   UnitTypeId = itmGroup.FirstOrDefault().UnitTypeId != null ? itmGroup.FirstOrDefault().UnitTypeId : 0,
+                                   UnitType = itmGroup.FirstOrDefault().UnitType,
+                                   ProductImages = itmGroup.Where(x => x.ImagePath != null).Select(x => (string)x.ImagePath),
 
                                });
                 obj.Data = objItem;
