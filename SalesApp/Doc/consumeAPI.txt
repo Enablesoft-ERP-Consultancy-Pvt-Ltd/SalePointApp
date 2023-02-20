@@ -1,0 +1,109 @@
+
+public class HolidaysApiService : IHolidaysApiService
+{
+    private static readonly HttpClient client;
+ 
+    static HolidaysApiService()
+    {
+        client = new HttpClient()
+        {
+            BaseAddress = new Uri("https://localhost:44377/api/product/getProductList/1")
+        };
+    }
+}
+
+
+
+public async Task<List<HolidayModel>> GetHolidays(string countryCode, int year)
+{
+    var url = string.Format("/api/v2/PublicHolidays/{0}/{1}", year, countryCode);
+    var result = new List<HolidayModel>();
+    var response = await client.GetAsync(url);
+    if (response.IsSuccessStatusCode)
+    {
+        var stringResponse = await response.Content.ReadAsStringAsync();
+ 
+        result = JsonSerializer.Deserialize<List<HolidayModel>>(stringResponse,
+            new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+    }
+    else
+    {
+        throw new HttpRequestException(response.ReasonPhrase);
+    }
+ 
+    return result;
+}
+
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddControllersWithViews();
+    services.AddSingleton<IHolidaysApiService, HolidaysApiService>();
+}
+
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddControllersWithViews();
+ 
+    services.AddSingleton<IHolidaysApiService, HolidaysApiService>();
+ 
+    services.AddHttpClient("PublicHolidaysApi", c => c.BaseAddress = new Uri("https://date.nager.at"));
+}
+
+
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+public class HolidaysApiService : IHolidaysApiService
+{
+    private readonly HttpClient client;
+ 
+    public HolidaysApiService(IHttpClientFactory clientFactory)
+    {
+        client = clientFactory.CreateClient("PublicHolidaysApi");
+    }
+ 
+    public async Task<List<HolidayModel>> GetHolidays(string countryCode, int year)
+    {
+        var url = string.Format("/api/v2/PublicHolidays/{0}/{1}", year, countryCode);
+        var result = new List<HolidayModel>();
+        var response = await client.GetAsync(url);
+        if (response.IsSuccessStatusCode)
+        {
+            var stringResponse = await response.Content.ReadAsStringAsync();
+ 
+            result = JsonSerializer.Deserialize<List<HolidayModel>>(stringResponse,
+                new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+        }
+        else
+        {
+            throw new HttpRequestException(response.ReasonPhrase);
+        }
+ 
+        return result;
+    }
+}

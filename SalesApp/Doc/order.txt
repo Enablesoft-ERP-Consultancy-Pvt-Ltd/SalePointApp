@@ -1,0 +1,130 @@
+   await this._SALESDBE.OrderMaster.AddAsync(new OrderMaster()
+                                {
+                                    MirrorId = _sale.mirrorid,
+                                    SaleDate = DateTime.Now,
+                                    DelieveryType = 0,
+                                    PortType = 0,
+                                    Unit = 1,
+                                    Description = "NormalSale", ///"CashSale",
+                                    TransactionId = Common.GetUnique(),
+                                    CreatedDatetime = DateTime.Now,
+                                    CreatedBy = userid,
+                                    IsActive = true,
+                                    salestatus = 0,
+                                    Session_Year=currentFinancialYearStartDate.Year,
+                                    Discountper=10
+                                    
+
+                                }).ConfigureAwait(false);
+								
+								
+								    await this._SALESDBE.OrderItemDetails.AddAsync(new OrderItemDetails()
+                        {
+                            OrderId = uid,
+                            ItemDesc = _sale.categoryid+"/"+ _sale.size+"/"+ _sale.shapeid+"/"+ _sale.marblecolor,
+                            StockId = _sale.stockno,
+                           //OrderType = _sale.saletypevalue == "OF" ? (int?)SaleType.OF : (int?)SaleType.CM,
+                             OrderType =  2 ,
+                           // OrderTypePrefix = _sale.saletypevalue ,
+                            OrderTypePrefix = "OF",
+                            ItemType = 1,
+                            Price = _sale.totalvalue,
+                            PriceInr = finalINR,
+                            ConversionRate = _sale.conversionrate,
+                            Size=_sale.size,
+                            Category=_sale.categoryid,
+                            Shape=_sale.shapeid,
+                            Color=_sale.marblecolor,
+                            Unit = 1,
+                            CreatedDatetime = DateTime.Now,
+                            IsActive = true,
+                            CurrencyType=_sale.currencyid,
+                            SaleType = 3
+
+
+                        });
+								
+								
+								
+								     await this._SALESDBE.OrderItemDetails.AddAsync(new OrderItemDetails()
+                                {
+                                    OrderId = uid,
+                                    BillId = bill_id,
+                                    ItemDesc = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_sale.item_desc),
+                                    StockId = _sale.stockno,
+                                    OrderType = _sale.saletypevalue == "OF" ? (int?)SaleType.OF : (int?)SaleType.CM,
+                                    OrderTypePrefix = _sale.saletypevalue,
+                                    ItemType = 1,
+                                    Price = _sale.isgiftitem == true?1:_sale.totalvalue,
+                                    PriceInr =_sale.isgiftitem==true?1:finalINR,
+                                    ConversionRate = _sale.conversionrate,
+                                    Unit = 1,
+                                    CreatedDatetime = DateTime.Now,
+                                    CreatedBy = userid,
+                                    IsActive = true,
+                                    CurrencyType = _sale.currencyid,
+                                    SaleType = 1,
+                                    Qty = 1,
+                                    CustomSpecialAddition=_sale.customspecialaddition,
+                                    Session_Year=currentFinancialYearStartDate.Year,
+                                    finishedid=_sale.finishedid,
+                                    hsncode=_sale.hsncode
+                                    
+
+                                }).ConfigureAwait(false);
+								
+								
+								
+
+                           
+								
+								
+								   var entitycarpet = await _SALESDBE.CarpetNumber.FirstOrDefaultAsync(c => c.TStockNo == _sale.stockno).ConfigureAwait(false);
+                            if (entitycarpet != null && entitycarpet.StockNo > 0)
+                            {
+                                entitycarpet.PackDate = DateTime.Now;
+                                entitycarpet.Pack = 2;
+                                entitycarpet.PackSource = "SALEADDED";
+                                entitycarpet.PackingDetailId = (Int32)oid;
+                            
+                             //   entitycarpet.PackingId = (Int32)item.OrderId;
+                                this._SALESDBE.CarpetNumber.Update(entitycarpet);
+                                result = await this._SALESDBE.SaveChangesAsync().ConfigureAwait(false) > 0;
+                            }
+							
+							
+							     if (entitycarpet != null && entitycarpet.StockNo > 0)
+                                {
+								
+								  ordermaster.CreatedDatetime = DateTime.Now;
+                        ordermaster.salestatus = 1;
+								
+								
+								
+                                    entitycarpet.PackDate = DateTime.Now;
+                                    entitycarpet.Pack = 1;
+                                    entitycarpet.PackSource = "SALE"; finish sales
+                                    entitycarpet.PackingDetailId =(Int32)item.Id;
+                                    entitycarpet.PackingId = (Int32)item.OrderId;
+                                    this._SALESDBE.OrderMaster.Update(entity);
+                                }
+							
+							
+							
+							 await this._SALESDBE.OrderPayment.AddAsync(new OrderPayment()
+                            {
+                                OrderId = orderItemId,
+                                PayDate = DateTime.Now,
+                                PayMode = 1, //Cash
+                                Amount = item.salevalue,
+                                CardType = 0,
+                                AmoutHd = item.salevalueinr,
+                                CreatedBy = userid,
+                                CreatedDatetime = DateTime.Now,
+                                Gst = 0,
+                                Igst = 0,
+                                UpdatedBy = userid,
+                                UpdateDatetime = DateTime.Now,
+                                IsActive = true,
+                                CurrencyType = item.currencyid
+                            }).ConfigureAwait(false);
