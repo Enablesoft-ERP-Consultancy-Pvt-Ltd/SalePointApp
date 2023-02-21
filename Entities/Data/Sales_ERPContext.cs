@@ -9,14 +9,12 @@ namespace SALEERP.Data
     {
         public Sales_ERPContext()
         {
+        
         }
-
         public Sales_ERPContext(DbContextOptions<Sales_ERPContext> options)
             : base(options)
         {
         }
-
-
         public virtual DbSet<AgentContact> AgentContact { get; set; }
         public virtual DbSet<AgentMaster> AgentMaster { get; set; }
         public virtual DbSet<AgentUser> AgentUser { get; set; }

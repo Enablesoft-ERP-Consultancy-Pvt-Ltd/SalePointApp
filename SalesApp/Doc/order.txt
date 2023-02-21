@@ -153,3 +153,6 @@ INSERT INTO [sales].[Order_Payment]
 VALUES
 (@OrderId,@paymode,@cardtype,@amount,@amouthd,@IGST,@GST,@paydate,@currencytype,@createddatetime
 ,@createdby,@updatedby,@updatedatetime,@isactive,@paylaterstatus,@paylaterdate)
+
+
+select top 1 Pack,PackSource,PackingDetailId,Pack_Date from CarpetNumber

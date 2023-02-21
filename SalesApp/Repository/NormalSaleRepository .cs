@@ -62,11 +62,8 @@ namespace SalesApp.Repository
                             if (entitystock.IsActive == true)
                             {
                                 status = false;
-
                             }
-
                         }
-
                         if (status)
                         {
 
@@ -109,8 +106,7 @@ namespace SalesApp.Repository
                                     IsActive = true,
                                     salestatus = 0,
                                     Session_Year=currentFinancialYearStartDate.Year,
-                                    Discountper=10
-                                    
+                                    Discountper=10                                    
 
                                 }).ConfigureAwait(false);
 
@@ -124,23 +120,18 @@ namespace SalesApp.Repository
                                 //string unit2billCM = Configuration.GetSection("BillNo").GetSection("UNIT2CM").Value;
                                 //string unit1billOF = Configuration.GetSection("BillNo").GetSection("UNIT1OF").Value;
                                 //string unit2billOF = Configuration.GetSection("BillNo").GetSection("UNIT2OF").Value;
-
                                 //if (_sale.billid == 0 || _sale.billid.ToString() == "")
                                 //{
-
-
                                 //    long finalbillid = await this._SALESDBE.OrderItemDetails.Where(i => i.OrderTypePrefix == _sale.saletypevalue && i.Unit == unitid && i.IsActive == true).DefaultIfEmpty().MaxAsync(b => (long?)b.BillId) ?? 0;
                                 //    if (finalbillid == 0)
                                 //    {
                                 //        if (unitid == 1 && _sale.saletypevalue == "OF")
                                 //        {
                                 //            bill_id = Convert.ToInt64(unit1billOF);
-
                                 //        }
                                 //        else if (unitid == 2 && _sale.saletypevalue == "OF")
                                 //        {
                                 //            bill_id = Convert.ToInt64(unit2billOF);
-
                                 //        }
                                 //        else if (unitid == 1 && _sale.saletypevalue == "CM")
                                 //        {
@@ -150,22 +141,15 @@ namespace SalesApp.Repository
                                 //        {
                                 //            bill_id = Convert.ToInt64(unit2billCM);
                                 //        }
-
-
                                 //    }
                                 //    else { bill_id = finalbillid + 1; }
-
                                 //}
                                 //else
                                 //{
-
                                 //    var billdetails = this._SALESDBE.OrderItemDetails.Where(i => i.BillId == _sale.billid && i.OrderTypePrefix == _sale.saletypevalue && i.IsActive == true);
                                 //    if (billdetails != null && billdetails.Count() > 0)
                                 //    {
                                 //        bill_id = billdetails.FirstOrDefault().BillId;
-
-
-
                                 //    }
                                 //    else
                                 //    {
@@ -192,14 +176,9 @@ namespace SalesApp.Repository
                                 //            {
                                 //                bill_id = Convert.ToInt64(unit2billCM);
                                 //            }
-
-
                                 //        }
                                 //        else { bill_id = finalbillid + 1; }
                                 //    }
-
-
-
                                 //}
 
                                 await this._SALESDBE.OrderItemDetails.AddAsync(new OrderItemDetails()
