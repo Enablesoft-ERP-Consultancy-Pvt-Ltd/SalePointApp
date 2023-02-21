@@ -74,11 +74,6 @@
                                 }).ConfigureAwait(false);
 								
 								
-								
-
-                           
-								
-								
 								   var entitycarpet = await _SALESDBE.CarpetNumber.FirstOrDefaultAsync(c => c.TStockNo == _sale.stockno).ConfigureAwait(false);
                             if (entitycarpet != null && entitycarpet.StockNo > 0)
                             {
@@ -128,3 +123,33 @@
                                 IsActive = true,
                                 CurrencyType = item.currencyid
                             }).ConfigureAwait(false);
+
+
+
+                            USE [MirzapurSales]
+GO
+
+INSERT INTO [sales].[Order_Master]
+([mirror_id],[sale_date],[transaction_id],[delievery_type],[port_type],[description],[unit],[created_datetime],
+[created_by],[is_active],[sale_status],[session_year],[DISCOUNTPER])
+VALUES
+(@MirrorId,@SaleDate,@TransactionId,@DelieveryType,@PortType,@Description,@Unit,@CreatedOn,
+@CreatedBy,@IsActive,@SaleStatus,@SessionYear,@DisCountPer)
+
+INSERT INTO [sales].[Order_Item_Details]
+([trans_id],[stock_id],[order_id],[order_type],[order_type_prefix],[sale_type],[qty],[currency_type],
+[price],[price_inr],[conversion_rate],[unit],[item_type],[custom_special_edition],[created_datetime],
+[created_by],[is_active],[session_year],[hsncode],[finishedid])
+VALUES
+(@TransId,@StockId,@OrderId,@OrderType,@OrderTypeprefix,@saleType,@Qty,@CurrencyType,
+@Price,@PriceInr,@Conversionrate,@Unit,@ItemType,@CustomSpecialEdition,@createddatetime,
+@CreatedBy,@IsActive,@SessionYear,@HsnCode,@FinishedId)
+
+
+
+INSERT INTO [sales].[Order_Payment]
+([order_id],[pay_mode],[card_type],[amount],[amout_hd],[IGST],[GST],[pay_date],[currency_type],[created_datetime]
+,[created_by],[updated_by],[update_datetime],[is_active],[paylaterstatus],[paylaterdate])
+VALUES
+(@OrderId,@paymode,@cardtype,@amount,@amouthd,@IGST,@GST,@paydate,@currencytype,@createddatetime
+,@createdby,@updatedby,@updatedatetime,@isactive,@paylaterstatus,@paylaterdate)

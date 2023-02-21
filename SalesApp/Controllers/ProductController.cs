@@ -29,7 +29,23 @@ namespace SalesApp.Controllers
         }
 
 
-  
+
+        [HttpPost("preOrder/{StoreId}")]
+        [ProducesResponseType(typeof(ServiceResponse<List<ProductModel>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceResponse<List<ProductModel>>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetProductList(int StoreId)
+        {
+            return Ok(await prodSrv.GetProductList(StoreId));
+        }
+
+
+        [HttpPost("confirmOrder/{StoreId}")]
+        [ProducesResponseType(typeof(ServiceResponse<List<ProductModel>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceResponse<List<ProductModel>>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetProductList(int StoreId)
+        {
+            return Ok(await prodSrv.GetProductList(StoreId));
+        }
 
 
 
