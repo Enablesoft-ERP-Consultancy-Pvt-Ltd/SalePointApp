@@ -344,7 +344,10 @@ select SCOPE_IDENTITY();
 [created_by],[is_active],[session_year],[hsncode],[finishedid])
 VALUES
 (@TransId,@StockId,@OrderId,@OrderType,@OrderTypePrefix,@SalesType,@Qty,@CurrencyType,
-@Price,@PriceINR,@ConversionRate,@Unit,@ItemType,@ItemDescription,@CreatedOn,@CreatedBy,@IsActive,@SessionYear,@HsnCode,@FinishedId)";
+@Price,@PriceINR,@ConversionRate,@Unit,@ItemType,@ItemDescription,@CreatedOn,@CreatedBy,@IsActive,@SessionYear,@HsnCode,@FinishedId);
+
+Update [dbo].[CarpetNumber] Set PackDate=@CreatedOn,Pack=2,PackSource=@PackSource,PackingDetailId=SCOPE_IDENTITY(),PackingId=@OrderId
+Where TStockNo=@StockId;";
 
                     int rowsAffected = await cnn.ExecuteAsync(sqlQuery, _model.ItemList, transaction);
                     transaction.Commit();

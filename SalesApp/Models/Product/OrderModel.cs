@@ -31,6 +31,7 @@ namespace SalesApp.Models.Product
 
     public class OrderItemModel
     {
+        public int OrderItemId { get; set; }
         public int OrderId { get; set; }
         public int TransId { get; set; }
         public int FinishedId { get; set; }
@@ -51,6 +52,9 @@ namespace SalesApp.Models.Product
         public DateTime CreatedOn { get; set; }
         public int CreatedBy { get; set; }
         public bool IsActive { get; set; }
+
+        public string PackSource { get; set; }
+        
 
 
 

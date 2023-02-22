@@ -46,7 +46,7 @@ namespace SalesApp.Controllers
                 model.DelieveryType = 0;
                 model.PortType = 0;
                 model.TransactionId = Common.GetUnique();
-                model.Description = "NormalSale";
+                model.Description = "WebSales";
                 model.SessionYear = DateTime.Now.Year;
                 model.SaleStatus = (short)SalesStatus.Ordered;
                 model.IsActive = true;
@@ -71,6 +71,7 @@ namespace SalesApp.Controllers
                     item.CreatedBy = 1;
                     item.CreatedOn = DateTime.Now;
                     item.IsActive = true;
+                    item.PackSource = "WebSales";
                 }
 
 
