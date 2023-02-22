@@ -192,7 +192,7 @@ namespace SalesApp.WebAPI.Data
         public async Task<ServiceResponse<IEnumerable<ProductModel>>> GetProductList(int StoreId)
         {
             ServiceResponse<IEnumerable<ProductModel>> obj = new ServiceResponse<IEnumerable<ProductModel>>();
-            using (var connection = new SqlConnection(configuration.GetConnectionString("DBConnectionString").ToString()))
+            using (var connection = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
             {
                 string sql = @"SELECT distinct IM.ITEM_ID as ItemId,
 IM.ITEM_NAME as ItemName, 
