@@ -1,36 +1,18 @@
-﻿
-using System;
+﻿using System.Collections.Generic;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
+using System.Text;
 using System.Threading;
-using System.Xml.Linq;
+using System;
 
-
-using System.Xml.Serialization;
-using System.IO;
-using System.Xml;
-
-
-namespace SalesApp.Common
+namespace SalesApp.Utility
 {
-
-
-
     public static class CommonHelper
     {
-
-
-
-
-
-
-
         public static void ConvertSourceToTarget<T, S>(T target, S source)
         {
             var properties = from prop in source.GetType().GetProperties()
@@ -430,7 +412,7 @@ namespace SalesApp.Common
             return TimeSpan.Parse(strTime);
         }
 
- 
+
 
 
 
@@ -439,7 +421,7 @@ namespace SalesApp.Common
             return point.ToString("F2", CultureInfo.CreateSpecificCulture(culture));
         }
 
-        public static string ToStr3Place(this decimal point,string culture)
+        public static string ToStr3Place(this decimal point, string culture)
         {
             return point.ToString("F3", CultureInfo.CreateSpecificCulture(culture));
         }
@@ -457,18 +439,4 @@ namespace SalesApp.Common
 
 
     }
-
-   
-
-
 }
-
-
-
-
-
-
-
-
-
-

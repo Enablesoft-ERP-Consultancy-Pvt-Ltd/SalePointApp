@@ -14,6 +14,8 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
+using Aspose.BarCode.Generation;
+
 
 namespace SalesApp.WebAPI.Data
 {
@@ -187,7 +189,6 @@ namespace SalesApp.WebAPI.Data
         //}
 
 
-
         public async Task<ServiceResponse<IEnumerable<ProductModel>>> GetProductList(int StoreId)
         {
             ServiceResponse<IEnumerable<ProductModel>> obj = new ServiceResponse<IEnumerable<ProductModel>>();
@@ -294,6 +295,152 @@ LEFT JOIN MAIN_ITEM_IMAGE tblImg(Nolock) ON IPM.ITEM_FINISHED_ID = tblImg.FINISH
             }
             return obj;
         }
+
+        public async Task<Tuple<int, bool>> CreateOrder(OrderModel _model)
+        {
+            string Message = string.Empty;
+            IDbTransaction transaction = null;
+            try
+            {
+
+                using (IDbConnection cnn = new SqlConnection(configuration.GetConnectionString("DBConnectionString").ToString()))
+                {
+                    if (cnn.State != ConnectionState.Open)
+                        cnn.Open();
+                    transaction = cnn.BeginTransaction();
+
+                    string Query;
+                    Query = @"INSERT INTO [sales].[Order_Master]
+([mirror_id],[sale_date],[transaction_id],[delievery_type],[port_type],[description],[unit],[created_datetime],
+[created_by],[is_active],[sale_status],[session_year],[DISCOUNTPER])
+VALUES
+(@MirrorId,@SaleDate,@TransactionId,@DelieveryType,@PortType,@Description,@Unit,@CreatedOn,
+@CreatedBy,@IsActive,@SaleStatus,@SessionYear,@DisCountPer);
+select SCOPE_IDENTITY();
+";
+                    _model.OrderId = (await cnn.ExecuteScalarAsync<int>(Query, new
+                    {
+                        @MirrorId = _model.MirrorId,
+                        @TransactionId = _model.TransactionId,
+                        @SaleDate = _model.SaleDate,
+                        @SaleStatus = _model.SaleStatus,
+                        @SessionYear = _model.SessionYear,
+                        @DisCountPer = _model.DisCountPer,
+                        @Unit = _model.Unit,
+                        @PortType = _model.PortType,
+                        @DelieveryType = _model.DelieveryType,
+                        @Description = _model.Description,
+                        @IsActive = _model.IsActive,
+                        @CreatedBy = _model.CreatedBy,
+                        @CreatedOn = _model.CreatedOn
+                    }, transaction));
+
+                    _model.ItemList.ForEach(x => x.OrderId = _model.OrderId);
+
+                    string sqlQuery = @"INSERT INTO [sales].[Order_Item_Details]
+([trans_id],[stock_id],[order_id],[order_type],[order_type_prefix],[sale_type],[qty],[currency_type],
+[price],[price_inr],[conversion_rate],[unit],[item_type],[item_desc],[created_datetime],
+[created_by],[is_active],[session_year],[hsncode],[finishedid])
+VALUES
+(@TransId,@StockId,@OrderId,@OrderType,@OrderTypePrefix,@SalesType,@Qty,@CurrencyType,
+@Price,@PriceINR,@ConversionRate,@Unit,@ItemType,@ItemDescription,@CreatedOn,@CreatedBy,@IsActive,@SessionYear,@HsnCode,@FinishedId)";
+
+                    int rowsAffected = await cnn.ExecuteAsync(sqlQuery, _model.ItemList, transaction);
+                    transaction.Commit();
+
+                    if (rowsAffected > 0)
+                    {
+                        return Tuple.Create(_model.OrderId, true);
+                    }
+                    else
+                    {
+                        return Tuple.Create(-1, false);
+
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                if (transaction != null)
+                {
+                    transaction.Rollback();
+                }
+                Message = ex.Message;
+                return Tuple.Create(-1, false);
+            }
+            finally
+            {
+                if (transaction != null)
+                    transaction.Dispose();
+            }
+
+        }
+
+        public async Task<bool> AddPayment(OrderPaymentModel _model)
+        {
+            bool IsSuccess = false;
+
+            string Message = string.Empty;
+            IDbTransaction transaction = null;
+            try
+            {
+                using (IDbConnection cnn = new SqlConnection(configuration.GetConnectionString("DBConnectionString").ToString()))
+                {
+                    if (cnn.State != ConnectionState.Open)
+                        cnn.Open();
+                    transaction = cnn.BeginTransaction();
+
+                    string sqlQuery = @"INSERT INTO [sales].[Order_Payment]
+([order_id],[pay_mode],[card_type],[amount],[amout_hd],[IGST],[GST],[pay_date],[currency_type],[created_datetime]
+,[created_by],[updated_by],[update_datetime],[is_active],[paylaterstatus],[paylaterdate])
+VALUES
+(@OrderId,@PaymentMode,@CardType,@Amount,@Amount,@IGST,@GST,@PaymentDate,@Currency,CreatedOn
+,@CreatedBy,@CreatedOn,@CreatedBy,@IsActive,@PaylaterStatus,@PaymentDate)";
+
+                    int rowsAffected = await cnn.ExecuteAsync(sqlQuery, _model, transaction);
+                    transaction.Commit();
+
+                    if (rowsAffected > 0)
+                    {
+
+                        IsSuccess = true;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                if (transaction != null)
+                {
+                    transaction.Rollback();
+                }
+                Message = ex.Message;
+                IsSuccess = false;
+            }
+            finally
+            {
+                if (transaction != null)
+                    transaction.Dispose();
+            }
+            return IsSuccess;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

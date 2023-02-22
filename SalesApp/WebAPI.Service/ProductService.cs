@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 using SalesApp.Models.Product;
 using SalesApp.Models;
+using System;
+using DocumentFormat.OpenXml.Wordprocessing;
+using DocumentFormat.OpenXml.Drawing.Charts;
 
 namespace SalesApp.WebAPI.Service
 {
@@ -16,12 +19,21 @@ namespace SalesApp.WebAPI.Service
         {
             data = ldata;
         }
-        
+
         public async Task<ServiceResponse<IEnumerable<ProductModel>>> GetProductList(int StoreId)
         {
             return await data.GetProductList(StoreId);
         }
 
+        public async Task<Tuple<int, bool>> CreateOrder(OrderModel _model)
+        {
+            return await data.CreateOrder(_model);
+        }
+
+        public async Task<bool> AddPayment(OrderPaymentModel _model)
+        {
+            return await data.AddPayment(_model);
+        }
 
 
 

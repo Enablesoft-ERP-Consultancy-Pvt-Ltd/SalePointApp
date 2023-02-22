@@ -1,6 +1,7 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.CodeAnalysis.Options;
+using System.ComponentModel;
 
-namespace SalesApp.Common
+namespace SalesApp.Utility
 {
     public enum ShoppingType
     {
@@ -13,6 +14,32 @@ namespace SalesApp.Common
         Ordered = 0,
         Purchased,
     }
+
+    public enum CardType
+    {
+        Amex = 1,
+        Visa,
+        Mastercard,
+        Diners, Maestro,
+        JCB,
+        Discover,
+        RuPay,
+        Other,
+    }
+
+
+
+    public enum PaymentMode
+    {
+        CreditCard = 1,
+        Cash,
+        PayLater,
+        DebitCard,
+        BankTransfer,
+    }
+
+
+
 
 
 
