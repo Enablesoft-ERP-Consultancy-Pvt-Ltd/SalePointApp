@@ -287,6 +287,7 @@ LEFT JOIN MAIN_ITEM_IMAGE tblImg(Nolock) ON IPM.ITEM_FINISHED_ID = tblImg.FINISH
                                    ProductImages = itmGroup.Where(x => x.ImagePath != null).Select(x => (string)x.ImagePath).ToList(),
                                    Price = itmGroup != null ? itmGroup.FirstOrDefault().Price : 0,
                                    Stocks = itmGroup.Select(x => (long)x.StockNo).ToList(),
+                                   StockNos = itmGroup.Select(x => (string)x.TStockNo).ToList(),
 
                                });
                 obj.Data = objItem;
