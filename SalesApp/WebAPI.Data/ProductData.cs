@@ -253,16 +253,18 @@ Where IM.MasterCompanyId=@StoreId and stock.CurrentProStatus=1;";
                                    //DesignCode = itmGroup.FirstOrDefault().DesignCode,
                                    //ColorCode = itmGroup.FirstOrDefault().ColorCode,
                                    //SizeCode = itmGroup.FirstOrDefault().SizeCode,
-                                   Width = itmGroup.FirstOrDefault().WidthINCH,
-                                   Length = itmGroup.FirstOrDefault().LengthINCH,
-                                   Height = itmGroup.FirstOrDefault().HeightINCH,
+
+                                   Width = itmGroup.FirstOrDefault().WidthINCH != null ? itmGroup.FirstOrDefault().WidthINCH : 0,
+                                   Length = itmGroup.FirstOrDefault().LengthINCH != null ? itmGroup.FirstOrDefault().LengthINCH : 0,
+                                   Height = itmGroup.FirstOrDefault().HeightINCH != null ? itmGroup.FirstOrDefault().HeightINCH : 0,
+
                                    Status = itmGroup.FirstOrDefault().Status != null ? itmGroup.FirstOrDefault().Status : 0,
                                    StoreId = itmGroup.FirstOrDefault().MasterCompanyId != null ? itmGroup.FirstOrDefault().MasterCompanyId : 0,
                                    Description = itmGroup.FirstOrDefault().Description,
                                    UnitTypeId = itmGroup.FirstOrDefault().UnitTypeId != null ? itmGroup.FirstOrDefault().UnitTypeId : 0,
                                    UnitType = itmGroup.FirstOrDefault().UnitType,
                                    ProductImages = itmGroup.Where(x => x.ImagePath != null).Select(x => (string)x.ImagePath).ToList(),
-                                   Price = itmGroup != null ? itmGroup.FirstOrDefault().Price : 0,
+                                   Price = itmGroup.FirstOrDefault().Price != null ? itmGroup.FirstOrDefault().Price : 0,
                                    Stocks = itmGroup.Select(x => (long)x.StockNo).ToList(),
                                    StockNos = itmGroup.Select(x => (string)x.TStockNo).ToList(),
 
@@ -273,12 +275,6 @@ Where IM.MasterCompanyId=@StoreId and stock.CurrentProStatus=1;";
             }
             return obj;
         }
-
-
-
-
-
-
 
         public async Task<ServiceResponse<ProductModel>> GetProductDetail(int ItemFinishId)
         {
@@ -337,16 +333,18 @@ Where IM.MasterCompanyId=@StoreId and stock.CurrentProStatus=1;";
                                    //DesignCode = itmGroup.FirstOrDefault().DesignCode,
                                    //ColorCode = itmGroup.FirstOrDefault().ColorCode,
                                    //SizeCode = itmGroup.FirstOrDefault().SizeCode,
-                                   Width = itmGroup.FirstOrDefault().WidthINCH,
-                                   Length = itmGroup.FirstOrDefault().LengthINCH,
-                                   Height = itmGroup.FirstOrDefault().HeightINCH,
+
+                                   Width = itmGroup.FirstOrDefault().WidthINCH != null ? itmGroup.FirstOrDefault().WidthINCH : 0,
+                                   Length = itmGroup.FirstOrDefault().LengthINCH != null ? itmGroup.FirstOrDefault().LengthINCH : 0,
+                                   Height = itmGroup.FirstOrDefault().HeightINCH != null ? itmGroup.FirstOrDefault().HeightINCH : 0,
+
                                    Status = itmGroup.FirstOrDefault().Status != null ? itmGroup.FirstOrDefault().Status : 0,
                                    StoreId = itmGroup.FirstOrDefault().MasterCompanyId != null ? itmGroup.FirstOrDefault().MasterCompanyId : 0,
                                    Description = itmGroup.FirstOrDefault().Description,
                                    UnitTypeId = itmGroup.FirstOrDefault().UnitTypeId != null ? itmGroup.FirstOrDefault().UnitTypeId : 0,
                                    UnitType = itmGroup.FirstOrDefault().UnitType,
                                    ProductImages = itmGroup.Where(x => x.ImagePath != null).Select(x => (string)x.ImagePath).ToList(),
-                                   Price = itmGroup != null ? itmGroup.FirstOrDefault().Price : 0,
+                                   Price = itmGroup.FirstOrDefault().Price != null ? itmGroup.FirstOrDefault().Price : 0,
                                    Stocks = itmGroup.Select(x => (long)x.StockNo).ToList(),
                                    StockNos = itmGroup.Select(x => (string)x.TStockNo).ToList(),
 
