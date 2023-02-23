@@ -33,6 +33,16 @@ namespace SalesApp.Controllers
             return Ok(await prodSrv.GetProductList(StoreId));
         }
 
+
+
+        [HttpGet("getProductListDetail/{ProductId}")]
+        [ProducesResponseType(typeof(ServiceResponse<ProductModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceResponse<ProductModel>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetProductDetail(int ProductId)
+        {
+            return Ok(await prodSrv.GetProductDetail(ProductId));
+        }
+
         [HttpPost("createOrder")]
         [ProducesResponseType(typeof(ServiceResponse<Tuple<int, bool>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ServiceResponse<Tuple<int, bool>>), StatusCodes.Status400BadRequest)]
