@@ -365,6 +365,115 @@ Where IPM.ITEM_FINISHED_ID=@ItemFinishId;";
 
 
 
+        public async Task<ServiceResponse<ProductModel>> AddToCardt(int ItemFinishId, int Quantity, string Source, short PackId)
+        {
+
+            ServiceResponse<ProductModel> obj = new ServiceResponse<ProductModel>();
+            using (var connection = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
+            {
+                string sql = @"Declare @Count int;
+Update [dbo].[CarpetNumber] Set PackingID=0 Where PackingID>=101 and Pack_Date<=GETDATE().add and Item_Finished_Id=@ItemFinishId;
+SELECT @Count=count(*) FROM CarpetNumber WHERE Item_Finished_Id=@ItemFinishId AND Pack=0;
+IF (@Count>=@Quantity) 
+BEGIN
+WITH UpdateStock AS (
+select TOP (select @Quantity)  * from [dbo].[CarpetNumber] Where Item_Finished_Id=@ItemFinishId AND Pack=0 
+)--101
+Update UpdateStock Set Pack = @PackId,PackSource = @Source;
+
+SELECT distinct IM.MasterCompanyId,IM.ITEM_ID as ItemId,IPM.ITEM_FINISHED_ID as ItemFinishId,IPM.Quality_Id as QualityId,
+IPM.Color_Id ColorId, IPM.design_Id DesignId, IPM.Size_Id SizeId,IPM.Shape_Id ShapeId,IPM.Shadecolor_Id ShadeColorId,
+ICM.CATEGORY_ID as CategoryId,IPM.ProductCode,IM.ITEM_NAME as ItemName, ICM.CATEGORY_NAME as CategoryName, 
+ISNULL(Q.QualityName, '') QualityName, ISNULL(D.DesignName, '') DesignName, ISNULL(C.ColorName, '') ColorName,
+ISNULL(SC.ShadeColorName, '') ShadeColorName, ISNULL(S.ShapeName, '') ShapeName, Q.Hscode HSNCode, 
+Isnull(IM.ITEM_CODE, '') ItemCode, IsNull(Q.QualityCode, '')  QualityCode, IsNull(SZ.WidthInch, 0) Width,
+IsNull(SZ.LengthINCH, 0) Length, IsNull(SZ.HeightINCH, 0) Height, ipm.status as Status, 
+IPM.Description,IsNull(ProdAreaFt, 0) ProdAreaFt,IsNull(ProdAreaMtr, 0) ProdAreaMtr, 
+UTM.UnitTypeID as UnitTypeId, UTM.UnitType,tblImg.PHOTO,tblImg.Remarks,
+stock.StockNo,stock.TStockNo,ISNULL(stock.Price, 0 ) AS Price
+FROM  ITEM_MASTER IM(Nolock) Inner Join ITEM_PARAMETER_MASTER IPM(Nolock) ON IM.ITEM_ID = IPM.ITEM_ID 
+inner join CarpetNumber stock(Nolock) ON IPM.ITEM_FINISHED_ID  = stock.Item_Finished_Id  
+JOIN ITEM_CATEGORY_MASTER ICM(Nolock) ON IM.CATEGORY_ID  = ICM.CATEGORY_ID  
+JOIN UNIT_TYPE_MASTER UTM(Nolock) ON IM.UnitTypeID  = UTM.UnitTypeID
+LEFT JOIN Quality Q(Nolock) ON Q.QualityId = IPM.QUALITY_ID   
+LEFT JOIN Design D(Nolock) ON D.DesignId = IPM.DESIGN_ID   
+LEFT JOIN Color C(Nolock) ON C.ColorId = IPM.COLOR_ID   
+LEFT JOIN ShadeColor SC(Nolock) ON SC.ShadecolorId = IPM.SHADECOLOR_ID   
+LEFT JOIN Shape S(Nolock) ON S.ShapeId = IPM.SHAPE_ID   
+LEFT JOIN Size SZ(Nolock) ON SZ.SizeId = IPM.SIZE_ID
+LEFT JOIN MAIN_ITEM_IMAGE tblImg(Nolock) ON IPM.ITEM_FINISHED_ID = tblImg.FINISHEDID
+Where stock.ITEM_FINISHED_ID=@ItemFinishId and stock.PackingID=@PackId AND stock.packsource=@Source;
+END";
+
+                var result = (await connection.QueryAsync(sql, new { @ItemFinishId = ItemFinishId, @Quantity = Quantity, @Source = Source, @PackId = PackId }));
+
+                var objItem = (from itm in result
+                               group itm by new { itm.ItemFinishId } into itmGroup
+                               orderby itmGroup.Key.ItemFinishId descending
+                               select new ProductModel
+                               {
+                                   ItemFinishId = itmGroup.Key.ItemFinishId != null ? itmGroup.Key.ItemFinishId : 0,
+                                   QualityId = itmGroup.FirstOrDefault().QualityId != null ? itmGroup.FirstOrDefault().QualityId : 0,
+                                   ColorId = itmGroup.FirstOrDefault().ColorId != null ? itmGroup.FirstOrDefault().ColorId : 0,
+                                   DesignId = itmGroup.FirstOrDefault().DesignId != null ? itmGroup.FirstOrDefault().DesignId : 0,
+                                   ShapeId = itmGroup.FirstOrDefault().ShapeId != null ? itmGroup.FirstOrDefault().ShapeId : 0,
+                                   ShadecolorId = itmGroup.FirstOrDefault().ShadecolorId != null ? itmGroup.FirstOrDefault().ShadecolorId : 0,
+                                   CategoryId = itmGroup.FirstOrDefault().CategoryId != null ? itmGroup.FirstOrDefault().CategoryId : 0,
+                                   ItemId = itmGroup.FirstOrDefault().ItemId != null ? itmGroup.FirstOrDefault().ItemId : 0,
+                                   ProductCode = itmGroup.FirstOrDefault().ProductCode,
+                                   CategoryName = itmGroup.FirstOrDefault().CategoryName,
+                                   ItemName = itmGroup.FirstOrDefault().ItemName,
+                                   QualityName = itmGroup.FirstOrDefault().QualityName,
+                                   DesignName = itmGroup.FirstOrDefault().DesignName,
+                                   ColorName = itmGroup.FirstOrDefault().ColorName,
+                                   ShadeColorName = itmGroup.FirstOrDefault().ShadeColorName,
+                                   ShapeName = itmGroup.FirstOrDefault().ShapeName,
+                                   HSNCode = itmGroup.FirstOrDefault().HSNCode,
+                                   QualityCode = itmGroup.FirstOrDefault().QualityCode,
+
+                                   Width = itmGroup.FirstOrDefault().WidthINCH != null ? itmGroup.FirstOrDefault().WidthINCH : 0,
+                                   Length = itmGroup.FirstOrDefault().LengthINCH != null ? itmGroup.FirstOrDefault().LengthINCH : 0,
+                                   Height = itmGroup.FirstOrDefault().HeightINCH != null ? itmGroup.FirstOrDefault().HeightINCH : 0,
+
+                                   Status = itmGroup.FirstOrDefault().Status != null ? itmGroup.FirstOrDefault().Status : 0,
+                                   StoreId = itmGroup.FirstOrDefault().MasterCompanyId != null ? itmGroup.FirstOrDefault().MasterCompanyId : 0,
+                                   Description = itmGroup.FirstOrDefault().Description,
+                                   UnitTypeId = itmGroup.FirstOrDefault().UnitTypeId != null ? itmGroup.FirstOrDefault().UnitTypeId : 0,
+                                   UnitType = itmGroup.FirstOrDefault().UnitType,
+                                   ProductImages = itmGroup.Where(x => x.ImagePath != null).Select(x => (string)x.ImagePath).ToList(),
+                                   Price = itmGroup.FirstOrDefault().Price != null ? itmGroup.FirstOrDefault().Price : 0,
+
+                                   Stocks = itmGroup.Select(x => (long)x.StockNo).ToList(),
+                                   StockNos = itmGroup.Select(x => (string)x.TStockNo).ToList(),
+
+                               }).FirstOrDefault();
+                obj.Data = objItem;
+                obj.Result = obj.Data != null ? true : false;
+                obj.Message = obj.Data != null ? "Data Found." : "No Data found.";
+            }
+            return obj;
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
