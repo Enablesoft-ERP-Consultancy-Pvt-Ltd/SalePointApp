@@ -30,12 +30,12 @@ namespace SalesApp.WebAPI.Service
             return await data.GetProductDetail(ItemFinishId);
         }
 
-        public async Task<Tuple<int, bool>> CreateOrder(OrderModel _model)
+        public async Task<ServiceResponse<int>> CreateOrder(OrderModel _model)
         {
             return await data.CreateOrder(_model);
         }
 
-        public async Task<bool> AddPayment(OrderPaymentModel _model)
+        public async Task<ServiceResponse<bool>> AddPayment(OrderPaymentModel _model)
         {
             return await data.AddPayment(_model);
         }

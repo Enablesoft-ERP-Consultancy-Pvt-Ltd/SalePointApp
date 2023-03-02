@@ -43,14 +43,14 @@ namespace SalesApp.Controllers
             return Ok(await prodSrv.GetProductDetail(ProductId));
         }
 
+
         [HttpPost("createOrder")]
-        [ProducesResponseType(typeof(ServiceResponse<Tuple<int, bool>>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ServiceResponse<Tuple<int, bool>>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ServiceResponse<int>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceResponse<int>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateOrder([FromBody] OrderModel model)
         {
             try
-            {
-                model.CreatedBy = 1;
+            {               
                 model.CreatedOn = DateTime.Now;
                 model.SaleDate = DateTime.Now;
                 model.DelieveryType = 0;
@@ -60,16 +60,14 @@ namespace SalesApp.Controllers
                 model.SessionYear = DateTime.Now.Year;
                 model.SaleStatus = (short)SalesStatus.Ordered;
                 model.IsActive = true;
-
                 model.Unit = 1;
                 model.DisCountPer = 10;
-                model.MirrorId = -1;
-
-
+              
                 foreach (var item in model.ItemList)
                 {
-                    item.PriceINR = item.Price;
-                    item.Qty = 1;
+                    item.TransId = model.TransactionId;
+                    item.PackId = 101;
+                    item.PriceINR = item.Price; 
                     item.Unit = 1;
                     item.CurrencyType = 6;
                     item.SalesType = (short)SaleType.OF;
@@ -77,11 +75,10 @@ namespace SalesApp.Controllers
                     item.OrderType = 1;
                     item.OrderTypePrefix = SaleType.OF.ToString();
                     item.ConversionRate = 1;
-                    item.SessionYear = DateTime.Now.Year;
-                    item.CreatedBy = 1;
+                    item.SessionYear = DateTime.Now.Year;             
                     item.CreatedOn = DateTime.Now;
                     item.IsActive = true;
-                    item.PackSource = "WebSales";
+                    item.Source = "WebSales";
                 }
 
 
@@ -107,7 +104,6 @@ namespace SalesApp.Controllers
                 model.PaylaterStatus = 0;
                 model.PaymentDate = DateTime.Now;
                 model.IsActive = true;
-                model.CreatedBy = 1;
                 model.CreatedOn = DateTime.Now;
 
 

@@ -456,36 +456,16 @@ END";
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        public async Task<Tuple<int, bool>> CreateOrder(OrderModel _model)
+        public async Task<ServiceResponse<int>> CreateOrder(OrderModel _model)
         {
+
+            ServiceResponse<int> obj = new ServiceResponse<int>();
             string Message = string.Empty;
             IDbTransaction transaction = null;
             try
             {
 
-                using (IDbConnection cnn = new SqlConnection(configuration.GetConnectionString("DBConnectionString").ToString()))
+                using (IDbConnection cnn = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
                 {
                     if (cnn.State != ConnectionState.Open)
                         cnn.Open();
@@ -493,16 +473,16 @@ END";
 
                     string Query;
                     Query = @"INSERT INTO [sales].[Order_Master]
-([mirror_id],[sale_date],[transaction_id],[delievery_type],[port_type],[description],[unit],[created_datetime],
+([sale_date],[transaction_id],[delievery_type],[port_type],[description],[unit],[created_datetime],
 [created_by],[is_active],[sale_status],[session_year],[DISCOUNTPER])
 VALUES
-(@MirrorId,@SaleDate,@TransactionId,@DelieveryType,@PortType,@Description,@Unit,@CreatedOn,
+(@SaleDate,@TransactionId,@DelieveryType,@PortType,@Description,@Unit,@CreatedOn,
 @CreatedBy,@IsActive,@SaleStatus,@SessionYear,@DisCountPer);
 select SCOPE_IDENTITY();
 ";
                     _model.OrderId = (await cnn.ExecuteScalarAsync<int>(Query, new
                     {
-                        @MirrorId = _model.MirrorId,
+
                         @TransactionId = _model.TransactionId,
                         @SaleDate = _model.SaleDate,
                         @SaleStatus = _model.SaleStatus,
@@ -519,29 +499,57 @@ select SCOPE_IDENTITY();
 
                     _model.ItemList.ForEach(x => x.OrderId = _model.OrderId);
 
-                    string sqlQuery = @"INSERT INTO [sales].[Order_Item_Details]
+                    //                    string sqlQuery = @"INSERT INTO [sales].[Order_Item_Details]
+                    //([trans_id],[stock_id],[order_id],[order_type],[order_type_prefix],[sale_type],[qty],[currency_type],
+                    //[price],[price_inr],[conversion_rate],[unit],[item_type],[item_desc],[created_datetime],
+                    //[created_by],[is_active],[session_year],[hsncode],[finishedid])
+                    //VALUES
+                    //(@TransId,@StockId,@OrderId,@OrderType,@OrderTypePrefix,@SalesType,@Qty,@CurrencyType,
+                    //@Price,@PriceINR,@ConversionRate,@Unit,@ItemType,@ItemDescription,@CreatedOn,@CreatedBy,@IsActive,@SessionYear,@HsnCode,@FinishedId);
+
+                    //Update [dbo].[CarpetNumber] Set PackDate=@CreatedOn,Pack=2,PackSource=@PackSource,PackingDetailId=SCOPE_IDENTITY(),PackingId=@OrderId
+                    //Where TStockNo=@StockId;";
+
+                    string sqlQuery = @"
+Declare @Count int
+Update [dbo].[CarpetNumber] Set Pack=0, PackingID=null,Pack_Date=null Where PackingID>=101 and Pack_Date<=GETDATE() and Item_Finished_Id=@FinishedId
+SELECT @Count=count(*) FROM CarpetNumber WHERE Item_Finished_Id=@FinishedId AND Pack=0
+IF (@Count>=@Quantity) 
+BEGIN
+
+WITH UpdateStock AS (
+select TOP (select @Quantity)  * from [dbo].[CarpetNumber] Where Item_Finished_Id=@FinishedId AND Pack=0 
+)
+Update UpdateStock Set Pack = @PackId,PackingDetailID=@OrderId,Pack_Date=@CreatedOn,PackSource = @Source
+
+INSERT INTO [sales].[Order_Item_Details]
 ([trans_id],[stock_id],[order_id],[order_type],[order_type_prefix],[sale_type],[qty],[currency_type],
 [price],[price_inr],[conversion_rate],[unit],[item_type],[item_desc],[created_datetime],
-[created_by],[is_active],[session_year],[hsncode],[finishedid])
-VALUES
-(@TransId,@StockId,@OrderId,@OrderType,@OrderTypePrefix,@SalesType,@Qty,@CurrencyType,
-@Price,@PriceINR,@ConversionRate,@Unit,@ItemType,@ItemDescription,@CreatedOn,@CreatedBy,@IsActive,@SessionYear,@HsnCode,@FinishedId);
+[created_by],[is_active],[session_year],[finishedid])
+select @TransId,x.TStockNo as StockId,@OrderId,@OrderType,@OrderTypePrefix,@SalesType,1,@CurrencyType,
+x.Price,@PriceINR,@ConversionRate,@Unit,@ItemType,@ItemDescription,@CreatedOn,@CreatedBy,@IsActive,@SessionYear,@FinishedId
+from [dbo].[CarpetNumber] as  x Where x.Pack = 101 and x.PackSource = @Source and  x.PackingDetailID = @OrderId 
 
-Update [dbo].[CarpetNumber] Set PackDate=@CreatedOn,Pack=2,PackSource=@PackSource,PackingDetailId=SCOPE_IDENTITY(),PackingId=@OrderId
-Where TStockNo=@StockId;";
+END";
 
                     int rowsAffected = await cnn.ExecuteAsync(sqlQuery, _model.ItemList, transaction);
                     transaction.Commit();
 
                     if (rowsAffected > 0)
                     {
-                        return Tuple.Create(_model.OrderId, true);
+
+
+                        obj.Data = _model.OrderId;
+
+
                     }
                     else
                     {
-                        return Tuple.Create(-1, false);
+
+                        obj.Data = -1;
 
                     }
+                    obj.Message = obj.Data > 0 ? "Data Found." : "No Data found.";
 
                 }
 
@@ -552,26 +560,29 @@ Where TStockNo=@StockId;";
                 {
                     transaction.Rollback();
                 }
-                Message = ex.Message;
-                return Tuple.Create(-1, false);
+                obj.Data = -1;
+                obj.Message = ex.Message;
+                return obj;
+
             }
             finally
             {
                 if (transaction != null)
                     transaction.Dispose();
+                obj.Result = obj.Data > 0 ? true : false;
             }
-
+            return obj;
         }
 
-        public async Task<bool> AddPayment(OrderPaymentModel _model)
+        public async Task<ServiceResponse<bool>> AddPayment(OrderPaymentModel _model)
         {
             bool IsSuccess = false;
-
+            ServiceResponse<bool> obj = new ServiceResponse<bool>();
             string Message = string.Empty;
             IDbTransaction transaction = null;
             try
             {
-                using (IDbConnection cnn = new SqlConnection(configuration.GetConnectionString("DBConnectionString").ToString()))
+                using (IDbConnection cnn = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
                 {
                     if (cnn.State != ConnectionState.Open)
                         cnn.Open();
@@ -581,8 +592,12 @@ Where TStockNo=@StockId;";
 ([order_id],[pay_mode],[card_type],[amount],[amout_hd],[IGST],[GST],[pay_date],[currency_type],[created_datetime]
 ,[created_by],[updated_by],[update_datetime],[is_active],[paylaterstatus],[paylaterdate])
 VALUES
-(@OrderId,@PaymentMode,@CardType,@Amount,@Amount,@IGST,@GST,@PaymentDate,@Currency,CreatedOn
-,@CreatedBy,@CreatedOn,@CreatedBy,@IsActive,@PaylaterStatus,@PaymentDate)";
+(@OrderId,@PaymentMode,@CardType,@Amount,@Amount,@IGST,@GST,@PaymentDate,@Currency,@CreatedOn
+,@CreatedBy,@CreatedBy,@CreatedOn,@IsActive,@PaylaterStatus,@PaymentDate)
+
+Update [sales].[Order_Master] Set sale_status=1 Where id=@OrderId
+Update x SET x.Pack=1,x.PackingDetailId=y.id,x.PackingID=y.order_id from [dbo].[CarpetNumber] x inner join [sales].Order_Item_Details y on x.TStockNo=y.stock_id
+where y.order_id=@OrderId";
 
                     int rowsAffected = await cnn.ExecuteAsync(sqlQuery, _model, transaction);
                     transaction.Commit();
@@ -609,7 +624,12 @@ VALUES
                 if (transaction != null)
                     transaction.Dispose();
             }
-            return IsSuccess;
+
+
+            obj.Data = IsSuccess;
+            obj.Result = IsSuccess;
+            obj.Message = IsSuccess ? "Data Found." : "No Data found.";
+            return obj;
         }
 
 

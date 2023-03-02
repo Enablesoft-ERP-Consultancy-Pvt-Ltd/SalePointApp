@@ -33,13 +33,13 @@ namespace SalesApp.Models.Product
     {
         public int OrderItemId { get; set; }
         public int OrderId { get; set; }
-        public int TransId { get; set; }
+        public string TransId { get; set; }
         public int FinishedId { get; set; }
         public string StockId { get; set; }
         public int OrderType { get; set; }
         public string OrderTypePrefix { get; set; }
         public int SalesType { get; set; }
-        public int Qty { get; set; }
+        public int Quantity { get; set; }
         public int CurrencyType { get; set; }
         public double Price { get; set; }
         public double PriceINR { get; set; }
@@ -53,9 +53,9 @@ namespace SalesApp.Models.Product
         public int CreatedBy { get; set; }
         public bool IsActive { get; set; }
 
-        public string PackSource { get; set; }
+        public string Source { get; set; }
+        public short PackId { get; set; }
         
-
 
 
     }

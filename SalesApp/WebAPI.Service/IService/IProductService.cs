@@ -12,7 +12,7 @@ namespace SalesApp.WebAPI.Service.IService
     {
         Task<ServiceResponse<IEnumerable<ProductModel>>> GetProductList(int StoreId);
         Task<ServiceResponse<ProductModel>> GetProductDetail(int ItemFinishId);
-        Task<Tuple<int, bool>> CreateOrder(OrderModel _model);
-        Task<bool> AddPayment(OrderPaymentModel _model);
+        Task<ServiceResponse<int>> CreateOrder(OrderModel _model);
+        Task<ServiceResponse<bool>> AddPayment(OrderPaymentModel _model);
     }
 }
