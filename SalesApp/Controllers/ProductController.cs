@@ -22,6 +22,9 @@ namespace SalesApp.Controllers
         private readonly IProductService prodSrv;
         public ProductController(IProductService _prodSrv)
         {
+
+
+
             prodSrv = _prodSrv;
         }
 

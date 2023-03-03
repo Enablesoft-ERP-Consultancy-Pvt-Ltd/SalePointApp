@@ -20,6 +20,7 @@ using SalesApp.WebAPI.Service;
 using SalesApp.WebAPI.Data.IData;
 using SalesApp.WebAPI.Data;
 using SalesApp.WebAPI.Service.IService;
+using Microsoft.AspNetCore.Http;
 
 namespace SalesApp
 {
@@ -86,6 +87,9 @@ namespace SalesApp
             services.AddScoped<IProductData, ProductData>();
 
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+
             //services.AddScoped<ILoginRepository, LoginRepository>();
             services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddDirectoryBrowser();
@@ -96,7 +100,7 @@ namespace SalesApp
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
 
-
+            
 
             AppDomain.CurrentDomain.SetData("ContentRootPath", env.ContentRootPath);
             AppDomain.CurrentDomain.SetData("WebRootPath", env.WebRootPath);

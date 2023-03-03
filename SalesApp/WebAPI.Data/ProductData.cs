@@ -18,6 +18,7 @@ using Aspose.BarCode.Generation;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using SalesApp.Utility;
+using Microsoft.AspNetCore.Http;
 
 namespace SalesApp.WebAPI.Data
 {
@@ -26,12 +27,26 @@ namespace SalesApp.WebAPI.Data
         private IConfiguration configuration;
         private readonly IWebHostEnvironment _hostEnvironment;
         string NoImage = string.Empty;
-        public ProductData(IConfiguration _configuration, IWebHostEnvironment hostEnvironment)
+        public ProductData(IConfiguration _configuration, IWebHostEnvironment hostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             configuration = _configuration;
             this._hostEnvironment = hostEnvironment;
-            this.NoImage = Path.Combine(hostEnvironment.WebRootPath + "/images/", "no-image.png");
+            //this.NoImage = Path.Combine(hostEnvironment.WebRootPath + "/images/", "no-image.png");
+
+            //var abs = CommonHelper.AbsolutePath("/images/no-image.png");
+
+
+            var request = httpContextAccessor.HttpContext.Request;
+            //var domain = $"{request.Scheme}://{request.Host}";
+
+            var baseUrl = $"{request.Scheme}://{request.Host.Value.ToString()}{request.PathBase.Value.ToString()}";
+            this.NoImage = Path.Combine(baseUrl + "/images/", "no-image.png");
+
+
         }
+
+
+
 
         //public async Task<ServiceResponse<UserModel>> LogInUser(LoginModel model)
         //{
