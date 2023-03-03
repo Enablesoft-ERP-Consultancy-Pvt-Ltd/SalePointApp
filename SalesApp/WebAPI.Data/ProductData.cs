@@ -15,16 +15,22 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
 using Aspose.BarCode.Generation;
-
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using SalesApp.Utility;
 
 namespace SalesApp.WebAPI.Data
 {
     public class ProductData : IProductData
     {
         private IConfiguration configuration;
-        public ProductData(IConfiguration _configuration)
+        private readonly IWebHostEnvironment _hostEnvironment;
+        string NoImage = string.Empty;
+        public ProductData(IConfiguration _configuration, IWebHostEnvironment hostEnvironment)
         {
             configuration = _configuration;
+            this._hostEnvironment = hostEnvironment;
+            this.NoImage = Path.Combine(hostEnvironment.WebRootPath + "/images/", "no-image.png");
         }
 
         //public async Task<ServiceResponse<UserModel>> LogInUser(LoginModel model)
@@ -221,6 +227,9 @@ Where IM.MasterCompanyId=@StoreId and stock.CurrentProStatus=1;";
 
 
 
+
+
+
                 //isnull(D.DesignCode,'') DesignCode,
                 //isnull(C.ColorCode,'') ColorCode,
                 //isnull(SZ.SizeCode,'') SizeCode, 
@@ -263,12 +272,16 @@ Where IM.MasterCompanyId=@StoreId and stock.CurrentProStatus=1;";
                                    Description = itmGroup.FirstOrDefault().Description,
                                    UnitTypeId = itmGroup.FirstOrDefault().UnitTypeId != null ? itmGroup.FirstOrDefault().UnitTypeId : 0,
                                    UnitType = itmGroup.FirstOrDefault().UnitType,
+                                   PrimePhoto = itmGroup.FirstOrDefault().ImagePath != null ? itmGroup.FirstOrDefault().ImagePath : this.NoImage,
+
+
+
                                    ProductImages = itmGroup.Where(x => x.ImagePath != null).Select(x => (string)x.ImagePath).ToList(),
                                    Price = itmGroup.FirstOrDefault().Price != null ? itmGroup.FirstOrDefault().Price : 0,
                                    Stocks = itmGroup.Select(x => (long)x.StockNo).ToList(),
                                    StockNos = itmGroup.Select(x => (string)x.TStockNo).ToList(),
 
-                               });
+                               }); ;
                 obj.Data = objItem;
                 obj.Result = obj.Data.Count() > 0 ? true : false;
                 obj.Message = obj.Data.Count() > 0 ? "Data Found." : "No Data found.";
@@ -343,6 +356,7 @@ Where IPM.ITEM_FINISHED_ID=@ItemFinishId;";
                                    Description = itmGroup.FirstOrDefault().Description,
                                    UnitTypeId = itmGroup.FirstOrDefault().UnitTypeId != null ? itmGroup.FirstOrDefault().UnitTypeId : 0,
                                    UnitType = itmGroup.FirstOrDefault().UnitType,
+                                   PrimePhoto = itmGroup.FirstOrDefault().ImagePath != null ? itmGroup.FirstOrDefault().ImagePath : this.NoImage,
                                    ProductImages = itmGroup.Where(x => x.ImagePath != null).Select(x => (string)x.ImagePath).ToList(),
                                    Price = itmGroup.FirstOrDefault().Price != null ? itmGroup.FirstOrDefault().Price : 0,
                                    Stocks = itmGroup.Select(x => (long)x.StockNo).ToList(),
