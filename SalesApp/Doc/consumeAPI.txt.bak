@@ -89,25 +89,5 @@ public class HolidaysApiService : IHolidaysApiService
  
 
 }
-http://enablesofterp.in/SalesAppPoint/api/product/getProductList/42
+
 https://localhost:44377/api/product/getProductList/1
-
-
-/SalesAppPoint/api/product/getProductList/42
-
-http://enablesofterp.in/SalesAppPoint/api/product/getProductListDetail/937
-
-https://localhost:44322/collection/multi/vct-24305/937
-
-{"itemFinishId":944,"qualityId":22,"colorId":3,"designId":923,
-"shapeId":1,"shadecolorId":0,
-"categoryId":1,"itemId":1,"productCode":"0","categoryName":"CARPET",
-"itemName":"HAND KNOTTED","qualityName":"TAPESTRY HEIGHTS",
-"designName":"VCD-9076\t","colorName":"ASSORTED",
-"shadeColorName":"","shapeName":"REC","hsnCode":"",
-"qualityCode":"","designCode":null,"colorCode":null,
-"sizeCode":null,"width":96,"length":120,"height":0,"status":1,"storeId":42,"description":"0","unitTypeId":1,"unitType":"AREA",
-"price":69000.00,"productImages":[],"stocks":[1799],"stockNos":["VCB52983"],"quantity":1},
-
-
-

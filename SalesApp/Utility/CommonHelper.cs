@@ -8,6 +8,9 @@ using System.Text.RegularExpressions;
 using System.Text;
 using System.Threading;
 using System;
+using System.IO;
+using Microsoft.AspNetCore.Http;
+using System.Net;
 
 namespace SalesApp.Utility
 {
@@ -430,10 +433,19 @@ namespace SalesApp.Utility
 
 
 
+        public static string MapPath(string path)
+        {
+            return Path.Combine(
+                (string)AppDomain.CurrentDomain.GetData("WebRootPath"), path);
+        }
 
 
+        public static string AbsolutePath(string path)
+        {
 
-
+            return Path.Combine(Dns.GetHostName().ToString(), path);
+             
+        }
 
 
 
