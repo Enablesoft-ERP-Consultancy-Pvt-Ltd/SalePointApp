@@ -27,6 +27,7 @@ namespace SalesApp.WebAPI.Data
         private IConfiguration configuration;
         private readonly IWebHostEnvironment _hostEnvironment;
         string NoImage = string.Empty;
+        string BaseUrl = string.Empty;
         public ProductData(IConfiguration _configuration, IWebHostEnvironment hostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             configuration = _configuration;
@@ -39,8 +40,8 @@ namespace SalesApp.WebAPI.Data
             var request = httpContextAccessor.HttpContext.Request;
             //var domain = $"{request.Scheme}://{request.Host}";
 
-            var baseUrl = $"{request.Scheme}://{request.Host.Value.ToString()}{request.PathBase.Value.ToString()}";
-            this.NoImage = Path.Combine(baseUrl + "/images/", "no-image.png");
+            this.BaseUrl = $"{request.Scheme}://{request.Host.Value.ToString()}{request.PathBase.Value.ToString()}";
+            this.NoImage = Path.Combine(this.BaseUrl + "/images/", "no-image.png");
 
 
         }
@@ -225,7 +226,7 @@ IsNull(Q.QualityCode, '')  QualityCode, IsNull(SZ.WidthInch, 0) Width,IsNull(SZ.
 IsNull(SZ.HeightINCH, 0) Height, ipm.status as Status, 
 IPM.Description,IsNull(ProdAreaFt, 0) ProdAreaFt,IsNull(ProdAreaMtr, 0) ProdAreaMtr, 
 UTM.UnitTypeID as UnitTypeId, UTM.UnitType,tblImg.PHOTO,tblImg.Remarks,
-stock.StockNo,stock.TStockNo,ISNULL(stock.Price, 0 ) AS Price
+stock.StockNo,stock.TStockNo,ISNULL(stock.Price, 0 ) AS Price,stock.Rec_Date as ReceiveDate
 FROM  ITEM_MASTER IM(Nolock) Inner Join ITEM_PARAMETER_MASTER IPM(Nolock) ON IM.ITEM_ID = IPM.ITEM_ID 
 inner join CarpetNumber stock(Nolock) ON IPM.ITEM_FINISHED_ID  = stock.Item_Finished_Id  
 JOIN ITEM_CATEGORY_MASTER ICM(Nolock) ON IM.CATEGORY_ID  = ICM.CATEGORY_ID  
@@ -295,6 +296,7 @@ Where IM.MasterCompanyId=@StoreId and stock.CurrentProStatus=1;";
                                    Price = itmGroup.FirstOrDefault().Price != null ? itmGroup.FirstOrDefault().Price : 0,
                                    Stocks = itmGroup.Select(x => (long)x.StockNo).ToList(),
                                    StockNos = itmGroup.Select(x => (string)x.TStockNo).ToList(),
+                                   CreatedOn = itmGroup.FirstOrDefault().ReceiveDate != null ? itmGroup.FirstOrDefault().ReceiveDate : DateTime.Now,
 
                                }); ;
                 obj.Data = objItem;
@@ -319,7 +321,7 @@ IsNull(Q.QualityCode, '')  QualityCode, IsNull(SZ.WidthInch, 0) Width,IsNull(SZ.
 IsNull(SZ.HeightINCH, 0) Height, ipm.status as Status, 
 IPM.Description,IsNull(ProdAreaFt, 0) ProdAreaFt,IsNull(ProdAreaMtr, 0) ProdAreaMtr, 
 UTM.UnitTypeID as UnitTypeId, UTM.UnitType,tblImg.PHOTO,tblImg.Remarks,
-stock.StockNo,stock.TStockNo,ISNULL(stock.Price, 0 ) AS Price
+stock.StockNo,stock.TStockNo,ISNULL(stock.Price, 0 ) AS Price,stock.Rec_Date as ReceiveDate
 FROM  ITEM_MASTER IM(Nolock) Inner Join ITEM_PARAMETER_MASTER IPM(Nolock) ON IM.ITEM_ID = IPM.ITEM_ID 
 inner join CarpetNumber stock(Nolock) ON IPM.ITEM_FINISHED_ID  = stock.Item_Finished_Id  
 JOIN ITEM_CATEGORY_MASTER ICM(Nolock) ON IM.CATEGORY_ID  = ICM.CATEGORY_ID  
@@ -376,6 +378,7 @@ Where IPM.ITEM_FINISHED_ID=@ItemFinishId;";
                                    Price = itmGroup.FirstOrDefault().Price != null ? itmGroup.FirstOrDefault().Price : 0,
                                    Stocks = itmGroup.Select(x => (long)x.StockNo).ToList(),
                                    StockNos = itmGroup.Select(x => (string)x.TStockNo).ToList(),
+                                   CreatedOn = itmGroup.FirstOrDefault().ReceiveDate != null ? itmGroup.FirstOrDefault().ReceiveDate : DateTime.Now,
 
                                }).FirstOrDefault();
                 obj.Data = objItem;

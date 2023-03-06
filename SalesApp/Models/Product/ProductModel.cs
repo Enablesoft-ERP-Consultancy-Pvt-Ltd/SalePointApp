@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Vml;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -47,7 +48,7 @@ namespace SalesApp.Models.Product
             get { return Stocks.Count(); }
         }
 
-  
+        public DateTime CreatedOn { get; set; }
     }
 
 }
