@@ -40,8 +40,10 @@ namespace SalesApp.WebAPI.Data
             var request = httpContextAccessor.HttpContext.Request;
             //var domain = $"{request.Scheme}://{request.Host}";
 
-            this.BaseUrl = $"{request.Scheme}://{request.Host.Value.ToString()}{request.PathBase.Value.ToString()}";
-            this.NoImage = Path.Combine(this.BaseUrl + "/images/", "no-image.png");
+
+
+            this.BaseUrl = $"{request.Scheme}://{configuration.GetConnectionString("ImageHost").ToString()}";
+            this.NoImage = Path.Combine(this.BaseUrl, "no-image.png");
 
 
         }
@@ -288,11 +290,8 @@ Where IM.MasterCompanyId=@StoreId and stock.CurrentProStatus=1;";
                                    Description = itmGroup.FirstOrDefault().Description,
                                    UnitTypeId = itmGroup.FirstOrDefault().UnitTypeId != null ? itmGroup.FirstOrDefault().UnitTypeId : 0,
                                    UnitType = itmGroup.FirstOrDefault().UnitType,
-                                   PrimePhoto = itmGroup.FirstOrDefault().ImagePath != null ? itmGroup.FirstOrDefault().ImagePath : this.NoImage,
-
-
-
-                                   ProductImages = itmGroup.Where(x => x.ImagePath != null).Select(x => (string)x.ImagePath).ToList(),
+                                   PrimePhoto = itmGroup.FirstOrDefault().ImagePath != null ? Path.Combine(this.BaseUrl, (string)itmGroup.FirstOrDefault().ImagePath) : this.NoImage,
+                                   ProductImages = itmGroup.Where(x => x.ImagePath != null).Select(x => (Path.Combine(this.BaseUrl, (string)x.ImagePath))).ToList(),
                                    Price = itmGroup.FirstOrDefault().Price != null ? itmGroup.FirstOrDefault().Price : 0,
                                    Stocks = itmGroup.Select(x => (long)x.StockNo).ToList(),
                                    StockNos = itmGroup.Select(x => (string)x.TStockNo).ToList(),
@@ -373,8 +372,8 @@ Where IPM.ITEM_FINISHED_ID=@ItemFinishId;";
                                    Description = itmGroup.FirstOrDefault().Description,
                                    UnitTypeId = itmGroup.FirstOrDefault().UnitTypeId != null ? itmGroup.FirstOrDefault().UnitTypeId : 0,
                                    UnitType = itmGroup.FirstOrDefault().UnitType,
-                                   PrimePhoto = itmGroup.FirstOrDefault().ImagePath != null ? itmGroup.FirstOrDefault().ImagePath : this.NoImage,
-                                   ProductImages = itmGroup.Where(x => x.ImagePath != null).Select(x => (string)x.ImagePath).ToList(),
+                                   PrimePhoto = itmGroup.FirstOrDefault().ImagePath != null ? Path.Combine(this.BaseUrl, (string)itmGroup.FirstOrDefault().ImagePath) : this.NoImage,
+                                   ProductImages = itmGroup.Where(x => x.ImagePath != null).Select(x => (Path.Combine(this.BaseUrl, (string)x.ImagePath))).ToList(),
                                    Price = itmGroup.FirstOrDefault().Price != null ? itmGroup.FirstOrDefault().Price : 0,
                                    Stocks = itmGroup.Select(x => (long)x.StockNo).ToList(),
                                    StockNos = itmGroup.Select(x => (string)x.TStockNo).ToList(),
