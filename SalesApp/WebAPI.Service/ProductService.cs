@@ -40,7 +40,10 @@ namespace SalesApp.WebAPI.Service
             return await data.AddPayment(_model);
         }
 
+        public async Task<ServiceResponse<bool>> CancelOrder(CancelOrderModel _model)
+        {
+            return await data.CancelOrder(_model);
+        }
 
-
-    }
+        }
 }

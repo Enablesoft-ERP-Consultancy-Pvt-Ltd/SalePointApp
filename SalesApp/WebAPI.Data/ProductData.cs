@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using SalesApp.Utility;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SalesApp.WebAPI.Data
 {
@@ -668,7 +669,60 @@ where y.order_id=@OrderId";
 
 
 
+        public async Task<ServiceResponse<bool>> CancelOrder(CancelOrderModel _model)
+        {
+            bool IsSuccess = false;
+            ServiceResponse<bool> obj = new ServiceResponse<bool>();
+            string Message = string.Empty;
+            IDbTransaction transaction = null;
+            try
+            {
+                using (IDbConnection cnn = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
+                {
+                    if (cnn.State != ConnectionState.Open)
+                        cnn.Open();
+                    transaction = cnn.BeginTransaction();
 
+                    string sqlQuery = @"Update y SET y.is_active = @IsActive,y.updated_by = @CreatedBy,y.updated_datetime = @CreatedOn ,y.bill_id = @BillId
+from sales.Order_Master x Inner Join sales.Order_Item_Details y on x.id = y.order_id Where y.order_id = @OrderId
+Update y SET y.is_active = @IsActive,y.updated_by = @CreatedBy
+from sales.Order_Master x Inner Join sales.Order_Payment y on x.id = y.order_id Where y.order_id = @OrderId
+Update x SET x.PackingDetailId = @PackingDetailId,x.packsource = '',x.Pack = 0,x.Pack_Date = null
+from[dbo].[CarpetNumber] x inner join[sales].Order_Item_Details y on x.TStockNo = y.stock_id
+where y.order_id = @OrderId";
+
+                    int rowsAffected = await cnn.ExecuteAsync(sqlQuery, _model, transaction);
+                    transaction.Commit();
+
+                    if (rowsAffected > 0)
+                    {
+
+                        IsSuccess = true;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                if (transaction != null)
+                {
+                    transaction.Rollback();
+                }
+                Message = ex.Message;
+                IsSuccess = false;
+            }
+            finally
+            {
+                if (transaction != null)
+                    transaction.Dispose();
+            }
+
+
+            obj.Data = IsSuccess;
+            obj.Result = IsSuccess;
+            obj.Message = IsSuccess ? "Data Found." : "No Data found.";
+            return obj;
+        }
 
 
 

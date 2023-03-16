@@ -81,6 +81,17 @@ namespace SalesApp.Models.Product
 
 
 
+    public class CancelOrderModel
+    {      
+        public int OrderId { get; set; }
+        public int CreatedBy { get; set; }
+        public bool IsActive { get; set; }
+        public int PackingDetailId { get; set; }
+        public int BillId { get; set; }
+        public int SaleStatus { get; set; }
+        public DateTime CreatedOn { get; set; } 
+
+    }
 
 
 
