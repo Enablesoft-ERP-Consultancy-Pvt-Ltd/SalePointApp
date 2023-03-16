@@ -12,6 +12,9 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using SalesApp.Utility;
 using DocumentFormat.OpenXml.Vml.Wordprocessing;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using SALEERP.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace SalesApp.Controllers
 {
@@ -118,6 +121,61 @@ namespace SalesApp.Controllers
             }
 
         }
+
+
+        [HttpPost("cancelOrder")]
+        [ProducesResponseType(typeof(ServiceResponse<bool>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceResponse<bool>), StatusCodes.Status400BadRequest)]
+
+        public async Task<IActionResult> CancelOrder([FromBody] OrderPaymentModel model)
+        {
+            try
+            {
+
+
+//                Select* from sales.Order_Master x Inner Join
+//sales.Order_Item_Details y on x.id = y.order_id Where y.order_id = 21
+//Update y SET y.is_active = 0,y.updated_by = y.id,y.updated_datetime = y.order_id ,y.bill_id = 0
+//from sales.Order_Master x Inner Join
+//sales.Order_Item_Details y on x.id = y.order_id Where y.order_id = 21
+//Select* from sales.Order_Master x Inner Join
+//sales.Order_Payment y on x.id = y.order_id Where y.order_id = 21
+//Update y SET y.is_active = 0,y.updated_by = y.id
+//from sales.Order_Master x Inner Join
+//sales.Order_Payment y on x.id = y.order_id Where y.order_id = 21
+//* ********************************
+//Update x SET x.PackingDetailId = 0,x.packsource = '',x.Pack = 0,x.Pack_Date = null
+//from[dbo].[CarpetNumber] x inner join[sales].Order_Item_Details y on x.TStockNo = y.stock_id
+//where y.order_id = 21
+
+
+
+
+
+
+
+
+
+
+                model.PaymentMode = (short)PaymentMode.BankTransfer;
+                model.CardType = (short)CardType.Other;
+                model.Currency = 6;
+                model.PaylaterStatus = 0;
+                model.PaymentDate = DateTime.Now;
+                model.IsActive = true;
+                model.CreatedOn = DateTime.Now;
+
+
+                return Ok(await prodSrv.AddPayment(model));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+
 
 
 
