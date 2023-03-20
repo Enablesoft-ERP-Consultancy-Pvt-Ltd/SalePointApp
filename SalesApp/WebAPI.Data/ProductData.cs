@@ -241,7 +241,7 @@ LEFT JOIN ShadeColor SC(Nolock) ON SC.ShadecolorId = IPM.SHADECOLOR_ID
 LEFT JOIN Shape S(Nolock) ON S.ShapeId = IPM.SHAPE_ID   
 LEFT JOIN Size SZ(Nolock) ON SZ.SizeId = IPM.SIZE_ID
 LEFT JOIN MAIN_ITEM_IMAGE tblImg(Nolock) ON IPM.ITEM_FINISHED_ID = tblImg.FINISHEDID
-Where IM.MasterCompanyId=@StoreId and stock.CurrentProStatus=1;";
+Where IM.MasterCompanyId=@StoreId and stock.CurrentProStatus=1 and stock.Pack=0;";
 
 
 
