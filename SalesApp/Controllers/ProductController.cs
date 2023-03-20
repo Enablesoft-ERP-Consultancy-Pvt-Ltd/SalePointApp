@@ -56,7 +56,8 @@ namespace SalesApp.Controllers
         public async Task<IActionResult> CreateOrder([FromBody] OrderModel model)
         {
             try
-            {               
+            {
+                model.CreatedBy = 1;
                 model.CreatedOn = DateTime.Now;
                 model.SaleDate = DateTime.Now;
                 model.DelieveryType = 0;
@@ -104,6 +105,7 @@ namespace SalesApp.Controllers
         {
             try
             {
+                model.CreatedBy = 1;
                 model.PaymentMode = (short)PaymentMode.BankTransfer;
                 model.CardType = (short)CardType.Other;
                 model.Currency = 6;
@@ -131,6 +133,7 @@ namespace SalesApp.Controllers
         {
             try
             {
+                model.CreatedBy = 1;
                 model.PackingDetailId = 0;
                 model.BillId = 0;              
                 model.IsActive = false;
