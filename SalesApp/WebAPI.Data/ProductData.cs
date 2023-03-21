@@ -542,17 +542,18 @@ select SCOPE_IDENTITY();
                     //Update [dbo].[CarpetNumber] Set PackDate=@CreatedOn,Pack=2,PackSource=@PackSource,PackingDetailId=SCOPE_IDENTITY(),PackingId=@OrderId
                     //Where TStockNo=@StockId;";
 
-                    string sqlQuery = @"
-Declare @Count int
+                    string sqlQuery = @"Declare @Count int
 Update [dbo].[CarpetNumber] Set Pack=0, PackingID=null,Pack_Date=null Where PackingID>=101 and Pack_Date<=GETDATE() and Item_Finished_Id=@FinishedId
 SELECT @Count=count(*) FROM CarpetNumber WHERE Item_Finished_Id=@FinishedId AND Pack=0
 IF (@Count>=@Quantity) 
 BEGIN
 
-WITH UpdateStock AS (
+WITH UpdateStock AS(
 select TOP (select @Quantity)  * from [dbo].[CarpetNumber] Where Item_Finished_Id=@FinishedId AND Pack=0 
 )
-Update UpdateStock Set Pack = @PackId,PackingDetailID=@OrderId,Pack_Date=@CreatedOn,PackSource = @Source
+select * into #temp from UpdateStock
+Update p Set p.Pack = @PackId,p.PackingDetailID=@OrderId,p.Pack_Date=@CreatedOn,p.PackSource = @Source  from  
+CarpetNumber p inner join  #temp q on p.TStockNo=q.TStockNo
 
 INSERT INTO [sales].[Order_Item_Details]
 ([bill_id],[trans_id],[stock_id],[order_id],[order_type],[order_type_prefix],[sale_type],[qty],[currency_type],
@@ -560,8 +561,8 @@ INSERT INTO [sales].[Order_Item_Details]
 [created_by],[is_active],[session_year],[finishedid])
 select 0,@TransId,x.TStockNo as StockId,@OrderId,@OrderType,@OrderTypePrefix,@SalesType,1,@CurrencyType,
 x.Price,x.Price,@ConversionRate,@Unit,@ItemType,@ItemDescription,@CreatedOn,@CreatedBy,@IsActive,@SessionYear,@FinishedId
-from [dbo].[CarpetNumber] as  x Where x.Pack = 101 and x.PackSource = @Source and  x.PackingDetailID = @OrderId 
-
+from #temp as  x 
+drop table #temp
 END";
 
                     int rowsAffected = await cnn.ExecuteAsync(sqlQuery, _model.ItemList, transaction);
