@@ -35,15 +35,14 @@ namespace SalesApp.Repository
                                 on m.StockId equals car.TStockNo into carpet
                                 from sc in carpet.DefaultIfEmpty()
                                 join view in this._DBERP.V_FinishedItemDetail
-                                on sc.item_finished_id equals view.ITEM_FINISHED_ID into view
-                                from finish in view.DefaultIfEmpty()
+                                on sc.item_finished_id equals view.ITEM_FINISHED_ID
 
                                 where master.IsActive == true && m.IsActive == true && m.CreatedBy == userid && m.ItemType==1 && master.salestatus==1
                                 select new itemprintdeatils
                                 {
                                     orderid = m.OrderId,
-                                    customername = order.Name,
-                                    stockdesc = m.ItemDesc,
+                                    customername = order != null ? order.Name : "WebSale",
+                                    stockdesc = view.ITEM_NAME + ',' + view.QUALITYNAME + ',' + view.SizeInch,
                                     stockvalue = m.PriceInr,
                                     unit = m.Unit,
                                     prefix = m.OrderTypePrefix,

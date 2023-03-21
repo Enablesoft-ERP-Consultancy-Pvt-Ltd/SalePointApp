@@ -555,11 +555,11 @@ select TOP (select @Quantity)  * from [dbo].[CarpetNumber] Where Item_Finished_I
 Update UpdateStock Set Pack = @PackId,PackingDetailID=@OrderId,Pack_Date=@CreatedOn,PackSource = @Source
 
 INSERT INTO [sales].[Order_Item_Details]
-([trans_id],[stock_id],[order_id],[order_type],[order_type_prefix],[sale_type],[qty],[currency_type],
+([bill_id],[trans_id],[stock_id],[order_id],[order_type],[order_type_prefix],[sale_type],[qty],[currency_type],
 [price],[price_inr],[conversion_rate],[unit],[item_type],[item_desc],[created_datetime],
 [created_by],[is_active],[session_year],[finishedid])
-select @TransId,x.TStockNo as StockId,@OrderId,@OrderType,@OrderTypePrefix,@SalesType,1,@CurrencyType,
-x.Price,@PriceINR,@ConversionRate,@Unit,@ItemType,@ItemDescription,@CreatedOn,@CreatedBy,@IsActive,@SessionYear,@FinishedId
+select 0,@TransId,x.TStockNo as StockId,@OrderId,@OrderType,@OrderTypePrefix,@SalesType,1,@CurrencyType,
+x.Price,x.Price,@ConversionRate,@Unit,@ItemType,@ItemDescription,@CreatedOn,@CreatedBy,@IsActive,@SessionYear,@FinishedId
 from [dbo].[CarpetNumber] as  x Where x.Pack = 101 and x.PackSource = @Source and  x.PackingDetailID = @OrderId 
 
 END";

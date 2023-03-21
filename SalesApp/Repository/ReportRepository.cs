@@ -63,7 +63,10 @@ namespace SalesApp.Repository
                                     //    on ma.AgentId equals ur.Id into ul
                                     //   from ulmaster in ul.Where(f => f.IsActive == true).DefaultIfEmpty()
 
-                                    where item.IsActive == true  && ((pcm.fromdate == null ? item.CreatedDatetime.Value.Date > DateTime.Today : item.CreatedDatetime.Value.Date >= pcm.fromdate.Date && item.CreatedDatetime.Value.Date <= pcm.Todate.Date) || (item.CreatedDatetime.Value.Date >= pcm.fromdate.Date && item.CreatedDatetime.Value.Date <= pcm.fromdate.Date))
+                                    where item.IsActive == true 
+                                    
+                                    
+                                    //&& ((pcm.fromdate == null ? item.CreatedDatetime.Value.Date > DateTime.Today : item.CreatedDatetime.Value.Date >= pcm.fromdate.Date && item.CreatedDatetime.Value.Date <= pcm.Todate.Date) || (item.CreatedDatetime.Value.Date >= pcm.fromdate.Date && item.CreatedDatetime.Value.Date <= pcm.fromdate.Date))
 
                               select new ReportVM
                               {

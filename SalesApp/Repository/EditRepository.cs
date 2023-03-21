@@ -37,22 +37,20 @@ namespace SalesApp.Repository
                                 on m.StockId equals car.TStockNo into carpet
                                 from sc in carpet.DefaultIfEmpty()
                                 join view in this._DBERP.V_FinishedItemDetail
-                                on sc.item_finished_id equals view.ITEM_FINISHED_ID into view
-                                from finish in view.DefaultIfEmpty()
-
+                                on sc.item_finished_id equals view.ITEM_FINISHED_ID
                                 where master.IsActive == true && m.CreatedBy == userid && m.ItemType == 1 && master.salestatus == 1 
                                 select new Edititemprintdeatils
                                 {
                                     orderid = m.OrderId,
-                                    customername = order.Name,
-                                    stockdesc =m.ItemDesc,
+                                    customername = order != null ? order.Name : "WebSale",
+                                    stockdesc = view.ITEM_NAME + ',' + view.QUALITYNAME + ',' + view.SizeInch,
                                     stockvalue = m.PriceInr,
                                     unit = m.Unit,
                                     prefix = m.OrderTypePrefix,
-                                    billdesc = m.OrderTypePrefix + "/" + m.Unit + "/" + m.BillId,
-                                    billid = m.BillId,
-                                    saletype=m.SaleType,
-                                    itemorderid=m.Id
+                                    billdesc = m.OrderTypePrefix + "/" + m.Unit + "/" + Convert.ToInt64(m.BillId),
+                                    billid = Convert.ToInt64(m.BillId),
+                                    saletype = m.SaleType,
+                                    itemorderid = m.Id
 
                                 }).ToList().GroupBy(m => m.orderid)
     .Select(g => new Edititemprintdeatils
@@ -85,21 +83,20 @@ namespace SalesApp.Repository
                                 on m.StockId equals car.TStockNo into carpet
                                 from sc in carpet.DefaultIfEmpty()
                                 join view in this._DBERP.V_FinishedItemDetail
-                                on sc.item_finished_id equals view.ITEM_FINISHED_ID into view
-                                from finish in view.DefaultIfEmpty()
+                                on sc.item_finished_id equals view.ITEM_FINISHED_ID
 
                                 where m.IsActive == true && m.CreatedBy == userid && m.ItemType == 1  &&  master.salestatus==0
                                 select new Edititemprintdeatils
                                 {
                                     orderid = m.OrderId,
-                                    customername = order.Name,
-                                    stockdesc = m.ItemDesc,
+                                    customername = order != null ? order.Name : "WebSale",
+                                    stockdesc = view.ITEM_NAME + ',' + view.QUALITYNAME + ',' + view.SizeInch,
                                     stockvalue = m.PriceInr,
                                     unit = m.Unit,
                                     prefix = m.OrderTypePrefix,
                                     billdesc = m.OrderTypePrefix + "/" + m.Unit + "/" + m.BillId,
-                                    billid = m.BillId,
-                                    itemorderid=m.Id,
+                                    billid = Convert.ToInt64(m.BillId),
+                                    itemorderid =m.Id,
                                     odate = m.CreatedDatetime
 
                                 }).ToList().GroupBy(m => m.orderid)
