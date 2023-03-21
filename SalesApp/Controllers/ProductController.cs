@@ -86,6 +86,7 @@ namespace SalesApp.Controllers
                     item.CreatedOn = DateTime.Now;
                     item.IsActive = true;
                     item.Source = "WebSales";
+                    item.CreatedBy = 1;
                 }
 
 
