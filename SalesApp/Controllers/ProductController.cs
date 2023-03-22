@@ -25,9 +25,6 @@ namespace SalesApp.Controllers
         private readonly IProductService prodSrv;
         public ProductController(IProductService _prodSrv)
         {
-
-
-
             prodSrv = _prodSrv;
         }
 
@@ -88,8 +85,6 @@ namespace SalesApp.Controllers
                     item.Source = "WebSales";
                     item.CreatedBy = 1;
                 }
-
-
                 return Ok(await prodSrv.CreateOrder(model));
             }
             catch (Exception ex)

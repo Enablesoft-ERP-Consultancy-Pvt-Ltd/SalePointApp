@@ -560,7 +560,7 @@ INSERT INTO [sales].[Order_Item_Details]
 [price],[price_inr],[conversion_rate],[unit],[item_type],[item_desc],[created_datetime],
 [created_by],[is_active],[session_year],[finishedid])
 select 0,@TransId,x.TStockNo as StockId,@OrderId,@OrderType,@OrderTypePrefix,@SalesType,1,@CurrencyType,
-x.Price,x.Price,@ConversionRate,@Unit,@ItemType,@ItemDescription,@CreatedOn,@CreatedBy,@IsActive,@SessionYear,@FinishedId
+@Price,@Price,@ConversionRate,@Unit,@ItemType,@ItemDescription,@CreatedOn,@CreatedBy,@IsActive,@SessionYear,@FinishedId
 from #temp as  x 
 drop table #temp
 END";
