@@ -1,0 +1,87 @@
+﻿@model SalesApp.ViewModel.UserLoginVM
+@{
+    ViewData["Title"] = "Index";
+    Layout = null;
+}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Login to Iexpro</title>
+    <!--Loading bootstrap css-->
+    <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,700" />
+    <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,700,300" />
+    <link href="~/content/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/content/lib/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="~/content/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link type="text/css" rel="stylesheet" href="~/Content/css/style.css" />
+    <link type="text/css" rel="stylesheet" href="~/Content/css/style-responsive.css" />
+</head>
+<body class="h-100">
+    <div id="root" class="h-100">
+        <div class="fixed-background"></div>
+        <div class="container p-0 pt-5 h-100 position-relative">
+            <div class="row g-0 h-100">
+                <div class="col-12 h-100 pb-4 px-4 pt-0 p-lg-0">
+                    <div class="sw-lg-80 login-bg shadow-deep py-5">
+                        <div class="sw-lg-80 px-5">
+                            <div class="row mb-5">
+                                <div class="col-xl-12 text-center">
+                                    <div class="sh-11">
+                                        <div class="logo-default mx-auto">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-6">
+                                                    <img class="img-fluid" src="images/logo.png" alt="" />
+                                                </div>
+                                                <div class="col-lg-6 col-6">
+                                                    <img style="max-height: 70px;" class="img-fluid" src="images/logo/42_company.png" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <form class="tooltip-end-bottom was-validated" asp-action="Login" >
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <div class="mb-3 filled form-group tooltip-end-top">
+                                                    <i class="icon-14 bi-person-fill text-primary"></i>
+                                                  <input asp-for="UserName" required class="form-control pe-7 " placeholder="User Name" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <div class="mb-3 filled form-group tooltip-end-top">
+                                                    <i class="icon-14 bi-unlock text-primary"></i>
+                                                    <input asp-for="UserPass" required  type="password"  class="form-control pe-7" placeholder="Password" >
+                                                    @*<a class="text-small position-absolute t-3 e-3" href="Pages.Authentication.ForgotPassword.html">Forgot?</a>*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6 mx-auto">
+                                                <input type="submit" value="Login" CssClass="btn btn-lg btn-danger">
+                                            </div>
+                                            <div class="col-xl-6 mt-5">
+                                                @*<p>Don't have an account ? <a href="#">Register here</a></p>                                           *@
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="~/content/lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="~/content/lib/jquery-migrate-1.2.1.min.js"></script>
+    <script src="~/vendor/bootstrap/js/popper.js"></script>
+    <script type="text/javascript" src="~/content/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+   
+</body>
+</html>
