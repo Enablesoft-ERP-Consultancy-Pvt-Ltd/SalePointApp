@@ -228,12 +228,12 @@ ISNULL(S.ShapeName, '') ShapeName, Q.Hscode HSNCode, Isnull(IM.ITEM_CODE, '') It
 IsNull(Q.QualityCode, '')  QualityCode, IsNull(SZ.WidthInch, 0) Width,IsNull(SZ.LengthINCH, 0) Length,
 IsNull(SZ.HeightINCH, 0) Height, ipm.status as Status, 
 IPM.Description,IsNull(ProdAreaFt, 0) ProdAreaFt,IsNull(ProdAreaMtr, 0) ProdAreaMtr, 
-UTM.UnitTypeID as UnitTypeId, UTM.UnitType,tblImg.PHOTO,tblImg.Remarks,
+UTM.UnitTypeID as UnitTypeId, UTM.UnitType,tblImg.PHOTO as ImagePath,tblImg.Remarks,
 stock.StockNo,stock.TStockNo,ISNULL(stock.Price, 0 ) AS Price,stock.Rec_Date as ReceiveDate
-FROM  ITEM_MASTER IM(Nolock) Inner Join ITEM_PARAMETER_MASTER IPM(Nolock) ON IM.ITEM_ID = IPM.ITEM_ID 
-inner join CarpetNumber stock(Nolock) ON IPM.ITEM_FINISHED_ID  = stock.Item_Finished_Id  
-JOIN ITEM_CATEGORY_MASTER ICM(Nolock) ON IM.CATEGORY_ID  = ICM.CATEGORY_ID  
-JOIN UNIT_TYPE_MASTER UTM(Nolock) ON IM.UnitTypeID  = UTM.UnitTypeID
+FROM  ITEM_MASTER IM(Nolock) Inner JOIN ITEM_PARAMETER_MASTER IPM(Nolock) ON IM.ITEM_ID = IPM.ITEM_ID 
+Inner JOIN CarpetNumber stock(Nolock) ON IPM.ITEM_FINISHED_ID  = stock.Item_Finished_Id  
+LEFT JOIN ITEM_CATEGORY_MASTER ICM(Nolock) ON IM.CATEGORY_ID  = ICM.CATEGORY_ID  
+LEFT JOIN UNIT_TYPE_MASTER UTM(Nolock) ON IM.UnitTypeID  = UTM.UnitTypeID
 LEFT JOIN Quality Q(Nolock) ON Q.QualityId = IPM.QUALITY_ID   
 LEFT JOIN Design D(Nolock) ON D.DesignId = IPM.DESIGN_ID   
 LEFT JOIN Color C(Nolock) ON C.ColorId = IPM.COLOR_ID   
@@ -320,12 +320,12 @@ ISNULL(S.ShapeName, '') ShapeName, Q.Hscode HSNCode, Isnull(IM.ITEM_CODE, '') It
 IsNull(Q.QualityCode, '')  QualityCode, IsNull(SZ.WidthInch, 0) Width,IsNull(SZ.LengthINCH, 0) Length,
 IsNull(SZ.HeightINCH, 0) Height, ipm.status as Status, 
 IPM.Description,IsNull(ProdAreaFt, 0) ProdAreaFt,IsNull(ProdAreaMtr, 0) ProdAreaMtr, 
-UTM.UnitTypeID as UnitTypeId, UTM.UnitType,tblImg.PHOTO,tblImg.Remarks,
+UTM.UnitTypeID as UnitTypeId, UTM.UnitType,tblImg.PHOTO as ImagePath,tblImg.Remarks,
 stock.StockNo,stock.TStockNo,ISNULL(stock.Price, 0 ) AS Price,stock.Rec_Date as ReceiveDate
-FROM  ITEM_MASTER IM(Nolock) Inner Join ITEM_PARAMETER_MASTER IPM(Nolock) ON IM.ITEM_ID = IPM.ITEM_ID 
-inner join CarpetNumber stock(Nolock) ON IPM.ITEM_FINISHED_ID  = stock.Item_Finished_Id  
-JOIN ITEM_CATEGORY_MASTER ICM(Nolock) ON IM.CATEGORY_ID  = ICM.CATEGORY_ID  
-JOIN UNIT_TYPE_MASTER UTM(Nolock) ON IM.UnitTypeID  = UTM.UnitTypeID
+FROM  ITEM_MASTER IM(Nolock) Inner JOIN ITEM_PARAMETER_MASTER IPM(Nolock) ON IM.ITEM_ID = IPM.ITEM_ID 
+Inner JOIN CarpetNumber stock(Nolock) ON IPM.ITEM_FINISHED_ID  = stock.Item_Finished_Id  
+LEFT JOIN ITEM_CATEGORY_MASTER ICM(Nolock) ON IM.CATEGORY_ID  = ICM.CATEGORY_ID  
+LEFT JOIN UNIT_TYPE_MASTER UTM(Nolock) ON IM.UnitTypeID  = UTM.UnitTypeID
 LEFT JOIN Quality Q(Nolock) ON Q.QualityId = IPM.QUALITY_ID   
 LEFT JOIN Design D(Nolock) ON D.DesignId = IPM.DESIGN_ID   
 LEFT JOIN Color C(Nolock) ON C.ColorId = IPM.COLOR_ID   
