@@ -24,7 +24,7 @@ namespace SalesApp.Models.Product
         public int CreatedBy { get; set; }
         public bool IsActive { get; set; }
 
-
+        public CustomerModel Customer { get; set; }
 
     }
 
@@ -55,7 +55,7 @@ namespace SalesApp.Models.Product
 
         public string Source { get; set; }
         public short PackId { get; set; }
-        
+
 
 
     }
@@ -82,19 +82,37 @@ namespace SalesApp.Models.Product
 
 
     public class CancelOrderModel
-    {      
+    {
         public int OrderId { get; set; }
         public int CreatedBy { get; set; }
         public bool IsActive { get; set; }
         public int PackingDetailId { get; set; }
         public int BillId { get; set; }
         public int SaleStatus { get; set; }
-        public DateTime CreatedOn { get; set; } 
+        public DateTime CreatedOn { get; set; }
 
     }
 
 
 
+    public class CustomerModel
+    {
+        public int OrderId { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string Country { get; set; }
+        public string State { get; set; }
+        public string City { get; set; }
+        public string ZipCode { get; set; }
+        public string ShippingAddress { get; set; }
+        public string ContactNo { get; set; }
+        public string Email { get; set; }
+        public bool IsActive { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
+
+
+    }
 
 
 

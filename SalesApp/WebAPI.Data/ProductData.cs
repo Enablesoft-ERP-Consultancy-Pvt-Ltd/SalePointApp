@@ -116,10 +116,10 @@ Where IM.MasterCompanyId=@StoreId and stock.CurrentProStatus=1 and stock.Pack=0;
                                    Description = itmGroup.FirstOrDefault().Description,
                                    UnitTypeId = itmGroup.FirstOrDefault().UnitTypeId != null ? itmGroup.FirstOrDefault().UnitTypeId : 0,
                                    UnitType = itmGroup.FirstOrDefault().UnitType,
-                                   
+
                                    PrimePhoto = !string.IsNullOrEmpty(itmGroup.FirstOrDefault().ImagePath) ? Path.Combine(this.BaseUrl, (string)itmGroup.FirstOrDefault().ImagePath) : this.NoImage,
                                    ProductImages = itmGroup.Where(x => !string.IsNullOrEmpty(x.ImagePath)).Select(x => (Path.Combine(this.BaseUrl, (string)x.ImagePath))).ToList(),
-                                  
+
                                    Price = itmGroup.FirstOrDefault().Price != null ? itmGroup.FirstOrDefault().Price : 0,
                                    Stocks = itmGroup.Select(x => (long)x.StockNo).ToList(),
                                    StockNos = itmGroup.Select(x => (string)x.TStockNo).ToList(),
@@ -350,6 +350,14 @@ select SCOPE_IDENTITY();
                         @CreatedBy = _model.CreatedBy,
                         @CreatedOn = _model.CreatedOn
                     }, transaction));
+
+                    string CustQuery;
+                    CustQuery = @"INSERT INTO [sales].[Customer_Details]([order_id],[name],[address],[state],[city],[country],[zipcode],[shippingaddress],		 
+[mobile],[email],[created_datetime],[created_by])
+VALUES(@OrderId,@Name,@Address,@State,@City,@Country,@ZipCode,@ShippingAddress,
+@ContactNo,@Email,@CreatedOn,@CreatedBy)";
+
+                    var addCust = (await cnn.ExecuteAsync(CustQuery, _model.Customer, transaction));
 
                     _model.ItemList.ForEach(x => x.OrderId = _model.OrderId);
 
