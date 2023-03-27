@@ -66,7 +66,13 @@ namespace SalesApp.Controllers
                 model.IsActive = true;
                 model.Unit = 1;
                 model.DisCountPer = 10;
-              
+
+
+                model.Customer.CreatedBy = 1;
+                model.Customer.CreatedOn = DateTime.Now;
+                model.Customer.IsActive = true;
+
+
                 foreach (var item in model.ItemList)
                 {
                     item.TransId = model.TransactionId;

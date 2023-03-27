@@ -357,6 +357,9 @@ select SCOPE_IDENTITY();
 VALUES(@OrderId,@Name,@Address,@State,@City,@Country,@ZipCode,@ShippingAddress,
 @ContactNo,@Email,@CreatedOn,@CreatedBy)";
 
+
+                    _model.Customer.OrderId = _model.OrderId;
+
                     var addCust = (await cnn.ExecuteAsync(CustQuery, _model.Customer, transaction));
 
                     _model.ItemList.ForEach(x => x.OrderId = _model.OrderId);
@@ -410,6 +413,11 @@ END";
                     {
 
                         obj.Data = -1;
+
+                        if (transaction != null)
+                        {
+                            transaction.Rollback();
+                        }
 
                     }
                     obj.Message = obj.Data > 0 ? "Data Found." : "No Data found.";
