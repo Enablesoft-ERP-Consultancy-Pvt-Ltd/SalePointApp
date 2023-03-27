@@ -376,11 +376,10 @@ VALUES(@OrderId,@Name,@Address,@State,@City,@Country,@ZipCode,@ShippingAddress,
                     //Where TStockNo=@StockId;";
 
                     string sqlQuery = @"Declare @Count int
-Update [dbo].[CarpetNumber] Set Pack=0, PackingID=null,Pack_Date=null Where PackingID>=101 and Pack_Date<=GETDATE() and Item_Finished_Id=@FinishedId
+Update [dbo].[CarpetNumber] Set Pack=0, PackingID=null,Pack_Date=null Where PackingID>=101 and Item_Finished_Id=@FinishedId
 SELECT @Count=count(*) FROM CarpetNumber WHERE Item_Finished_Id=@FinishedId AND Pack=0
 IF (@Count>=@Quantity) 
 BEGIN
-
 WITH UpdateStock AS(
 select TOP (select @Quantity)  * from [dbo].[CarpetNumber] Where Item_Finished_Id=@FinishedId AND Pack=0 
 )
