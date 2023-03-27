@@ -150,7 +150,7 @@ namespace SalesApp.Controllers
         }
 
 
-        [HttpPost("cancelAllOrder")]
+        [HttpGet("cancelAllOrder")]
         [ProducesResponseType(typeof(ServiceResponse<bool>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ServiceResponse<bool>), StatusCodes.Status400BadRequest)]
 
