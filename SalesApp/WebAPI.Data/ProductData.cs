@@ -568,6 +568,64 @@ where y.order_id = @OrderId";
 
 
 
+        public async Task<ServiceResponse<bool>> CancelAllOrder()
+        {
+            bool IsSuccess = false;
+            ServiceResponse<bool> obj = new ServiceResponse<bool>();
+            string Message = string.Empty;
+            IDbTransaction transaction = null;
+            try
+            {
+                using (IDbConnection cnn = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
+                {
+                    if (cnn.State != ConnectionState.Open)
+                        cnn.Open();
+                    transaction = cnn.BeginTransaction();
+
+                    string sqlQuery = @"Update y SET y.is_active = 'false',y.updated_by = 1,y.updated_datetime = getDate() ,y.bill_id = 0
+from sales.Order_Master x Inner Join sales.Order_Item_Details y on x.id = y.order_id 
+inner join  [dbo].[CarpetNumber] z on  z.TStockNo = y.stock_id
+Where z.Pack >= 101
+Update y SET y.is_active = 'false',y.updated_by = 1
+from sales.Order_Item_Details x Inner Join sales.Order_Payment y on x.order_id = y.order_id 
+inner join  [dbo].[CarpetNumber] z on  z.TStockNo = x.stock_id
+Where z.Pack >= 101
+Update x SET x.PackingDetailId = 0,x.packsource = '',x.Pack = 0,x.Pack_Date = null
+from[dbo].[CarpetNumber] x inner join[sales].Order_Item_Details y on x.TStockNo = y.stock_id
+where x.Pack >= 101";
+
+                    int rowsAffected = await cnn.ExecuteAsync(sqlQuery, transaction);
+                    transaction.Commit();
+
+                    if (rowsAffected > 0)
+                    {
+
+                        IsSuccess = true;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                if (transaction != null)
+                {
+                    transaction.Rollback();
+                }
+                Message = ex.Message;
+                IsSuccess = false;
+            }
+            finally
+            {
+                if (transaction != null)
+                    transaction.Dispose();
+            }
+
+
+            obj.Data = IsSuccess;
+            obj.Result = IsSuccess;
+            obj.Message = IsSuccess ? "Data Found." : "No Data found.";
+            return obj;
+        }
 
 
 

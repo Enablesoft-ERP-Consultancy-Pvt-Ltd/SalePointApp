@@ -77,7 +77,7 @@ namespace SalesApp.Controllers
                 {
                     item.TransId = model.TransactionId;
                     item.PackId = 101;
-                    item.PriceINR = item.Price; 
+                    item.PriceINR = item.Price;
                     item.Unit = 1;
                     item.CurrencyType = 6;
                     item.SalesType = (short)SaleType.OF;
@@ -85,7 +85,7 @@ namespace SalesApp.Controllers
                     item.OrderType = 1;
                     item.OrderTypePrefix = SaleType.OF.ToString();
                     item.ConversionRate = 1;
-                    item.SessionYear = DateTime.Now.Year;             
+                    item.SessionYear = DateTime.Now.Year;
                     item.CreatedOn = DateTime.Now;
                     item.IsActive = true;
                     item.Source = "WebSales";
@@ -137,10 +137,29 @@ namespace SalesApp.Controllers
             {
                 model.CreatedBy = 1;
                 model.PackingDetailId = 0;
-                model.BillId = 0;              
+                model.BillId = 0;
                 model.IsActive = false;
                 model.CreatedOn = DateTime.Now;
                 return Ok(await prodSrv.CancelOrder(model));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+
+        [HttpPost("cancelAllOrder")]
+        [ProducesResponseType(typeof(ServiceResponse<bool>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceResponse<bool>), StatusCodes.Status400BadRequest)]
+
+        public async Task<IActionResult> CancelOrder()
+        {
+            try
+            {
+
+                return Ok(await prodSrv.CancelAllOrder());
             }
             catch (Exception ex)
             {
