@@ -31,6 +31,9 @@ namespace SalesApp.Models.Product
 
     public class OrderItemModel
     {
+
+
+        public int CustomerId { get; set; }
         public int OrderItemId { get; set; }
         public int OrderId { get; set; }
         public string TransId { get; set; }
