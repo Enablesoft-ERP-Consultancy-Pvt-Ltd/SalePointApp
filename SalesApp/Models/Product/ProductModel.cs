@@ -43,10 +43,13 @@ namespace SalesApp.Models.Product
         public IList<string> ProductImages { get; set; }
         public IList<long> Stocks { get; set; }
         public IList<string> StockNos { get; set; }
+        //public int Quantity
+        //{
+        //    get { return Stocks.Count(); }
+        //}
+
         public int Quantity
-        {
-            get { return Stocks.Count(); }
-        }
+        { get; set; }
 
         public DateTime CreatedOn { get; set; }
     }

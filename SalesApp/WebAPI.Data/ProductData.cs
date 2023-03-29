@@ -121,8 +121,12 @@ Where IM.MasterCompanyId=@StoreId and stock.CurrentProStatus=1 and stock.Pack=0;
                                    ProductImages = itmGroup.Where(x => !string.IsNullOrEmpty(x.ImagePath)).Select(x => (Path.Combine(this.BaseUrl, (string)x.ImagePath))).ToList(),
 
                                    Price = itmGroup.FirstOrDefault().Price != null ? itmGroup.FirstOrDefault().Price : 0,
-                                   Stocks = itmGroup.Select(x => (long)x.StockNo).ToList(),
-                                   StockNos = itmGroup.Select(x => (string)x.TStockNo).ToList(),
+                                   //Stocks = itmGroup.Select(x => (long)x.StockNo).ToList(),
+                                   //StockNos = itmGroup.Select(x => (string)x.TStockNo).ToList(),
+                                   Quantity = itmGroup.Count(),
+
+
+
                                    CreatedOn = itmGroup.FirstOrDefault().ReceiveDate != null ? itmGroup.FirstOrDefault().ReceiveDate : DateTime.Now,
 
                                }); ;
@@ -138,7 +142,7 @@ Where IM.MasterCompanyId=@StoreId and stock.CurrentProStatus=1 and stock.Pack=0;
             ServiceResponse<ProductModel> obj = new ServiceResponse<ProductModel>();
             using (var connection = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
             {
-                string sql = @"SELECT distinct IM.MasterCompanyId,IM.ITEM_ID as ItemId,IPM.ITEM_FINISHED_ID as ItemFinishId,IPM.Quality_Id as QualityId,
+                string sql = @"SELECT DISTINCT TOP 1000 IM.MasterCompanyId,IM.ITEM_ID as ItemId,IPM.ITEM_FINISHED_ID as ItemFinishId,IPM.Quality_Id as QualityId,
 IPM.Color_Id ColorId, IPM.design_Id DesignId, IPM.Size_Id SizeId,IPM.Shape_Id ShapeId,IPM.Shadecolor_Id ShadeColorId,
 ICM.CATEGORY_ID as CategoryId,IPM.ProductCode, 
 IM.ITEM_NAME as ItemName, ICM.CATEGORY_NAME as CategoryName, ISNULL(Q.QualityName, '') QualityName, 
@@ -207,6 +211,7 @@ Where IPM.ITEM_FINISHED_ID=@ItemFinishId;";
                                    Price = itmGroup.FirstOrDefault().Price != null ? itmGroup.FirstOrDefault().Price : 0,
                                    Stocks = itmGroup.Select(x => (long)x.StockNo).ToList(),
                                    StockNos = itmGroup.Select(x => (string)x.TStockNo).ToList(),
+                                   Quantity = itmGroup.Count(),
                                    CreatedOn = itmGroup.FirstOrDefault().ReceiveDate != null ? itmGroup.FirstOrDefault().ReceiveDate : DateTime.Now,
 
                                }).FirstOrDefault();
