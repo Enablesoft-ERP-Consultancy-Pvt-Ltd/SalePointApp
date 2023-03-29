@@ -126,7 +126,7 @@ Where IM.MasterCompanyId=@StoreId and stock.CurrentProStatus=1 and stock.Pack=0;
                                    Quantity = itmGroup.Count(),
                                    CreatedOn = itmGroup.FirstOrDefault().ReceiveDate != null ? itmGroup.FirstOrDefault().ReceiveDate : DateTime.Now,
 
-                               }).Take(500); 
+                               }).Take(1000); 
                 obj.Data = objItem;
                 obj.Result = obj.Data.Count() > 0 ? true : false;
                 obj.Message = obj.Data.Count() > 0 ? "Data Found." : "No Data found.";
