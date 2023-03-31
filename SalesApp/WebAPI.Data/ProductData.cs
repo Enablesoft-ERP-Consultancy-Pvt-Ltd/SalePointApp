@@ -121,9 +121,7 @@ Where IM.MasterCompanyId=@StoreId and stock.CurrentProStatus=1 and stock.Pack=0;
                                    ProductImages = itmGroup.Where(x => !string.IsNullOrEmpty(x.ImagePath)).Select(x => (Path.Combine(this.BaseUrl, (string)x.ImagePath))).ToList(),
 
                                    Price = itmGroup.FirstOrDefault().Price != null ? itmGroup.FirstOrDefault().Price : 0,
-                                   //Stocks = itmGroup.Select(x => (long)x.StockNo).ToList(),
-                                   //StockNos = itmGroup.Select(x => (string)x.TStockNo).ToList(),
-                                   Quantity = itmGroup.Count(),
+                                   Quantity = itmGroup.Select(x => (long)x.StockNo).Distinct().Count(),
                                    CreatedOn = itmGroup.FirstOrDefault().ReceiveDate != null ? itmGroup.FirstOrDefault().ReceiveDate : DateTime.Now,
 
                                }).Take(1000); 
@@ -206,9 +204,9 @@ Where IPM.ITEM_FINISHED_ID=@ItemFinishId;";
                                    ProductImages = itmGroup.Where(x => !string.IsNullOrEmpty(x.ImagePath)).Select(x => (Path.Combine(this.BaseUrl, (string)x.ImagePath))).ToList(),
 
                                    Price = itmGroup.FirstOrDefault().Price != null ? itmGroup.FirstOrDefault().Price : 0,
-                                   Stocks = itmGroup.Select(x => (long)x.StockNo).ToList(),
-                                   StockNos = itmGroup.Select(x => (string)x.TStockNo).ToList(),
-                                   Quantity = itmGroup.Count(),
+                                   Stocks = itmGroup.Select(x => (long)x.StockNo).Distinct().ToList(),
+                                   StockNos = itmGroup.Select(x => (string)x.TStockNo).Distinct().ToList(),
+                                   Quantity = itmGroup.Select(x => (long)x.StockNo).Distinct().Count(),
                                    CreatedOn = itmGroup.FirstOrDefault().ReceiveDate != null ? itmGroup.FirstOrDefault().ReceiveDate : DateTime.Now,
 
                                }).FirstOrDefault();
