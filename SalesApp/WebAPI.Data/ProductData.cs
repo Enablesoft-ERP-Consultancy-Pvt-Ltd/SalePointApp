@@ -33,185 +33,10 @@ namespace SalesApp.WebAPI.Data
         {
             configuration = _configuration;
             this._hostEnvironment = hostEnvironment;
-            //this.NoImage = Path.Combine(hostEnvironment.WebRootPath + "/images/", "no-image.png");
-
-            //var abs = CommonHelper.AbsolutePath("/images/no-image.png");
-
-
             var request = httpContextAccessor.HttpContext.Request;
-            //var domain = $"{request.Scheme}://{request.Host}";
-
-
-
-            this.BaseUrl = $"{request.Scheme}://{configuration.GetConnectionString("ImageHost").ToString()}";
+            this.BaseUrl = $"https://{configuration.GetConnectionString("ImageHost").ToString()}";
             this.NoImage = Path.Combine(this.BaseUrl, "no-image.png");
-
-
         }
-
-
-
-
-        //public async Task<ServiceResponse<UserModel>> LogInUser(LoginModel model)
-        //{
-        //    ServiceResponse<UserModel> obj = new ServiceResponse<UserModel>();
-        //    try
-        //    {
-        //        using (IDbConnection connection = new SqlConnection(configuration.GetConnectionString("DBConnectionString").ToString()))
-        //        {
-        //            string sqlQuery = "select * from tblUser where UserName=@UserName and UserPassword=@UserPassword and IsActive=@IsActive";
-
-        //            var result = (await connection.QueryAsync(sqlQuery,
-        //                new
-        //                {
-        //                    @UserName = model.UserName,
-        //                    @UserPassword = model.Password,
-        //                    @IsActive = model.IsActive
-        //                })).FirstOrDefault();
-
-        //            if (result.UserId > 0)
-        //            {
-
-        //                var resObj = new UserModel
-        //                {
-        //                    UserId = result.UserId,
-
-        //                    UserName = result.UserName,
-        //                };
-
-        //                string sqlstr = "insert Into tblLogin(UserId,LogIn) Values(@UserId,@LogIn) select SCOPE_IDENTITY();";
-        //                resObj.LoginInId = (long)(connection.Query<long>(sqlstr, new { @UserId = result.UserId, @LogIn = DateTime.Now }).First());
-
-        //                obj.Data = resObj;
-        //                obj.Result = obj.Data.LoginInId > 0 ? true : false;
-        //                obj.Message = obj.Data.LoginInId > 0 ? "Data Found." : "No Data found.";
-
-        //            }
-        //        };
-
-        //        return obj;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        obj.Message = ex.Message;
-        //        return obj;
-        //    }
-        //}
-
-        //public async Task<ServiceResponse<string>> LogOutUser(int userId)
-        //{
-        //    ServiceResponse<string> obj = new ServiceResponse<string>();
-        //    try
-        //    {
-        //        using (IDbConnection cnn = new SqlConnection(configuration.GetConnectionString("DBConnectionString").ToString()))
-        //        {
-        //            string sqlQuery = "Update tblLogin Set LogOut=@LogOut Where UserId=@UserId; ";
-
-        //            int rowsAffected = cnn.Execute(sqlQuery, new { @LogOut = DateTime.Now, @UserId = userId });
-        //            if (rowsAffected > 0)
-        //            {
-        //                obj.Result = true;
-        //                obj.Data = "Sucessfully  Created.";
-        //            }
-        //            else
-        //            {
-        //                obj.Data = null;
-        //                obj.Message = "Failed new creation.";
-        //            }
-
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        obj.Message = ex.Message;
-        //        return obj;
-        //    }
-        //    finally
-        //    {
-
-        //    }
-        //    return obj;
-        //}
-
-        //public async Task<ServiceResponse<string>> AddUser(AccountUserModel _model)
-        //{
-        //    ServiceResponse<string> sres = new ServiceResponse<string>();
-        //    IDbTransaction transaction = null;
-
-        //    try
-        //    {
-        //        using (IDbConnection cnn = new SqlConnection(configuration.GetConnectionString("DBConnectionString").ToString()))
-        //        {
-        //            if (cnn.State != ConnectionState.Open)
-        //                cnn.Open();
-        //            transaction = cnn.BeginTransaction();
-
-        //            string _query = "INSERT INTO tblUser (UserKey,UserType,UserName,UserPassword,Organization,Title,SSN,FirstName,MiddleName,LastName,DOB,Email,CellPhone,HomePhone,EmgPhone,EmgContact,Gender,MaritalStatus,Ethnicity,SupervisorId,IsActive,CreatedOn,CreatedBy) VALUES (@UserKey,@UserType,@UserName,@UserPassword,@Organization,@Title,@SSN,@FirstName,@MiddleName,@LastName,@DOB,@Email,@CellPhone,@HomePhone,@EmgPhone,@EmgContact,@Gender,@MaritalStatus,@Ethnicity,@SupervisorId,@IsActive,@CreatedOn,@CreatedBy); select SCOPE_IDENTITY();";
-
-        //            _model.UserId = (int)(cnn.ExecuteScalar<int>(_query, _model, transaction));
-        //            string sqlQuery = "Insert Into tblAddress (UserId,AddressType,FlatNo,Address,City,Country,State,ZipCode,Longitude,Latitude,CreatedOn,CreatedBy) Values (@UserId,@AddressType,@FlatNo,@Address,@City,@Country,@State,@ZipCode,@Longitude,@Latitude,@CreatedOn,@CreatedBy);";
-        //            int rowsAffected = cnn.Execute(sqlQuery, new
-        //            {
-        //                @UserId = _model.UserId,
-        //                @AddressType = 1,
-        //                @FlatNo = _model.HomeAddress.FlatNo,
-        //                @Address = _model.HomeAddress.Address,
-        //                @City = _model.HomeAddress.City,
-        //                @Country = "USA",
-        //                @State = _model.HomeAddress.State,
-        //                @ZipCode = _model.HomeAddress.ZipCode,
-        //                @Longitude = _model.HomeAddress.Longitude,
-        //                @Latitude = _model.HomeAddress.Latitude,
-        //                @CreatedOn = _model.CreatedOn,
-        //                @CreatedBy = _model.CreatedBy
-        //            }, transaction);
-        //            transaction.Commit();
-        //            if (rowsAffected > 0)
-        //            {
-        //                sres.Result = true;
-        //                sres.Data = "Sucessfully  Created.";
-        //            }
-        //            else
-        //            {
-        //                sres.Data = null;
-        //                sres.Message = "Failed new creation.";
-        //            }
-
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        if (transaction != null)
-        //        {
-        //            transaction.Rollback();
-        //        }
-        //        sres.Message = ex.Message;
-        //        return sres;
-        //    }
-        //    finally
-        //    {
-        //        if (transaction != null)
-        //            transaction.Dispose();
-        //    }
-        //    return sres;
-        //}
-
-        //public async Task<ServiceResponse<IEnumerable<AccountUserModel>>> GetUser(int userType)
-        //{
-        //    ServiceResponse<IEnumerable<AccountUserModel>> obj = new ServiceResponse<IEnumerable<AccountUserModel>>();
-        //    using (var connection = new SqlConnection(configuration.GetConnectionString("DBConnectionString").ToString()))
-        //    {
-        //        string sql = "Select * from tblUser Where UserType=@UserType; ";
-        //        IEnumerable<AccountUserModel> results = (await connection.QueryAsync<AccountUserModel>(sql,
-        //                 new { @UserType = userType }));
-        //        obj.Data = results;
-        //        obj.Result = results.Any() ? true : false;
-        //        obj.Message = results.Any() ? "Data Found." : "No Data found.";
-        //    }
-        //    return obj;
-        //}
 
 
         public async Task<ServiceResponse<IEnumerable<ProductModel>>> GetProductList(int StoreId)
@@ -219,7 +44,7 @@ namespace SalesApp.WebAPI.Data
             ServiceResponse<IEnumerable<ProductModel>> obj = new ServiceResponse<IEnumerable<ProductModel>>();
             using (var connection = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
             {
-                string sql = @"SELECT distinct IM.MasterCompanyId,IM.ITEM_ID as ItemId,IPM.ITEM_FINISHED_ID as ItemFinishId,IPM.Quality_Id as QualityId,
+                string sql = @"SELECT DISTINCT IM.MasterCompanyId,IM.ITEM_ID as ItemId,IPM.ITEM_FINISHED_ID as ItemFinishId,IPM.Quality_Id as QualityId,
 IPM.Color_Id ColorId, IPM.design_Id DesignId, IPM.Size_Id SizeId,IPM.Shape_Id ShapeId,IPM.Shadecolor_Id ShadeColorId,
 ICM.CATEGORY_ID as CategoryId,IPM.ProductCode, 
 IM.ITEM_NAME as ItemName, ICM.CATEGORY_NAME as CategoryName, ISNULL(Q.QualityName, '') QualityName, 
@@ -228,12 +53,12 @@ ISNULL(S.ShapeName, '') ShapeName, Q.Hscode HSNCode, Isnull(IM.ITEM_CODE, '') It
 IsNull(Q.QualityCode, '')  QualityCode, IsNull(SZ.WidthInch, 0) Width,IsNull(SZ.LengthINCH, 0) Length,
 IsNull(SZ.HeightINCH, 0) Height, ipm.status as Status, 
 IPM.Description,IsNull(ProdAreaFt, 0) ProdAreaFt,IsNull(ProdAreaMtr, 0) ProdAreaMtr, 
-UTM.UnitTypeID as UnitTypeId, UTM.UnitType,tblImg.PHOTO,tblImg.Remarks,
+UTM.UnitTypeID as UnitTypeId, UTM.UnitType,tblImg.PHOTO as ImagePath,tblImg.Remarks,
 stock.StockNo,stock.TStockNo,ISNULL(stock.Price, 0 ) AS Price,stock.Rec_Date as ReceiveDate
-FROM  ITEM_MASTER IM(Nolock) Inner Join ITEM_PARAMETER_MASTER IPM(Nolock) ON IM.ITEM_ID = IPM.ITEM_ID 
-inner join CarpetNumber stock(Nolock) ON IPM.ITEM_FINISHED_ID  = stock.Item_Finished_Id  
-JOIN ITEM_CATEGORY_MASTER ICM(Nolock) ON IM.CATEGORY_ID  = ICM.CATEGORY_ID  
-JOIN UNIT_TYPE_MASTER UTM(Nolock) ON IM.UnitTypeID  = UTM.UnitTypeID
+FROM  ITEM_MASTER IM(Nolock) Inner JOIN ITEM_PARAMETER_MASTER IPM(Nolock) ON IM.ITEM_ID = IPM.ITEM_ID 
+Inner JOIN CarpetNumber stock(Nolock) ON IPM.ITEM_FINISHED_ID  = stock.Item_Finished_Id  
+LEFT JOIN ITEM_CATEGORY_MASTER ICM(Nolock) ON IM.CATEGORY_ID  = ICM.CATEGORY_ID  
+LEFT JOIN UNIT_TYPE_MASTER UTM(Nolock) ON IM.UnitTypeID  = UTM.UnitTypeID
 LEFT JOIN Quality Q(Nolock) ON Q.QualityId = IPM.QUALITY_ID   
 LEFT JOIN Design D(Nolock) ON D.DesignId = IPM.DESIGN_ID   
 LEFT JOIN Color C(Nolock) ON C.ColorId = IPM.COLOR_ID   
@@ -291,14 +116,15 @@ Where IM.MasterCompanyId=@StoreId and stock.CurrentProStatus=1 and stock.Pack=0;
                                    Description = itmGroup.FirstOrDefault().Description,
                                    UnitTypeId = itmGroup.FirstOrDefault().UnitTypeId != null ? itmGroup.FirstOrDefault().UnitTypeId : 0,
                                    UnitType = itmGroup.FirstOrDefault().UnitType,
-                                   PrimePhoto = itmGroup.FirstOrDefault().ImagePath != null ? Path.Combine(this.BaseUrl, (string)itmGroup.FirstOrDefault().ImagePath) : this.NoImage,
-                                   ProductImages = itmGroup.Where(x => x.ImagePath != null).Select(x => (Path.Combine(this.BaseUrl, (string)x.ImagePath))).ToList(),
+
+                                   PrimePhoto = !string.IsNullOrEmpty(itmGroup.FirstOrDefault().ImagePath) ? Path.Combine(this.BaseUrl, (string)itmGroup.FirstOrDefault().ImagePath) : this.NoImage,
+                                   ProductImages = itmGroup.Where(x => !string.IsNullOrEmpty(x.ImagePath)).Select(x => (Path.Combine(this.BaseUrl, (string)x.ImagePath))).ToList(),
+
                                    Price = itmGroup.FirstOrDefault().Price != null ? itmGroup.FirstOrDefault().Price : 0,
-                                   Stocks = itmGroup.Select(x => (long)x.StockNo).ToList(),
-                                   StockNos = itmGroup.Select(x => (string)x.TStockNo).ToList(),
+                                   Quantity = itmGroup.Select(x => (long)x.StockNo).Distinct().Count(),
                                    CreatedOn = itmGroup.FirstOrDefault().ReceiveDate != null ? itmGroup.FirstOrDefault().ReceiveDate : DateTime.Now,
 
-                               }); ;
+                               }).Take(1000); 
                 obj.Data = objItem;
                 obj.Result = obj.Data.Count() > 0 ? true : false;
                 obj.Message = obj.Data.Count() > 0 ? "Data Found." : "No Data found.";
@@ -311,7 +137,7 @@ Where IM.MasterCompanyId=@StoreId and stock.CurrentProStatus=1 and stock.Pack=0;
             ServiceResponse<ProductModel> obj = new ServiceResponse<ProductModel>();
             using (var connection = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
             {
-                string sql = @"SELECT distinct IM.MasterCompanyId,IM.ITEM_ID as ItemId,IPM.ITEM_FINISHED_ID as ItemFinishId,IPM.Quality_Id as QualityId,
+                string sql = @"SELECT DISTINCT IM.MasterCompanyId,IM.ITEM_ID as ItemId,IPM.ITEM_FINISHED_ID as ItemFinishId,IPM.Quality_Id as QualityId,
 IPM.Color_Id ColorId, IPM.design_Id DesignId, IPM.Size_Id SizeId,IPM.Shape_Id ShapeId,IPM.Shadecolor_Id ShadeColorId,
 ICM.CATEGORY_ID as CategoryId,IPM.ProductCode, 
 IM.ITEM_NAME as ItemName, ICM.CATEGORY_NAME as CategoryName, ISNULL(Q.QualityName, '') QualityName, 
@@ -320,12 +146,12 @@ ISNULL(S.ShapeName, '') ShapeName, Q.Hscode HSNCode, Isnull(IM.ITEM_CODE, '') It
 IsNull(Q.QualityCode, '')  QualityCode, IsNull(SZ.WidthInch, 0) Width,IsNull(SZ.LengthINCH, 0) Length,
 IsNull(SZ.HeightINCH, 0) Height, ipm.status as Status, 
 IPM.Description,IsNull(ProdAreaFt, 0) ProdAreaFt,IsNull(ProdAreaMtr, 0) ProdAreaMtr, 
-UTM.UnitTypeID as UnitTypeId, UTM.UnitType,tblImg.PHOTO,tblImg.Remarks,
+UTM.UnitTypeID as UnitTypeId, UTM.UnitType,tblImg.PHOTO as ImagePath,tblImg.Remarks,
 stock.StockNo,stock.TStockNo,ISNULL(stock.Price, 0 ) AS Price,stock.Rec_Date as ReceiveDate
-FROM  ITEM_MASTER IM(Nolock) Inner Join ITEM_PARAMETER_MASTER IPM(Nolock) ON IM.ITEM_ID = IPM.ITEM_ID 
-inner join CarpetNumber stock(Nolock) ON IPM.ITEM_FINISHED_ID  = stock.Item_Finished_Id  
-JOIN ITEM_CATEGORY_MASTER ICM(Nolock) ON IM.CATEGORY_ID  = ICM.CATEGORY_ID  
-JOIN UNIT_TYPE_MASTER UTM(Nolock) ON IM.UnitTypeID  = UTM.UnitTypeID
+FROM  ITEM_MASTER IM(Nolock) Inner JOIN ITEM_PARAMETER_MASTER IPM(Nolock) ON IM.ITEM_ID = IPM.ITEM_ID 
+Inner JOIN CarpetNumber stock(Nolock) ON IPM.ITEM_FINISHED_ID  = stock.Item_Finished_Id  
+LEFT JOIN ITEM_CATEGORY_MASTER ICM(Nolock) ON IM.CATEGORY_ID  = ICM.CATEGORY_ID  
+LEFT JOIN UNIT_TYPE_MASTER UTM(Nolock) ON IM.UnitTypeID  = UTM.UnitTypeID
 LEFT JOIN Quality Q(Nolock) ON Q.QualityId = IPM.QUALITY_ID   
 LEFT JOIN Design D(Nolock) ON D.DesignId = IPM.DESIGN_ID   
 LEFT JOIN Color C(Nolock) ON C.ColorId = IPM.COLOR_ID   
@@ -373,11 +199,14 @@ Where IPM.ITEM_FINISHED_ID=@ItemFinishId;";
                                    Description = itmGroup.FirstOrDefault().Description,
                                    UnitTypeId = itmGroup.FirstOrDefault().UnitTypeId != null ? itmGroup.FirstOrDefault().UnitTypeId : 0,
                                    UnitType = itmGroup.FirstOrDefault().UnitType,
-                                   PrimePhoto = itmGroup.FirstOrDefault().ImagePath != null ? Path.Combine(this.BaseUrl, (string)itmGroup.FirstOrDefault().ImagePath) : this.NoImage,
-                                   ProductImages = itmGroup.Where(x => x.ImagePath != null).Select(x => (Path.Combine(this.BaseUrl, (string)x.ImagePath))).ToList(),
+
+                                   PrimePhoto = !string.IsNullOrEmpty(itmGroup.FirstOrDefault().ImagePath) ? Path.Combine(this.BaseUrl, (string)itmGroup.FirstOrDefault().ImagePath) : this.NoImage,
+                                   ProductImages = itmGroup.Where(x => !string.IsNullOrEmpty(x.ImagePath)).Select(x => (Path.Combine(this.BaseUrl, (string)x.ImagePath))).ToList(),
+
                                    Price = itmGroup.FirstOrDefault().Price != null ? itmGroup.FirstOrDefault().Price : 0,
-                                   Stocks = itmGroup.Select(x => (long)x.StockNo).ToList(),
-                                   StockNos = itmGroup.Select(x => (string)x.TStockNo).ToList(),
+                                   Stocks = itmGroup.Select(x => (long)x.StockNo).Distinct().ToList(),
+                                   StockNos = itmGroup.Select(x => (string)x.TStockNo).Distinct().ToList(),
+                                   Quantity = itmGroup.Select(x => (long)x.StockNo).Distinct().Count(),
                                    CreatedOn = itmGroup.FirstOrDefault().ReceiveDate != null ? itmGroup.FirstOrDefault().ReceiveDate : DateTime.Now,
 
                                }).FirstOrDefault();
@@ -387,14 +216,6 @@ Where IPM.ITEM_FINISHED_ID=@ItemFinishId;";
             }
             return obj;
         }
-
-
-
-
-
-
-
-
 
 
         public async Task<ServiceResponse<ProductModel>> AddToCardt(int ItemFinishId, int Quantity, string Source, short PackId)
@@ -505,16 +326,16 @@ END";
 
                     string Query;
                     Query = @"INSERT INTO [sales].[Order_Master]
-([sale_date],[transaction_id],[delievery_type],[port_type],[description],[unit],[created_datetime],
+([mirror_id],[sale_date],[transaction_id],[delievery_type],[port_type],[description],[unit],[created_datetime],
 [created_by],[is_active],[sale_status],[session_year],[DISCOUNTPER])
 VALUES
-(@SaleDate,@TransactionId,@DelieveryType,@PortType,@Description,@Unit,@CreatedOn,
+(@MirrorId,@SaleDate,@TransactionId,@DelieveryType,@PortType,@Description,@Unit,@CreatedOn,
 @CreatedBy,@IsActive,@SaleStatus,@SessionYear,@DisCountPer);
 select SCOPE_IDENTITY();
 ";
                     _model.OrderId = (await cnn.ExecuteScalarAsync<int>(Query, new
                     {
-
+                        @MirrorId=_model.MirrorId,
                         @TransactionId = _model.TransactionId,
                         @SaleDate = _model.SaleDate,
                         @SaleStatus = _model.SaleStatus,
@@ -529,30 +350,54 @@ select SCOPE_IDENTITY();
                         @CreatedOn = _model.CreatedOn
                     }, transaction));
 
+                    string CustQuery;
+                    CustQuery = @"INSERT INTO [sales].[Customer_Details]([order_id],[title],[name],[address],[state],[city],[country],[zipcode],[shippingaddress],		 
+[mobile],[email],[created_datetime],[created_by],[mob_country_code])
+VALUES(@OrderId,@Title,@Name,@Address,@State,@City,@Country,@ZipCode,@ShippingAddress,
+@ContactNo,@Email,@CreatedOn,@CreatedBy,@CountryCode)";
+
+                    _model.Customer.OrderId = _model.OrderId;
+
+                    var addCust = (await cnn.ExecuteAsync(CustQuery, _model.Customer, transaction));
+
                     _model.ItemList.ForEach(x => x.OrderId = _model.OrderId);
 
-                    //                    string sqlQuery = @"INSERT INTO [sales].[Order_Item_Details]
+                    //string sqlQuery = @"INSERT INTO [sales].[Order_Item_Details]
                     //([trans_id],[stock_id],[order_id],[order_type],[order_type_prefix],[sale_type],[qty],[currency_type],
                     //[price],[price_inr],[conversion_rate],[unit],[item_type],[item_desc],[created_datetime],
                     //[created_by],[is_active],[session_year],[hsncode],[finishedid])
                     //VALUES
                     //(@TransId,@StockId,@OrderId,@OrderType,@OrderTypePrefix,@SalesType,@Qty,@CurrencyType,
                     //@Price,@PriceINR,@ConversionRate,@Unit,@ItemType,@ItemDescription,@CreatedOn,@CreatedBy,@IsActive,@SessionYear,@HsnCode,@FinishedId);
-
                     //Update [dbo].[CarpetNumber] Set PackDate=@CreatedOn,Pack=2,PackSource=@PackSource,PackingDetailId=SCOPE_IDENTITY(),PackingId=@OrderId
                     //Where TStockNo=@StockId;";
 
                     string sqlQuery = @"Declare @Count int
-Update [dbo].[CarpetNumber] Set Pack=0, PackingID=null,Pack_Date=null Where PackingID>=101 and Pack_Date<=GETDATE() and Item_Finished_Id=@FinishedId
+Update x SET x.is_active = 'false',x.updated_by = 1,x.updated_datetime = getDate() ,x.bill_id = 0
+from sales.Order_Master x Inner Join sales.Order_Item_Details y on x.id = y.order_id 
+inner join  [dbo].[CarpetNumber] z on  z.TStockNo = y.stock_id
+Where z.Pack>=101 and z.Item_Finished_Id=@FinishedId and z.PackSource = @Source and z.PackingID=@CustomerId
+
+Update y SET y.is_active = 'false',y.updated_by = 1,y.updated_datetime = getDate() ,y.bill_id = 0
+from sales.Order_Master x Inner Join sales.Order_Item_Details y on x.id = y.order_id 
+inner join  [dbo].[CarpetNumber] z on  z.TStockNo = y.stock_id
+Where z.Pack>=101 and z.Item_Finished_Id=@FinishedId and z.PackSource = @Source and z.PackingID=@CustomerId
+
+Update y SET y.is_active = 'false',y.updated_by = 1
+from sales.Order_Item_Details x Inner Join sales.Order_Payment y on x.order_id = y.order_id 
+inner join  [dbo].[CarpetNumber] z on  z.TStockNo = x.stock_id
+Where z.Pack>=101 and z.Item_Finished_Id=@FinishedId and z.PackSource = @Source and z.PackingID=@CustomerId
+Update x SET x.PackingDetailId = 0,x.PackingID=null,x.packsource = '',x.Pack = 0,x.Pack_Date = null
+from[dbo].[CarpetNumber] x inner join[sales].Order_Item_Details y on x.TStockNo = y.stock_id
+where x.Pack>=101 and x.Item_Finished_Id=@FinishedId and x.PackSource = @Source and x.PackingID=@CustomerId
 SELECT @Count=count(*) FROM CarpetNumber WHERE Item_Finished_Id=@FinishedId AND Pack=0
 IF (@Count>=@Quantity) 
 BEGIN
-
 WITH UpdateStock AS(
 select TOP (select @Quantity)  * from [dbo].[CarpetNumber] Where Item_Finished_Id=@FinishedId AND Pack=0 
 )
 select * into #temp from UpdateStock
-Update p Set p.Pack = @PackId,p.PackingDetailID=@OrderId,p.Pack_Date=@CreatedOn,p.PackSource = @Source  from  
+Update p Set p.Pack = @PackId,p.PackingID=@CustomerId,p.PackingDetailID=@OrderId,p.Pack_Date=@CreatedOn,p.PackSource = @Source  from  
 CarpetNumber p inner join  #temp q on p.TStockNo=q.TStockNo
 
 INSERT INTO [sales].[Order_Item_Details]
@@ -570,16 +415,18 @@ END";
 
                     if (rowsAffected > 0)
                     {
-
-
                         obj.Data = _model.OrderId;
-
 
                     }
                     else
                     {
 
                         obj.Data = -1;
+
+                        if (transaction != null)
+                        {
+                            transaction.Rollback();
+                        }
 
                     }
                     obj.Message = obj.Data > 0 ? "Data Found." : "No Data found.";
@@ -684,7 +531,9 @@ where y.order_id=@OrderId";
                         cnn.Open();
                     transaction = cnn.BeginTransaction();
 
-                    string sqlQuery = @"Update y SET y.is_active = @IsActive,y.updated_by = @CreatedBy,y.updated_datetime = @CreatedOn ,y.bill_id = @BillId
+                    string sqlQuery = @"Update x SET x.is_active = @IsActive,x.updated_by = @CreatedBy,x.updated_datetime = @CreatedOn ,x.bill_id = @BillId
+from sales.Order_Master x Inner Join sales.Order_Item_Details y on x.id = y.order_id Where y.order_id = @OrderId
+Update y SET y.is_active = @IsActive,y.updated_by = @CreatedBy,y.updated_datetime = @CreatedOn ,y.bill_id = @BillId
 from sales.Order_Master x Inner Join sales.Order_Item_Details y on x.id = y.order_id Where y.order_id = @OrderId
 Update y SET y.is_active = @IsActive,y.updated_by = @CreatedBy
 from sales.Order_Master x Inner Join sales.Order_Payment y on x.id = y.order_id Where y.order_id = @OrderId
@@ -730,6 +579,57 @@ where y.order_id = @OrderId";
 
 
 
+        public async Task<ServiceResponse<bool>> CancelAllOrder()
+        {
+            bool IsSuccess = false;
+            ServiceResponse<bool> obj = new ServiceResponse<bool>();
+            string Message = string.Empty;
+     
+            try
+            {
+                using (IDbConnection cnn = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
+                {
+                    if (cnn.State != ConnectionState.Open)
+                        cnn.Open();
+                    
+
+                    string sqlQuery = @"Update y SET y.is_active = 'false',y.updated_by = 1,y.updated_datetime = getDate() ,y.bill_id = 0
+from sales.Order_Master x Inner Join sales.Order_Item_Details y on x.id = y.order_id 
+inner join  [dbo].[CarpetNumber] z on  z.TStockNo = y.stock_id
+Where z.Pack >= 101
+Update y SET y.is_active = 'false',y.updated_by = 1
+from sales.Order_Item_Details x Inner Join sales.Order_Payment y on x.order_id = y.order_id 
+inner join  [dbo].[CarpetNumber] z on  z.TStockNo = x.stock_id
+Where z.Pack >= 101
+Update x SET x.PackingDetailId = 0,x.packsource = '',x.Pack = 0,x.Pack_Date = null
+from[dbo].[CarpetNumber] x inner join[sales].Order_Item_Details y on x.TStockNo = y.stock_id
+where x.Pack >= 101";
+
+                    int rowsAffected = await cnn.ExecuteAsync(sqlQuery);
+        
+
+                    if (rowsAffected > 0)
+                    {
+
+                        IsSuccess = true;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+               
+                Message = ex.Message;
+                IsSuccess = false;
+            }
+         
+
+
+            obj.Data = IsSuccess;
+            obj.Result = IsSuccess;
+            obj.Message = IsSuccess ? "Data Found." : "No Data found.";
+            return obj;
+        }
 
 
 

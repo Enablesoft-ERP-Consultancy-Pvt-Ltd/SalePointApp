@@ -1,10 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="Service\**" />
     <Compile Remove="uploadedcustomorder\**" />
@@ -19,13 +17,11 @@
     <None Remove="uploadedcustomorder\**" />
     <None Remove="Views\Sale\**" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Remove="Controllers\MeetingController.cs" />
     <Compile Remove="Properties\Startup.cs" />
     <Compile Remove="ViewModel\PaymentVM.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Aspose.BarCode" Version="20.8.0" />
     <PackageReference Include="Dapper" Version="2.0.123" />
@@ -47,27 +43,22 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Entities\Entities.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="SalesApp.csproj" />
     <None Include="SalesApp.csproj.user" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="ClosedXML">
-      <HintPath>..\..\IExproERP\IExproERP\Library\ClosedXML.dll</HintPath>
-    </Reference>
-    <Reference Include="DocumentFormat.OpenXml">
-      <HintPath>..\..\IExproERP\IExproERP\Library\DocumentFormat.OpenXml.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
   <ItemGroup>
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
-
+  <ItemGroup>
+    <Reference Include="ClosedXML">
+      <HintPath>..\..\Library\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml">
+      <HintPath>..\..\Library\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

@@ -45,5 +45,17 @@ namespace SalesApp.WebAPI.Service
             return await data.CancelOrder(_model);
         }
 
+        public async Task<ServiceResponse<bool>> CancelAllOrder()
+        {
+            return await data.CancelAllOrder();
         }
+
+
+
+
+
+
+
+
+    }
 }
