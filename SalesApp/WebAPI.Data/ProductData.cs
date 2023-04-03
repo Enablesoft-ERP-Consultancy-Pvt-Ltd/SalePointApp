@@ -326,15 +326,16 @@ END";
 
                     string Query;
                     Query = @"INSERT INTO [sales].[Order_Master]
-([sale_date],[transaction_id],[delievery_type],[port_type],[description],[unit],[created_datetime],
+([mirror_id],[sale_date],[transaction_id],[delievery_type],[port_type],[description],[unit],[created_datetime],
 [created_by],[is_active],[sale_status],[session_year],[DISCOUNTPER])
 VALUES
-(@SaleDate,@TransactionId,@DelieveryType,@PortType,@Description,@Unit,@CreatedOn,
+(@MirrorId,@SaleDate,@TransactionId,@DelieveryType,@PortType,@Description,@Unit,@CreatedOn,
 @CreatedBy,@IsActive,@SaleStatus,@SessionYear,@DisCountPer);
 select SCOPE_IDENTITY();
 ";
                     _model.OrderId = (await cnn.ExecuteScalarAsync<int>(Query, new
                     {
+                        @MirrorId=_model.MirrorId,
                         @TransactionId = _model.TransactionId,
                         @SaleDate = _model.SaleDate,
                         @SaleStatus = _model.SaleStatus,
@@ -350,10 +351,10 @@ select SCOPE_IDENTITY();
                     }, transaction));
 
                     string CustQuery;
-                    CustQuery = @"INSERT INTO [sales].[Customer_Details]([order_id],[name],[address],[state],[city],[country],[zipcode],[shippingaddress],		 
-[mobile],[email],[created_datetime],[created_by])
-VALUES(@OrderId,@Name,@Address,@State,@City,@Country,@ZipCode,@ShippingAddress,
-@ContactNo,@Email,@CreatedOn,@CreatedBy)";
+                    CustQuery = @"INSERT INTO [sales].[Customer_Details]([order_id],[title],[name],[address],[state],[city],[country],[zipcode],[shippingaddress],		 
+[mobile],[email],[created_datetime],[created_by],[mob_country_code])
+VALUES(@OrderId,@Title,@Name,@Address,@State,@City,@Country,@ZipCode,@ShippingAddress,
+@ContactNo,@Email,@CreatedOn,@CreatedBy,@CountryCode)";
 
                     _model.Customer.OrderId = _model.OrderId;
 

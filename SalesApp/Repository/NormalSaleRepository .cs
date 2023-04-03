@@ -2101,7 +2101,7 @@ namespace SalesApp.Repository
                                                     {
                                                         Name = c.Name,
                                                         countryid = c.countryid,
-                                                        Country = country.Name,
+                                                        Country = country.Name==null?c.Country: country.Name,
                                                         Title = c.Title,
                                                         City = c.City,
                                                         Zipcode = c.Zipcode,
@@ -2113,8 +2113,8 @@ namespace SalesApp.Repository
                                                         Address = c.Address,
                                                         Email = c.Email,
                                                         PassportNo = m.PassportNo,
-                                                        nationality = country.Name,
-                                                        GSTIN=c.GSTIN,
+                                                        nationality = country.Name == null ? c.Country : country.Name,
+                                                        GSTIN =c.GSTIN,
                                                         ShippingAddress=c.shippingaddress
 
                                                     }).FirstOrDefaultAsync();

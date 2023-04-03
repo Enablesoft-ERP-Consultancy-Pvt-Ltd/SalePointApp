@@ -5,6 +5,9 @@ namespace SalesApp.Models.Product
 {
     public class OrderModel
     {
+
+
+
         public int OrderId { get; set; }
         public DateTime SaleDate { get; set; }
         public string TransactionId { get; set; }
@@ -17,7 +20,7 @@ namespace SalesApp.Models.Product
         public List<OrderItemModel> ItemList { get; set; }
         public int Unit { get; set; } //Remove
         public int MirrorId { get; set; }//Remove
-        public int DisCountPer { get; set; } //Remove
+        public decimal DisCountPer { get; set; } //Remove
 
 
         public DateTime CreatedOn { get; set; }
@@ -101,6 +104,9 @@ namespace SalesApp.Models.Product
     public class CustomerModel
     {
         public int OrderId { get; set; }
+
+
+        public string Title { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
         public string Country { get; set; }
@@ -108,6 +114,9 @@ namespace SalesApp.Models.Product
         public string City { get; set; }
         public string ZipCode { get; set; }
         public string ShippingAddress { get; set; }
+
+
+        public string CountryCode { get; set; }
         public string ContactNo { get; set; }
         public string Email { get; set; }
         public bool IsActive { get; set; }
