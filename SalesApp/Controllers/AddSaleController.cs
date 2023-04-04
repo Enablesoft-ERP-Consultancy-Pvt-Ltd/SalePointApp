@@ -801,7 +801,7 @@ namespace SalesApp.Controllers
             InvoiceVM invoice = new InvoiceVM();
             invoice.Open2Pdf = true;
             invoice.ShowPDFs = true;
-            string host = _httpContextAccessor.HttpContext.Request.Scheme + @"://" + _httpContextAccessor.HttpContext.Request.Host.Value + @"/uploadedcustomorder/{0}/" + orderid + ".html";
+            string host = _httpContextAccessor.HttpContext.Request.Scheme + @"://" + _httpContextAccessor.HttpContext.Request.Host.Value + _httpContextAccessor.HttpContext.Request.PathBase + @"/uploadedcustomorder/{0}/" + orderid + ".html";
 
             if (cashdetails.cashsaledetailsCM.Count > 0)
             {
