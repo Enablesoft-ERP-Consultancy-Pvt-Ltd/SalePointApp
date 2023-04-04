@@ -15,6 +15,7 @@ namespace SalesApp.WebAPI.Data.IData
         Task<ServiceResponse<int>> CreateOrder(OrderModel _model);
         Task<ServiceResponse<bool>> AddPayment(OrderPaymentModel _model);
         Task<ServiceResponse<bool>> CancelOrder(CancelOrderModel _model);
-    Task<ServiceResponse<bool>> CancelAllOrder();
+        Task<ServiceResponse<bool>> CancelAllOrder();
+        Task<ServiceResponse<IEnumerable<BillModel>>> GetAllWebOrder();
     }
 }

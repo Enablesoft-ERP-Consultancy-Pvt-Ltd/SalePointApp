@@ -1,43 +1,19 @@
-﻿
-@model SalesApp.ViewModel.InvoiceVM;
+﻿@model SalesApp.ViewModel.InvoiceVM;
 
 @{
     ViewBag.Title = "Add Normal Sale Item";
-
+    var fileUrl = Model.PdfUrl1 == null ? Model.PdfUrl2 : Model.PdfUrl1;
 }
 
 
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script>
-    //window.parent.close();
-</script>
-@*<script>
-    if(@Model.PdfUrl1 !='')
-    {*@
-   @*CashMemo : <iframe id="pdfviewer" src="@Model.PdfUrl1" frameborder="0" width="100 % " height="100 % " name="CashMemo"></iframe>*@
-@*}*@
-@*if(@Model.PdfUrl2 !='')
-    {*@
-@*OrderForm : <iframe id="pdfviewer" src="@Model.PdfUrl2" frameborder="0" width="100 % " height="100 % " name="OrderForm"></iframe>*@
-    @*}*@
-@*window.parent.close();
-    </script>*@
-
 <script type="text/javascript">
 
-
-    var url = '@Model.PdfUrl2';
+    var url = '@fileUrl';
     if ((url != '') && (url != null)) {
         window.open(url, '_blank');
-    }
-
-    var url1 = '@Model.PdfUrl1';
-     if ((url1 != '') && (url1 != null)) {
-        window.open(url1, '_blank');
     }
     window.parent.close();
 </script>
 
-@*var url1 = @Model.PdfUrl1;
-    var  url2= @Model.PdfUrl2;*@

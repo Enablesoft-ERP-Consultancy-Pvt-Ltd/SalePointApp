@@ -50,12 +50,15 @@ namespace SalesApp.WebAPI.Service
             return await data.CancelAllOrder();
         }
 
+        public async Task<ServiceResponse<IEnumerable<BillModel>>> GetAllWebOrder()
+        {
+            return await data.GetAllWebOrder();
+        }
 
 
 
 
 
 
-
-    }
+        }
 }

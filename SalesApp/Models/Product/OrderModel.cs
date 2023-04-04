@@ -3,6 +3,15 @@ using System.Collections.Generic;
 
 namespace SalesApp.Models.Product
 {
+
+
+    public class BillModel
+    {
+
+        public long OrderId { get; set; }
+
+        public long BillId { get; set; }
+    }
     public class OrderModel
     {
 

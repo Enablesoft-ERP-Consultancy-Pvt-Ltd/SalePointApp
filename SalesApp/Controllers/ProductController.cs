@@ -173,6 +173,13 @@ namespace SalesApp.Controllers
         }
 
 
+        [HttpGet("getAllWebOrder")]
+        [ProducesResponseType(typeof(ServiceResponse<List<BillModel>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceResponse<List<BillModel>>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAllWebOrder()
+        {
+            return Ok(await prodSrv.GetAllWebOrder());
+        }
 
 
 

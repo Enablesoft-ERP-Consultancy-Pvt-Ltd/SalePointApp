@@ -124,7 +124,7 @@ Where IM.MasterCompanyId=@StoreId and stock.CurrentProStatus=1 and stock.Pack=0;
                                    Quantity = itmGroup.Select(x => (long)x.StockNo).Distinct().Count(),
                                    CreatedOn = itmGroup.FirstOrDefault().ReceiveDate != null ? itmGroup.FirstOrDefault().ReceiveDate : DateTime.Now,
 
-                               }).Take(1000); 
+                               }).Take(1000);
                 obj.Data = objItem;
                 obj.Result = obj.Data.Count() > 0 ? true : false;
                 obj.Message = obj.Data.Count() > 0 ? "Data Found." : "No Data found.";
@@ -335,7 +335,7 @@ select SCOPE_IDENTITY();
 ";
                     _model.OrderId = (await cnn.ExecuteScalarAsync<int>(Query, new
                     {
-                        @MirrorId=_model.MirrorId,
+                        @MirrorId = _model.MirrorId,
                         @TransactionId = _model.TransactionId,
                         @SaleDate = _model.SaleDate,
                         @SaleStatus = _model.SaleStatus,
@@ -584,14 +584,14 @@ where y.order_id = @OrderId";
             bool IsSuccess = false;
             ServiceResponse<bool> obj = new ServiceResponse<bool>();
             string Message = string.Empty;
-     
+
             try
             {
                 using (IDbConnection cnn = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
                 {
                     if (cnn.State != ConnectionState.Open)
                         cnn.Open();
-                    
+
 
                     string sqlQuery = @"Update y SET y.is_active = 'false',y.updated_by = 1,y.updated_datetime = getDate() ,y.bill_id = 0
 from sales.Order_Master x Inner Join sales.Order_Item_Details y on x.id = y.order_id 
@@ -606,7 +606,7 @@ from[dbo].[CarpetNumber] x inner join[sales].Order_Item_Details y on x.TStockNo 
 where x.Pack >= 101";
 
                     int rowsAffected = await cnn.ExecuteAsync(sqlQuery);
-        
+
 
                     if (rowsAffected > 0)
                     {
@@ -618,11 +618,11 @@ where x.Pack >= 101";
             }
             catch (Exception ex)
             {
-               
+
                 Message = ex.Message;
                 IsSuccess = false;
             }
-         
+
 
 
             obj.Data = IsSuccess;
@@ -633,6 +633,25 @@ where x.Pack >= 101";
 
 
 
+
+        public async Task<ServiceResponse<IEnumerable<BillModel>>> GetAllWebOrder()
+        {
+            ServiceResponse<IEnumerable<BillModel>> obj = new ServiceResponse<IEnumerable<BillModel>>();
+            using (var connection = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
+            {
+                string sql = @"Select y.order_id,IsNull(Max(y.bill_id),00) as BillId 
+  FROM [MirzapurSale].[sales].[Order_Master] x inner join 
+  [MirzapurSale].[sales].[Order_Item_Details] y on x.id=y.order_id and x.description='WebSales'
+  group By y.order_id;";
+
+                var result = (await connection.QueryAsync(sql)).Where(x => x.order_id != null).Select(x => new BillModel { OrderId = (long)x.order_id, BillId = (long)x.BillId });
+
+                obj.Data = result;
+                obj.Result = obj.Data.Count() > 0 ? true : false;
+                obj.Message = obj.Data.Count() > 0 ? "Data Found." : "No Data found.";
+            }
+            return obj;
+        }
 
 
 

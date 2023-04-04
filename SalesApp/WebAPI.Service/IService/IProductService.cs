@@ -17,5 +17,6 @@ namespace SalesApp.WebAPI.Service.IService
         Task<ServiceResponse<bool>> CancelOrder(CancelOrderModel _model);
 
         Task<ServiceResponse<bool>> CancelAllOrder();
+        Task<ServiceResponse<IEnumerable<BillModel>>> GetAllWebOrder();
     }
 }
