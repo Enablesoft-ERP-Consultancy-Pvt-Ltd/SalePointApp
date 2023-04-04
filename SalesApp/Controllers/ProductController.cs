@@ -68,7 +68,6 @@ namespace SalesApp.Controllers
                 model.SaleStatus = (short)SalesStatus.Ordered;
                 model.IsActive = true;
                 model.Unit = 1;
-                model.DisCountPer = 10;
                 model.Customer.Title = "Mr";
                 model.Customer.CountryCode = "+91";
                 model.Customer.CreatedBy = model.CreatedBy;
