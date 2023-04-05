@@ -653,7 +653,29 @@ where x.Pack >= 101";
             return obj;
         }
 
+        public async Task<ServiceResponse<dynamic>> GetOrderDeatil(long orderId)
+        {
+            ServiceResponse<dynamic> obj = new ServiceResponse<dynamic>();
+            using (var connection = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
+            {
+                string sql = @"Select * FROM [MirzapurSale].[sales].[Order_Master] x Left join 
+[MirzapurSale].[sales].[Order_Item_Details] y on x.id=y.order_id 
+Left join 
+[MirzapurSale].[sales].[Order_Payment] z on x.id=z.order_id 
+Left join 
+[MirzapurSale].[sales].[Customer_Details] p on x.id=p.order_id 
+Left join 
+[MirzapurSale].[sales].[Customer_Details] q on x.id=q.order_id
+Where x.id=@OrderId;";
 
+                var result = (await connection.QueryAsync(sql, new { @OrderId = orderId }));
+
+                obj.Data = result;
+                obj.Result = obj.Data != null ? true : false;
+                obj.Message = obj.Data != null ? "Data Found." : "No Data found.";
+            }
+            return obj;
+        }
 
     }
 }

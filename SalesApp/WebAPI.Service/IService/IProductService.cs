@@ -18,5 +18,6 @@ namespace SalesApp.WebAPI.Service.IService
 
         Task<ServiceResponse<bool>> CancelAllOrder();
         Task<ServiceResponse<IEnumerable<BillModel>>> GetAllWebOrder();
+        Task<ServiceResponse<dynamic>> GetOrderDeatil(long orderId);
     }
 }
