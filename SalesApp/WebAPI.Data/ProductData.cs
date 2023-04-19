@@ -34,7 +34,7 @@ namespace SalesApp.WebAPI.Data
             configuration = _configuration;
             this._hostEnvironment = hostEnvironment;
             var request = httpContextAccessor.HttpContext.Request;
-            this.BaseUrl = $"{request.Scheme}://{configuration.GetConnectionString("ImageHost").ToString()}";
+            this.BaseUrl = $"https://{configuration.GetConnectionString("ImageHost").ToString()}";
             this.NoImage = Path.Combine(this.BaseUrl, "no-image.png");
         }
 
