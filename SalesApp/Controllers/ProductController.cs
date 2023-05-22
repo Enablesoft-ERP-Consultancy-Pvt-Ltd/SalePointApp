@@ -82,10 +82,10 @@ namespace SalesApp.Controllers
                     item.PriceINR = item.Price;
                     item.Unit = 1;
                     item.CurrencyType = 6;
-                    item.SalesType = (short)SaleType.OF;
+                    item.SalesType = (short)SaleType.CM;
                     item.ItemType = 1;
                     item.OrderType = 1;
-                    item.OrderTypePrefix = SaleType.OF.ToString();
+                    item.OrderTypePrefix = SaleType.CM.ToString();
                     item.ConversionRate = 1;
                     item.SessionYear = DateTime.Now.Year;
                     item.CreatedOn = DateTime.Now;
