@@ -69,21 +69,6 @@ namespace SalesApp.WebAPI.Data
                 //Where IM.MasterCompanyId=@StoreId and stock.CurrentProStatus=1 and stock.Pack=0;";
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 string sql = @"SELECT
 IPM.ITEM_FINISHED_ID as ItemFinishId,IM.MasterCompanyId,IPM.Quality_Id as QualityId,
 IPM.Color_Id ColorId, IPM.design_Id DesignId, IPM.Size_Id SizeId,IPM.Shape_Id ShapeId,
