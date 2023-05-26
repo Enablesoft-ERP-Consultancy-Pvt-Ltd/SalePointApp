@@ -62,6 +62,7 @@ namespace SALEERP.Data
         public virtual DbSet<CashRegister> CashRegister { get; set; }
         public virtual DbSet<FavourMaster> FavourMaster { get; set; }
         public virtual DbSet<ContractMaster> ContractMaster { get; set; }
+        public virtual DbSet<Session> Session { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -168,6 +169,20 @@ namespace SALEERP.Data
                     .IsUnicode(false);
 
                 entity.Property(e => e.Priority).HasColumnName("priority");
+            });
+            modelBuilder.Entity<Session>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("SESSION");
+
+                entity.Property(e => e.FromDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Session1)
+                    .HasColumnName("Session")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.ToDate).HasColumnType("datetime");
             });
             modelBuilder.Entity<AgentContact>(entity =>
             {
