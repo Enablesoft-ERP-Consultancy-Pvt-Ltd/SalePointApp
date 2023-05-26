@@ -55,9 +55,9 @@ namespace SalesApp.Models.Product
         public DateTime CreatedOn { get; set; }
 
         public List<ItemModel> ItemList { get; set; }
+        public List<StockModel> StockList { get; set; }
+
         
-
-
     }
 
 
@@ -69,5 +69,13 @@ namespace SalesApp.Models.Product
         public string ItemName { get; set; }
     }
 
+
+    public class StockModel
+    {
+        public decimal Price { get; set; }
+
+        public string TStockNo { get; set; }
+        public string StockNo { get; set; }
+    }
 
 }

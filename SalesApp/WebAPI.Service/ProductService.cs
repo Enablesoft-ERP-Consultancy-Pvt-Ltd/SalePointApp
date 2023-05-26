@@ -8,6 +8,7 @@ using SalesApp.Models;
 using System;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml.Drawing.Charts;
+using System.Linq;
 
 namespace SalesApp.WebAPI.Service
 {
@@ -27,7 +28,24 @@ namespace SalesApp.WebAPI.Service
 
         public async Task<ServiceResponse<ProductModel>> GetProductDetail(int ItemFinishId)
         {
-            return await data.GetProductDetail(ItemFinishId);
+            ServiceResponse<ProductModel> result = await data.GetProductDetail(ItemFinishId);
+            var model = result.Data;
+
+            if(model.StockList.Count>0)
+            {
+                model.Quantity = model.StockList.Count;
+                model.Price = model.StockList.Average(x => x.Price);
+            }
+            else
+            {
+
+                model.Quantity = 0;
+            }
+
+
+    
+            result.Data = model;
+            return result;
         }
 
         public async Task<ServiceResponse<int>> CreateOrder(OrderModel _model)
@@ -45,5 +63,5 @@ namespace SalesApp.WebAPI.Service
             return await data.CancelOrder(_model);
         }
 
-        }
+    }
 }
