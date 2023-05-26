@@ -41,6 +41,18 @@ namespace SalesApp.Utility
 
 
 
+    public enum AttributeList
+    {
+        Collection=1,
+        Construction,
+        Material,
+        Texture,
+        Origin,
+        Style,
+        OtherInfo
+
+    }
+
 
 
 

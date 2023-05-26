@@ -56,8 +56,24 @@ namespace SalesApp.Models.Product
 
         public List<ItemModel> ItemList { get; set; }
         public List<StockModel> StockList { get; set; }
-
         
+        public string CollectionName { get; set; }
+        public string ConstructionName { get; set; }
+        public string MaterialName { get; set; }
+        public string OriginName { get; set; }
+        public string StyleName { get; set; }
+        public string TextureName { get; set; }
+        public string OtherInformation { get; set; }
+
+
+
+
+
+
+
+
+
+
     }
 
 
