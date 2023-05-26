@@ -83,7 +83,7 @@ LEFT JOIN Color C(Nolock) ON C.ColorId = IPM.COLOR_ID
 LEFT JOIN ShadeColor SC(Nolock) ON SC.ShadecolorId = IPM.SHADECOLOR_ID   
 LEFT JOIN Shape S(Nolock) ON S.ShapeId = IPM.SHAPE_ID   
 LEFT JOIN Size SZ(Nolock) ON SZ.SizeId = IPM.SIZE_ID
-Where IM.MasterCompanyId=247";
+Where IM.MasterCompanyId=@StoreId";
                     var result = (await connection.QueryAsync(sql, new { @StoreId = StoreId }));
 
                     var objItem = result.Select(x => new ProductModel
@@ -242,7 +242,7 @@ LEFT JOIN Color C(Nolock) ON C.ColorId = IPM.COLOR_ID
 LEFT JOIN ShadeColor SC(Nolock) ON SC.ShadecolorId = IPM.SHADECOLOR_ID   
 LEFT JOIN Shape S(Nolock) ON S.ShapeId = IPM.SHAPE_ID   
 LEFT JOIN Size SZ(Nolock) ON SZ.SizeId = IPM.SIZE_ID
-Where IPM.ITEM_FINISHED_ID=13";
+Where IPM.ITEM_FINISHED_ID=@ItemFinishId";
 
                     var result = (await connection.QueryAsync(sql, new { @ItemFinishId = ItemFinishId }));
                     var objItem = result.Select(x => new ProductModel
