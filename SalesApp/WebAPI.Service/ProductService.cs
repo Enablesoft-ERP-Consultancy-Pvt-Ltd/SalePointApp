@@ -45,23 +45,5 @@ namespace SalesApp.WebAPI.Service
             return await data.CancelOrder(_model);
         }
 
-        public async Task<ServiceResponse<bool>> CancelAllOrder()
-        {
-            return await data.CancelAllOrder();
         }
-
-        public async Task<ServiceResponse<IEnumerable<BillModel>>> GetAllWebOrder()
-        {
-            return await data.GetAllWebOrder();
-        }
-
-
-
-        public async Task<ServiceResponse<dynamic>> GetOrderDeatil(long orderId)
-        {
-            return await data.GetOrderDeatil(orderId);
-        }
-
-
-    }
 }

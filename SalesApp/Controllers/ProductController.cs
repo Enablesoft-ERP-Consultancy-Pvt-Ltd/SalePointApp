@@ -54,9 +54,6 @@ namespace SalesApp.Controllers
         {
             try
             {
-
-                int CustomerId = model.CreatedBy;
-                model.MirrorId = 4;
                 model.CreatedBy = 1;
                 model.CreatedOn = DateTime.Now;
                 model.SaleDate = DateTime.Now;
@@ -68,31 +65,25 @@ namespace SalesApp.Controllers
                 model.SaleStatus = (short)SalesStatus.Ordered;
                 model.IsActive = true;
                 model.Unit = 1;
-                model.Customer.Title = "Mr";
-                model.Customer.CountryCode = "+91";
-                model.Customer.CreatedBy = model.CreatedBy;
-                model.Customer.CreatedOn = DateTime.Now;
-                model.Customer.IsActive = true;
-
-
+                model.DisCountPer = 10;
+              
                 foreach (var item in model.ItemList)
                 {
                     item.TransId = model.TransactionId;
                     item.PackId = 101;
-                    item.PriceINR = item.Price;
+                    item.PriceINR = item.Price; 
                     item.Unit = 1;
                     item.CurrencyType = 6;
-                    item.SalesType = (short)SaleType.CM;
+                    item.SalesType = (short)SaleType.OF;
                     item.ItemType = 1;
                     item.OrderType = 1;
-                    item.OrderTypePrefix = SaleType.CM.ToString();
+                    item.OrderTypePrefix = SaleType.OF.ToString();
                     item.ConversionRate = 1;
-                    item.SessionYear = DateTime.Now.Year;
+                    item.SessionYear = DateTime.Now.Year;             
                     item.CreatedOn = DateTime.Now;
                     item.IsActive = true;
                     item.Source = "WebSales";
-                    item.CreatedBy = model.CreatedBy;
-                    item.CustomerId = CustomerId;
+                    item.CreatedBy = 1;
                 }
                 return Ok(await prodSrv.CreateOrder(model));
             }
@@ -140,7 +131,7 @@ namespace SalesApp.Controllers
             {
                 model.CreatedBy = 1;
                 model.PackingDetailId = 0;
-                model.BillId = 0;
+                model.BillId = 0;              
                 model.IsActive = false;
                 model.CreatedOn = DateTime.Now;
                 return Ok(await prodSrv.CancelOrder(model));
@@ -153,39 +144,7 @@ namespace SalesApp.Controllers
         }
 
 
-        [HttpGet("cancelAllOrder")]
-        [ProducesResponseType(typeof(ServiceResponse<bool>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ServiceResponse<bool>), StatusCodes.Status400BadRequest)]
 
-        public async Task<IActionResult> CancelOrder()
-        {
-            try
-            {
-
-                return Ok(await prodSrv.CancelAllOrder());
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-        }
-
-        [HttpGet("getAllWebOrder")]
-        [ProducesResponseType(typeof(ServiceResponse<List<BillModel>>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ServiceResponse<List<BillModel>>), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllWebOrder()
-        {
-            return Ok(await prodSrv.GetAllWebOrder());
-        }
-        [HttpGet("getOrderDeatil/{OrderId}")]
-        [ProducesResponseType(typeof(ServiceResponse<List<BillModel>>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ServiceResponse<List<BillModel>>), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetOrderDeatil(long OrderId)
-        {
-            return Ok(await prodSrv.GetOrderDeatil(OrderId));
-        }
-      
 
 
     }

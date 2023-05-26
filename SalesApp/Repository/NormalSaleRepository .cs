@@ -1846,8 +1846,10 @@ namespace SalesApp.Repository
             {
 
                 var entityorder = await this._SALESDBE.OrderItemDetails.Where(i => i.OrderId == orderid).ToListAsync().ConfigureAwait(false);
-
-                var entitiyCM = entityorder.Where(a => a.OrderTypePrefix == "CM").ToList();
+                int currentfinancialyear = 0;
+                var data = await this._SALESDBE.Session.ToListAsync();
+                currentfinancialyear = Convert.ToInt32(data.Where(a => a.FromDate <= DateTime.Today && a.ToDate >= DateTime.Today).Max(b => b.Year));
+                var entitiyCM = entityorder.Where(a => a.OrderTypePrefix == "CM" && a.IsActive == true).ToList();
                 var entitiyOF = entityorder.Where(a => a.OrderTypePrefix == "OF" && a.IsActive == true).ToList();
                 uid = await this._SALESDBE.OrderMaster.MaxAsync(p => p.Id).ConfigureAwait(false);
                 if (uid > 0)
@@ -1873,7 +1875,7 @@ namespace SalesApp.Repository
                             }
                             else
                             {
-                                finalbillid = await this._SALESDBE.OrderItemDetails.Where(i => i.OrderTypePrefix == "OF" && i.Unit == unitid).DefaultIfEmpty().MaxAsync(b => (long?)b.BillId) ?? 0;
+                                finalbillid = await this._SALESDBE.OrderItemDetails.Where(i => i.OrderTypePrefix == "OF" && i.CreatedDatetime>= currentFinancialYearStartDate && i.CreatedDatetime<= currentFinancialYearEndDate && i.Unit == unitid).DefaultIfEmpty().MaxAsync(b => (long?)b.BillId) ?? 0;
                             }
                             if (finalbillid == 0)
                             {
@@ -1943,28 +1945,61 @@ namespace SalesApp.Repository
                         if (entitiyCM.Any())
                         {
                             unitid = (int)entitiyCM.FirstOrDefault()?.Unit;
-                            long finalbillid = await this._SALESDBE.OrderItemDetails.Where(i => i.OrderTypePrefix == "CM" && i.Session_Year==currentFinancialYearStartDate.Year && i.Unit == unitid && i.IsActive == true).DefaultIfEmpty().MaxAsync(b => (long?)b.BillId) ?? 0;
+                            long finalbillid = 0;
+                            //long finalbillid = await this._SALESDBE.OrderItemDetails.Where(i => i.OrderTypePrefix == "CM" && i.Session_Year==currentFinancialYearStartDate.Year && i.Unit == unitid && i.IsActive == true).DefaultIfEmpty().MaxAsync(b => (long?)b.BillId) ?? 0;
+
+                            if (entityorder.Where(a => a.OrderTypePrefix == "CM").FirstOrDefault().BillId > 0)
+                            {
+                                //if (currentfinancialyear >= 2023)
+                                //{
+                                //    finalbillid = entityorder.Where(a => a.OrderTypePrefix == "INV").FirstOrDefault().BillId;
+                                //}
+                                //else
+                                //{ 
+                                    finalbillid = entityorder.Where(a => a.OrderTypePrefix == "CM").FirstOrDefault().BillId; 
+                                
+                              //  }
+
+
+                            }
+                            else
+                            {
+                                //if (currentfinancialyear >= 2023)
+                                //{
+                                //    finalbillid = await this._SALESDBE.OrderItemDetails.Where(i => (i.OrderTypePrefix == "INV") && i.Session_Year == currentfinancialyear && i.Unit == unitid).DefaultIfEmpty().MaxAsync(b => (long?)b.BillId) ?? 0;
+                                //}
+                                //else
+                                //{
+                                    finalbillid = await this._SALESDBE.OrderItemDetails.Where(i => (i.OrderTypePrefix == "CM") && i.CreatedDatetime >= currentFinancialYearStartDate && i.CreatedDatetime <= currentFinancialYearEndDate  && i.Session_Year == currentfinancialyear && i.Unit == unitid).DefaultIfEmpty().MaxAsync(b => (long?)b.BillId) ?? 0;
+
+                              //  }
+                            }
+
+
+
                             if (finalbillid == 0)
                             {
-                                if (unitid == 1)
-                                {
-                                    bill_id = Convert.ToInt64(unit1billCM);
+                                //if (unitid == 1)
+                                //{
+                                //    bill_id = Convert.ToInt64(unit1billCM);
 
-                                }
-                                else if (unitid == 2)
+                                //}
+                                //else if (unitid == 2)
+                                //{
+                                //    bill_id = Convert.ToInt64(unit2billCM);
+
+                                //}
+
+                                if (unitid == 2)
                                 {
                                     bill_id = Convert.ToInt64(unit2billCM);
 
                                 }
-                                //else if (unitid == 1 && _sale.saletypevalue == "CM")
-                                //{
-                                //    bill_id = Convert.ToInt64(unit1billCM);
-                                //}
-                                //else if (unitid == 2 && _sale.saletypevalue == "CM")
-                                //{
-                                //    bill_id = Convert.ToInt64(unit2billCM);
-                                //}
+                                else
+                                {
+                                    bill_id = Convert.ToInt64(unit1billCM);
 
+                                }
 
                             }
                             else
@@ -2101,7 +2136,7 @@ namespace SalesApp.Repository
                                                     {
                                                         Name = c.Name,
                                                         countryid = c.countryid,
-                                                        Country = country.Name==null?c.Country: country.Name,
+                                                        Country = country.Name,
                                                         Title = c.Title,
                                                         City = c.City,
                                                         Zipcode = c.Zipcode,
@@ -2113,8 +2148,8 @@ namespace SalesApp.Repository
                                                         Address = c.Address,
                                                         Email = c.Email,
                                                         PassportNo = m.PassportNo,
-                                                        nationality = country.Name == null ? c.Country : country.Name,
-                                                        GSTIN =c.GSTIN,
+                                                        nationality = country.Name,
+                                                        GSTIN=c.GSTIN,
                                                         ShippingAddress=c.shippingaddress
 
                                                     }).FirstOrDefaultAsync();

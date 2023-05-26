@@ -6,21 +6,15 @@
   <ItemGroup>
     <Compile Remove="Service\**" />
     <Compile Remove="uploadedcustomorder\**" />
-    <Compile Remove="Views\Sale\**" />
     <Content Remove="Service\**" />
     <Content Remove="uploadedcustomorder\**" />
-    <Content Remove="Views\Sale\**" />
     <EmbeddedResource Remove="Service\**" />
     <EmbeddedResource Remove="uploadedcustomorder\**" />
-    <EmbeddedResource Remove="Views\Sale\**" />
     <None Remove="Service\**" />
     <None Remove="uploadedcustomorder\**" />
-    <None Remove="Views\Sale\**" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Controllers\MeetingController.cs" />
     <Compile Remove="Properties\Startup.cs" />
-    <Compile Remove="ViewModel\PaymentVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Aspose.BarCode" Version="20.8.0" />
@@ -49,9 +43,87 @@
   <ItemGroup>
     <None Include="SalesApp.csproj" />
     <None Include="SalesApp.csproj.user" />
+    <None Include="Views\Account\Index.cshtml" />
+    <None Include="Views\Account\Test.cshtml" />
+    <None Include="Views\AddSale\Index.cshtml" />
+    <None Include="Views\CashSale\Index.cshtml" />
+    <None Include="Views\CashSale\PartialOrderList.cshtml" />
+    <None Include="Views\CashSale\Payment.cshtml" />
+    <None Include="Views\CustomSale\Index.cshtml" />
+    <None Include="Views\Edit\Index.cshtml" />
+    <None Include="Views\Edit\Temp.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Home\Privacy.cshtml" />
+    <None Include="Views\Mirror\AddCashSale.cshtml" />
+    <None Include="Views\Mirror\AddSale.cshtml" />
+    <None Include="Views\Mirror\Index.cshtml" />
+    <None Include="Views\Mirror\Payment.cshtml" />
+    <None Include="Views\Mirror\UserAccount.cshtml" />
+    <None Include="Views\Print\Index.cshtml" />
+    <None Include="Views\Report\ICINDEX.cshtml" />
+    <None Include="Views\Report\Index.cshtml" />
+    <None Include="Views\Shared\CashMemo.cshtml" />
+    <None Include="Views\Shared\CustomerDetails.cshtml" />
+    <None Include="Views\Shared\CustomItem.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\NormalCustomerDetails.cshtml" />
+    <None Include="Views\Shared\NormalOrderPayment.cshtml" />
+    <None Include="Views\Shared\NormalReview.cshtml" />
+    <None Include="Views\Shared\NormalSaleItem.cshtml" />
+    <None Include="Views\Shared\Normalstanddelivery.cshtml" />
+    <None Include="Views\Shared\OrderPayment.cshtml" />
+    <None Include="Views\Shared\Review.cshtml" />
+    <None Include="Views\Shared\Sidebar.cshtml" />
+    <None Include="Views\Shared\standdelivery.cshtml" />
+    <None Include="Views\Shared\_header.cshtml" />
+    <None Include="Views\Shared\_headerNormal.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Views\User\Index.cshtml" />
+    <None Include="Views\User\ManageUser.cshtml" />
+    <None Include="Views\User\UpdateUser.cshtml" />
+    <None Include="Views\_ViewImports.cshtml" />
+    <None Include="Views\_ViewStart.cshtml" />
+    <None Include="wwwroot\img\.gitignore" />
+    <None Include="wwwroot\js\instascan.min.js" />
+    <None Include="wwwroot\js\main.js" />
+    <None Include="wwwroot\js\plugins.js" />
+    <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\js\vendor\jquery-3.4.1.min.js" />
+    <None Include="wwwroot\js\vendor\modernizr-3.8.0.min.js" />
+    <None Include="wwwroot\Reports\Internal_Report.xlsx" />
+    <None Include="wwwroot\Reports\Item_Costing.xlsx" />
+    <None Include="wwwroot\uploadedcustomorder\10372.pdf" />
+    <None Include="wwwroot\uploadedcustomorder\10373.pdf" />
+    <None Include="wwwroot\uploadedcustomorder\10374.pdf" />
+    <None Include="wwwroot\uploadedcustomorder\10375.pdf" />
+    <None Include="wwwroot\vendor\bootstrap\css\bootstrap-grid.css.map" />
+    <None Include="wwwroot\vendor\bootstrap\css\bootstrap-grid.min.css.map" />
+    <None Include="wwwroot\vendor\bootstrap\css\bootstrap-reboot.css.map" />
+    <None Include="wwwroot\vendor\bootstrap\css\bootstrap-reboot.min.css.map" />
+    <None Include="wwwroot\vendor\bootstrap\css\bootstrap.css.map" />
+    <None Include="wwwroot\vendor\bootstrap\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\vendor\bootstrap\js\bootstrap.js" />
+    <None Include="wwwroot\vendor\bootstrap\js\bootstrap.min.js" />
+    <None Include="wwwroot\vendor\bootstrap\js\popper.js" />
+    <None Include="wwwroot\vendor\bootstrap\js\popper.min.js" />
+    <None Include="wwwroot\vendor\bootstrap\js\tooltip.js" />
+    <None Include="wwwroot\vendor\jquery\jquery-3.2.1.min.js" />
+    <None Include="wwwroot\vendor\select2\select2.js" />
+    <None Include="wwwroot\vendor\select2\select2.min.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\uploadedcustomorder\10355\" />
+    <Folder Include="wwwroot\uploadedcustomorder\10376\" />
+    <Folder Include="wwwroot\uploadedcustomorder\10378\" />
+    <Folder Include="wwwroot\uploadedcustomorder\10382\" />
+    <Folder Include="wwwroot\uploadedcustomorder\10384\" />
+    <Folder Include="wwwroot\uploadedcustomorder\20418\" />
+    <Folder Include="wwwroot\uploadedcustomorder\20420\" />
+    <Folder Include="wwwroot\uploadedcustomorder\20489\" />
+    <Folder Include="wwwroot\uploadedcustomorder\QR\" />
+    <Folder Include="wwwroot\uploadedcustomorder\Reports\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ClosedXML">

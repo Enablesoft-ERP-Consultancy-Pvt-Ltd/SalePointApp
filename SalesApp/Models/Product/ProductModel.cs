@@ -38,18 +38,15 @@ namespace SalesApp.Models.Product
         public int UnitTypeId { get; set; }
         public string UnitType { get; set; }
         public decimal Price { get; set; }
-        public double Discount { get; set; }
+
         public string PrimePhoto { get; set; }
         public IList<string> ProductImages { get; set; }
         public IList<long> Stocks { get; set; }
         public IList<string> StockNos { get; set; }
-        //public int Quantity
-        //{
-        //    get { return Stocks.Count(); }
-        //}
-
         public int Quantity
-        { get; set; }
+        {
+            get { return Stocks.Count(); }
+        }
 
         public DateTime CreatedOn { get; set; }
     }
