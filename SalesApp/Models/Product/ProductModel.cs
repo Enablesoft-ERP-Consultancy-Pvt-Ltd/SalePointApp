@@ -28,6 +28,11 @@ namespace SalesApp.Models.Product
         public string DesignCode { get; set; }
         public string ColorCode { get; set; }
         public string SizeCode { get; set; }
+
+
+
+        public string SizeInch { get; set; }
+        public string SizeFeet { get; set; }
         public double Width { get; set; }
         public double Length { get; set; }
         public double Height { get; set; }
@@ -43,12 +48,26 @@ namespace SalesApp.Models.Product
         public IList<string> ProductImages { get; set; }
         public IList<long> Stocks { get; set; }
         public IList<string> StockNos { get; set; }
-        public int Quantity
-        {
-            get { return Stocks.Count(); }
-        }
+
+        public int Quantity { get; set; }
+
 
         public DateTime CreatedOn { get; set; }
+
+        public List<ItemModel> ItemList { get; set; }
+        
+
+
     }
+
+
+    public class ItemModel
+    {
+        public int CategoryId { get; set; }
+
+        public string Category { get; set; }
+        public string ItemName { get; set; }
+    }
+
 
 }
