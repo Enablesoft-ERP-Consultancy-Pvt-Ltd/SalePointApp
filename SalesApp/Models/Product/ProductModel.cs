@@ -56,7 +56,7 @@ namespace SalesApp.Models.Product
 
         public List<ItemModel> ItemList { get; set; }
         public List<StockModel> StockList { get; set; }
-        
+
         public string CollectionName { get; set; }
         public string ConstructionName { get; set; }
         public string MaterialName { get; set; }
@@ -66,9 +66,9 @@ namespace SalesApp.Models.Product
         public string OtherInformation { get; set; }
 
 
+        public bool IsArrival { get; set; }
 
-
-
+        public decimal Discount { get; set; }
 
 
 
