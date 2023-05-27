@@ -144,6 +144,109 @@ Where IM.MasterCompanyId=@StoreId";
 
         }
 
+        public async Task<ServiceResponse<IEnumerable<ProductModel>>> GetProductList(int StoreId,int Count)
+        {
+            try
+            {
+                ServiceResponse<IEnumerable<ProductModel>> obj = new ServiceResponse<IEnumerable<ProductModel>>();
+                using (var connection = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
+                {
+
+                    string sql = @"SELECT
+IPM.ITEM_FINISHED_ID as ItemFinishId,IM.MasterCompanyId,IPM.Quality_Id as QualityId,
+IPM.Color_Id ColorId, IPM.design_Id DesignId, IPM.Size_Id SizeId,IPM.Shape_Id ShapeId,
+IPM.Shadecolor_Id ShadeColorId,ICM.CATEGORY_ID as CategoryId,IPM.ProductCode, 
+IM.ITEM_NAME as ItemName, ICM.CATEGORY_NAME as CategoryName, ISNULL(Q.QualityName, '') QualityName, 
+ISNULL(D.DesignName, '') DesignName, ISNULL(C.ColorName, '') ColorName,ISNULL(SC.ShadeColorName, '') ShadeColorName, 
+ISNULL(S.ShapeName, '') ShapeName, Q.Hscode HSNCode, Isnull(IM.ITEM_CODE, '') ItemCode, 
+IsNull(Q.QualityCode, '')  QualityCode,sz.SizeInch, sz.SizeFt,IsNull(SZ.WidthInch, 0) Width,IsNull(SZ.LengthINCH, 0) Length,
+IsNull(SZ.HeightINCH, 0) Height, ipm.status as Status, 
+z.DESCRIPTION,IsNull(ProdAreaFt, 0) ProdAreaFt,IsNull(ProdAreaMtr, 0) ProdAreaMtr, 
+UTM.UnitTypeID as UnitTypeId, UTM.UnitType,
+IsNUll(stock.Quantity,0) Quantity,IsNUll(stock.Price,IsNUll(z.Price,0.00)) Price,
+(Select y.AttributeId as  '@AttributeId',y.AttributeName as  '@Name', x.AttributeValue as ItemName    from  tblItemAttributes x 
+Inner Join tblItemAttributeMaster y on x.AttributeId=y.AttributeId
+Where x.ItemFinishId=IPM.ITEM_FINISHED_ID
+FOR XML PATH('Item'), ROOT('ItemList'), type) as AttributeList,
+(Select IsNull(img.Remarks,'MIRZAPUR KALEEN AND RUGS') as '@PhotoRemarks',img.IsPrime as '@IsPrime',img.PhotoName  From 
+tblItemPhoto img(Nolock)
+Where img.ItemFinishId=IPM.ITEM_FINISHED_ID 
+FOR XML PATH('Photo'), ROOT('PhotoList'), type) as PhotoList
+FROM  ITEM_MASTER IM(Nolock) 
+Inner JOIN ITEM_PARAMETER_MASTER IPM(Nolock) ON IM.ITEM_ID = IPM.ITEM_ID 
+Left Join ITEM_PARAMETER_OTHER z on IPM.ITEM_FINISHED_ID = z.ITEM_FINISHED_ID
+Left Join (select x.Item_Finished_Id,Avg(IsNUll(x.Price,0)) Price,Count(*) Quantity from CarpetNumber x
+Group BY x.Item_Finished_Id,x.CurrentProStatus,x.Pack
+Having x.CurrentProStatus=1 and x.Pack=0
+) stock ON IPM.ITEM_FINISHED_ID  = stock.Item_Finished_Id
+LEFT JOIN ITEM_CATEGORY_MASTER ICM(Nolock) ON IM.CATEGORY_ID  = ICM.CATEGORY_ID  
+LEFT JOIN UNIT_TYPE_MASTER UTM(Nolock) ON IM.UnitTypeID  = UTM.UnitTypeID
+LEFT JOIN Quality Q(Nolock) ON Q.QualityId = IPM.QUALITY_ID   
+LEFT JOIN Design D(Nolock) ON D.DesignId = IPM.DESIGN_ID   
+LEFT JOIN Color C(Nolock) ON C.ColorId = IPM.COLOR_ID   
+LEFT JOIN ShadeColor SC(Nolock) ON SC.ShadecolorId = IPM.SHADECOLOR_ID   
+LEFT JOIN Shape S(Nolock) ON S.ShapeId = IPM.SHAPE_ID   
+LEFT JOIN Size SZ(Nolock) ON SZ.SizeId = IPM.SIZE_ID
+Where IM.MasterCompanyId=@StoreId";
+                    var result = (await connection.QueryAsync(sql, new { @StoreId = StoreId }));
+
+                    var objItem = result.Select(x => new ProductModel
+                    {
+
+                        ItemFinishId = x.ItemFinishId,
+                        QualityId = x.QualityId != null ? x.QualityId : 0,
+                        ColorId = x.ColorId != null ? x.ColorId : 0,
+                        DesignId = x.DesignId != null ? x.DesignId : 0,
+                        ShapeId = x.ShapeId != null ? x.ShapeId : 0,
+                        ShadecolorId = x.ShadecolorId != null ? x.ShadecolorId : 0,
+                        CategoryId = x.CategoryId != null ? x.CategoryId : 0,
+                        ItemId = x.ItemId != null ? x.ItemId : 0,
+                        ProductCode = x.ProductCode,
+                        CategoryName = x.CategoryName,
+                        ItemName = x.ItemName,
+                        QualityName = x.QualityName,
+                        DesignName = x.DesignName,
+                        ColorName = x.ColorName,
+                        ShadeColorName = x.ShadeColorName,
+                        ShapeName = x.ShapeName,
+                        HSNCode = x.HSNCode,
+                        QualityCode = x.QualityCode,
+                        Width = x.WidthINCH != null ? x.WidthINCH : 0,
+                        Length = x.LengthINCH != null ? x.LengthINCH : 0,
+                        Height = x.HeightINCH != null ? x.HeightINCH : 0,
+                        Status = x.Status != null ? x.Status : 0,
+                        StoreId = x.MasterCompanyId != null ? x.MasterCompanyId : 0,
+                        Description = x.DESCRIPTION != null ? x.DESCRIPTION : "Product Description not available",
+                        UnitTypeId = x.UnitTypeId != null ? x.UnitTypeId : 0,
+                        UnitType = x.UnitType,
+                        PrimePhoto = this.GetMainImage(x.PhotoList),
+                        ProductImages = this.BindImageList(x.PhotoList),
+                        Price = x.Price,
+                        Quantity = x.Quantity,
+                        CreatedOn = x.ReceiveDate != null ? x.ReceiveDate : DateTime.Now,
+                        SizeInch = x.SizeInch != null ? x.SizeInch : "",
+                        SizeFeet = x.SizeFt != null ? x.SizeFt : "",
+                        ItemList = this.BindItemList(x.AttributeList),
+
+
+                    }).Take(Count);
+
+                    obj.Data = objItem;
+                    obj.Result = obj.Data.Count() > 0 ? true : false;
+                    obj.Message = obj.Data.Count() > 0 ? "Data Found." : "No Data found.";
+                }
+                return obj;
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+
+            }
+
+        }
 
 
         public List<string> BindImageList(string xmlStr)
