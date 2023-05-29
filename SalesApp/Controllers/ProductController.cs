@@ -37,6 +37,13 @@ namespace SalesApp.Controllers
         }
 
 
+        [HttpGet("getProductList/{StoreId}/{Count}")]
+        [ProducesResponseType(typeof(ServiceResponse<List<ProductModel>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceResponse<List<ProductModel>>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetProductList(int StoreId,int Count)
+        {
+            return Ok(await prodSrv.GetProductList(StoreId));
+        }
 
         [HttpGet("getProductListDetail/{ProductId}")]
         [ProducesResponseType(typeof(ServiceResponse<ProductModel>), StatusCodes.Status200OK)]

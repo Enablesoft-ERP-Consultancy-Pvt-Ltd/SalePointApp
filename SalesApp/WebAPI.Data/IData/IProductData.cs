@@ -11,6 +11,8 @@ namespace SalesApp.WebAPI.Data.IData
     public interface IProductData
     {
         Task<ServiceResponse<IEnumerable<ProductModel>>> GetProductList(int StoreId);
+
+        Task<ServiceResponse<IEnumerable<ProductModel>>> GetProductList(int StoreId,int Count);
         Task<ServiceResponse<ProductModel>> GetProductDetail(int ItemFinishId);
         Task<ServiceResponse<int>> CreateOrder(OrderModel _model);
         Task<ServiceResponse<bool>> AddPayment(OrderPaymentModel _model);
