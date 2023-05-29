@@ -42,7 +42,7 @@ namespace SalesApp.Controllers
         [ProducesResponseType(typeof(ServiceResponse<List<ProductModel>>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetProductList(int StoreId,int Count)
         {
-            return Ok(await prodSrv.GetProductList(StoreId));
+            return Ok(await prodSrv.GetProductList(StoreId, Count));
         }
 
         [HttpGet("getProductListDetail/{ProductId}")]
