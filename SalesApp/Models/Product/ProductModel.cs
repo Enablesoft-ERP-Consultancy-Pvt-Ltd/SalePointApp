@@ -68,6 +68,8 @@ namespace SalesApp.Models.Product
 
         public bool IsArrival { get; set; }
 
+        public bool IsCall { get; set; }
+
         public decimal Discount { get; set; }
 
 

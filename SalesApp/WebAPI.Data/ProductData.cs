@@ -59,7 +59,8 @@ IsNull(Q.QualityCode, '')  QualityCode,sz.SizeInch, sz.SizeFt,IsNull(SZ.WidthInc
 IsNull(SZ.HeightINCH, 0) Height, ipm.status as Status, 
 z.DESCRIPTION,IsNull(ProdAreaFt, 0) ProdAreaFt,IsNull(ProdAreaMtr, 0) ProdAreaMtr, 
 UTM.UnitTypeID as UnitTypeId, UTM.UnitType,
-IsNUll(stock.Quantity,0) Quantity,IsNUll(stock.Price,IsNUll(z.Price,0.00)) Price,
+IsNUll(stock.Quantity,0) Quantity,IsNUll(stock.Price,IsNUll(cost.Price,0.00)) Price,
+IsNUll(cost.Discount,0.00) Discount,IsNUll(cost.IsCall,0) IsCall, IsNUll(cost.IsArrival,0) IsArrival,
 (Select y.AttributeId as  '@AttributeId',y.AttributeName as  '@Name', x.AttributeValue as ItemName    from  tblItemAttributes x 
 Inner Join tblItemAttributeMaster y on x.AttributeId=y.AttributeId
 Where x.ItemFinishId=IPM.ITEM_FINISHED_ID
@@ -83,6 +84,7 @@ LEFT JOIN Color C(Nolock) ON C.ColorId = IPM.COLOR_ID
 LEFT JOIN ShadeColor SC(Nolock) ON SC.ShadecolorId = IPM.SHADECOLOR_ID   
 LEFT JOIN Shape S(Nolock) ON S.ShapeId = IPM.SHAPE_ID   
 LEFT JOIN Size SZ(Nolock) ON SZ.SizeId = IPM.SIZE_ID
+Left Join tblItemCosting(Nolock) cost on IPM.ITEM_FINISHED_ID =cost.ItemFinishId 
 Where IM.MasterCompanyId=@StoreId";
                     var result = (await connection.QueryAsync(sql, new { @StoreId = StoreId }));
 
@@ -117,8 +119,12 @@ Where IM.MasterCompanyId=@StoreId";
                         UnitType = x.UnitType,
                         PrimePhoto = this.GetMainImage(x.PhotoList),
                         ProductImages = this.BindImageList(x.PhotoList),
-                        Price = x.Price,
                         Quantity = x.Quantity,
+                        Price = x.Price,
+                        Discount = x.Discount,
+                        IsCall = x.IsCall,
+                        IsArrival = x.IsArrival,
+
                         CreatedOn = x.ReceiveDate != null ? x.ReceiveDate : DateTime.Now,
                         SizeInch = x.SizeInch != null ? x.SizeInch : "",
                         SizeFeet = x.SizeFt != null ? x.SizeFt : "",
@@ -219,6 +225,7 @@ IsNull(Q.QualityCode, '')  QualityCode,sz.SizeInch, sz.SizeFt,IsNull(SZ.WidthInc
 IsNull(SZ.HeightINCH, 0) Height, ipm.status as Status, IsNull(z.PRICE, 0.00) Price, 
 z.DESCRIPTION,IsNull(ProdAreaFt, 0) ProdAreaFt,IsNull(ProdAreaMtr, 0) ProdAreaMtr, 
 UTM.UnitTypeID as UnitTypeId, UTM.UnitType,
+IsNUll(cost.Discount,0.00) Discount,IsNUll(cost.IsCall,0) IsCall, IsNUll(cost.IsArrival,0) IsArrival,
 (Select y.AttributeId as  '@AttributeId',y.AttributeName as  '@Name', x.AttributeValue as ItemName    from  tblItemAttributes x 
 Inner Join tblItemAttributeMaster y on x.AttributeId=y.AttributeId
 Where x.ItemFinishId=IPM.ITEM_FINISHED_ID
@@ -242,6 +249,7 @@ LEFT JOIN Color C(Nolock) ON C.ColorId = IPM.COLOR_ID
 LEFT JOIN ShadeColor SC(Nolock) ON SC.ShadecolorId = IPM.SHADECOLOR_ID   
 LEFT JOIN Shape S(Nolock) ON S.ShapeId = IPM.SHAPE_ID   
 LEFT JOIN Size SZ(Nolock) ON SZ.SizeId = IPM.SIZE_ID
+LEFT JOIN tblItemCosting(Nolock) cost on IPM.ITEM_FINISHED_ID = cost.ItemFinishId
 Where IPM.ITEM_FINISHED_ID=@ItemFinishId";
 
                     var result = (await connection.QueryAsync(sql, new { @ItemFinishId = ItemFinishId }));
@@ -280,6 +288,9 @@ Where IPM.ITEM_FINISHED_ID=@ItemFinishId";
                         SizeInch = x.SizeInch != null ? x.SizeInch : "",
                         SizeFeet = x.SizeFt != null ? x.SizeFt : "",
                         Price = (decimal)x.Price,
+                        Discount = x.Discount,
+                        IsCall = x.IsCall,
+                        IsArrival = x.IsArrival,
                         ItemList = this.BindItemList(x.AttributeList),
                         StockList = this.BindStockList(x.StockList)
 
