@@ -150,7 +150,7 @@ Where IM.MasterCompanyId=@StoreId";
 
         }
 
-        public async Task<ServiceResponse<IEnumerable<ProductModel>>> GetProductList(int StoreId,int Count)
+        public async Task<ServiceResponse<IEnumerable<ProductModel>>> GetProductList(int StoreId, int Count)
         {
             try
             {
@@ -229,7 +229,7 @@ Where IM.MasterCompanyId=@StoreId";
                         UnitType = x.UnitType,
                         PrimePhoto = this.GetMainImage(x.PhotoList),
                         ProductImages = this.BindImageList(x.PhotoList),
-                   
+
                         Quantity = x.Quantity,
 
                         Price = x.Price,
@@ -304,7 +304,7 @@ Where IM.MasterCompanyId=@StoreId";
             List<StockModel> result = new List<StockModel>();
             if (!string.IsNullOrEmpty(xmlStr))
             {
-                result = XElement.Parse(xmlStr).Descendants("Item").Select(x => new StockModel
+                result = XElement.Parse(xmlStr).Descendants("Stock").Select(x => new StockModel
                 {
                     Price = Convert.ToDecimal(x.Attribute("Price").Value),
                     StockNo = x.Attribute("StockNo").Value,
