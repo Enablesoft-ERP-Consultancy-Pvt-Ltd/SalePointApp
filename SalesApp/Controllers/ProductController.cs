@@ -151,10 +151,6 @@ namespace SalesApp.Controllers
         }
 
 
-
-
-
-
         [HttpPost("addWishItem")]
         [ProducesResponseType(typeof(ServiceResponse<bool>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ServiceResponse<bool>), StatusCodes.Status400BadRequest)]
