@@ -758,8 +758,18 @@ where y.order_id = @OrderId";
                 {
                     if (cnn.State != ConnectionState.Open)
                         cnn.Open();
-                    string sqlQuery = @"INSERT INTO tblWishList(StoreId,ProductId,Quantity,IsActive,CustomerId,IsPublished,CreatedOn)
-VALUES(@StoreId,@ProductId,@Quantity,@IsActive,@CustomerId,@IsPublished,@CreatedOn)";
+                    string sqlQuery = @"IF NOT EXISTS (SELECT 0 FROM tblWishList WHERE CustomerId=@CustomerId and  ProductId=@ProductId and StoreId=@StoreId)
+BEGIN
+INSERT INTO tblWishList(StoreId,ProductId,Quantity,IsActive,CustomerId,IsPublished,CreatedOn)
+VALUES(@StoreId,@ProductId,@Quantity,@IsActive,@CustomerId,@IsPublished,@CreatedOn
+END
+END
+ELSE
+BEGIN
+UPDATE tblWishList SET Quantity=@Quantity WHERE CustomerId=@CustomerId and  ProductId=@ProductId and StoreId=@StoreId
+
+
+END";
 
                     int rowsAffected = await cnn.ExecuteAsync(sqlQuery, _model);
                     if (rowsAffected > 0)
