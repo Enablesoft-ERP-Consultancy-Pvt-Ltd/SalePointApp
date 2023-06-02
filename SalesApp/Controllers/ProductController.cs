@@ -196,8 +196,8 @@ namespace SalesApp.Controllers
 
 
         [HttpGet("getWishList/{StoreId}/{CustomerId}")]
-        [ProducesResponseType(typeof(ServiceResponse<List<ProductModel>>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ServiceResponse<List<ProductModel>>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ServiceResponse<List<WishModel>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceResponse<List<WishModel>>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetWishList(int StoreId, int CustomerId)
         {
             return Ok(await prodSrv.GetWishList(StoreId, CustomerId));
