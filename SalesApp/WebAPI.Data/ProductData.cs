@@ -21,6 +21,7 @@ using SalesApp.Utility;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Xml.Linq;
+using Microsoft.CodeAnalysis;
 
 namespace SalesApp.WebAPI.Data
 {
@@ -692,11 +693,6 @@ where y.order_id=@OrderId";
             return obj;
         }
 
-
-
-
-
-
         public async Task<ServiceResponse<bool>> CancelOrder(CancelOrderModel _model)
         {
             bool IsSuccess = false;
@@ -752,8 +748,147 @@ where y.order_id = @OrderId";
             return obj;
         }
 
+        public async Task<ServiceResponse<bool>> AddWishItem(WishItemModel _model)
+        {
+            bool IsSuccess = false;
+            ServiceResponse<bool> obj = new ServiceResponse<bool>();
+            try
+            {
+                using (IDbConnection cnn = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
+                {
+                    if (cnn.State != ConnectionState.Open)
+                        cnn.Open();
+                    string sqlQuery = @"INSERT INTO tblWishList(StoreId,ProductId,Quantity,IsActive,CustomerId,IsPublished,CreatedOn)
+VALUES(@StoreId,@ProductId,@Quantity,@IsActive,@CustomerId,@IsPublished,@CreatedOn)";
+
+                    int rowsAffected = await cnn.ExecuteAsync(sqlQuery, _model);
+                    if (rowsAffected > 0)
+                    {
+
+                        IsSuccess = true;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                IsSuccess = false;
+            }
+
+            obj.Data = IsSuccess;
+            obj.Result = IsSuccess;
+            obj.Message = IsSuccess ? "Data Found." : "No Data found.";
+            return obj;
+        }
+
+        public async Task<ServiceResponse<bool>> DelWishItem(int WishId)
+        {
+            bool IsSuccess = false;
+            ServiceResponse<bool> obj = new ServiceResponse<bool>();
+            try
+            {
+                using (IDbConnection conn = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
+                {
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
+                    string sqlQuery = @"Delete From tblWishList Where WishId=@WishId";
+
+                    int rowsAffected = await conn.ExecuteAsync(sqlQuery, new { @WishId = WishId });
+                    if (rowsAffected > 0)
+                    {
+                        IsSuccess = true;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                IsSuccess = false;
+            }
+
+            obj.Data = IsSuccess;
+            obj.Result = IsSuccess;
+            obj.Message = IsSuccess ? "Data Found." : "No Data found.";
+            return obj;
+        }
+
+        public async Task<ServiceResponse<IEnumerable<WishModel>>> GetWishList(int StoreId, int CustomerId)
+        {
+            try
+            {
+                ServiceResponse<IEnumerable<WishModel>> obj = new ServiceResponse<IEnumerable<WishModel>>();
+                using (var connection = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
+                {
+
+                    string sql = @"SELECT wish.WishId,wish.CustomerId ,wish.Quantity,wish.ProductId as ItemFinishId,wish.StoreId,IPM.Quality_Id as QualityId,
+IPM.Color_Id ColorId, IPM.design_Id DesignId, IPM.Size_Id SizeId,IPM.Shape_Id ShapeId,
+IPM.Shadecolor_Id ShadeColorId,ICM.CATEGORY_ID as CategoryId,IPM.ProductCode, 
+IM.ITEM_NAME as ItemName, ICM.CATEGORY_NAME as CategoryName, ISNULL(Q.QualityName, '') QualityName, 
+ISNULL(D.DesignName, '') DesignName, ISNULL(C.ColorName, '') ColorName,ISNULL(SC.ShadeColorName, '') ShadeColorName, 
+ISNULL(S.ShapeName, '') ShapeName, Q.Hscode HSNCode, Isnull(IM.ITEM_CODE, '') ItemCode, 
+IsNull(Q.QualityCode, '')  QualityCode,sz.SizeInch, sz.SizeFt,IsNull(SZ.WidthInch, 0) Width,IsNull(SZ.LengthINCH, 0) Length,
+IsNull(SZ.HeightINCH, 0) Height, ipm.status as Status, IsNull(z.PRICE, 0.00) Price, 
+z.DESCRIPTION,IsNull(ProdAreaFt, 0) ProdAreaFt,IsNull(ProdAreaMtr, 0) ProdAreaMtr, 
+UTM.UnitTypeID as UnitTypeId, UTM.UnitType,
+(Select y.AttributeId as  '@AttributeId',y.AttributeName as  '@Name', x.AttributeValue as ItemName    from  tblItemAttributes x 
+Inner Join tblItemAttributeMaster y on x.AttributeId=y.AttributeId
+Where x.ItemFinishId=IPM.ITEM_FINISHED_ID
+FOR XML PATH('Item'), ROOT('ItemList'), type) as AttributeList,
+(Select IsNull(img.Remarks,'MIRZAPUR KALEEN AND RUGS') as '@PhotoRemarks',img.IsPrime as '@IsPrime',img.PhotoName  From 
+tblItemPhoto img(Nolock) Where img.ItemFinishId=IPM.ITEM_FINISHED_ID 
+FOR XML PATH('Photo'), ROOT('PhotoList'), type) as PhotoList
+FROM tblWishList(Nolock) wish Inner Join ITEM_PARAMETER_MASTER IPM(Nolock) 
+ON wish.ProductId = IPM.ITEM_FINISHED_ID Inner Join ITEM_MASTER IM(Nolock) 
+on IPM.ITEM_ID=IM.ITEM_ID 
+Left Join ITEM_PARAMETER_OTHER z on IPM.ITEM_FINISHED_ID = z.ITEM_FINISHED_ID
+LEFT JOIN ITEM_CATEGORY_MASTER ICM(Nolock) ON IM.CATEGORY_ID  = ICM.CATEGORY_ID  
+LEFT JOIN UNIT_TYPE_MASTER UTM(Nolock) ON IM.UnitTypeID  = UTM.UnitTypeID
+LEFT JOIN Quality Q(Nolock) ON Q.QualityId = IPM.QUALITY_ID   
+LEFT JOIN Design D(Nolock) ON D.DesignId = IPM.DESIGN_ID   
+LEFT JOIN Color C(Nolock) ON C.ColorId = IPM.COLOR_ID   
+LEFT JOIN ShadeColor SC(Nolock) ON SC.ShadecolorId = IPM.SHADECOLOR_ID   
+LEFT JOIN Shape S(Nolock) ON S.ShapeId = IPM.SHAPE_ID   
+LEFT JOIN Size SZ(Nolock) ON SZ.SizeId = IPM.SIZE_ID
+Where wish.CustomerId=@CustomerId and wish.StoreId=@StoreId";
+                    var result = (await connection.QueryAsync(sql, new { @StoreId = StoreId, @CustomerId = CustomerId }));
+
+                    var objItem = result.Select(x => new WishModel
+                    {
+
+                        WishId = x.WishId,
+                        ProductId = x.ProductId.
+                        Quantity = x.Quantity,
+                        StoreId = x.StoreId,
+                        CustomerId = x.CustomerId,
+                        ProductCode = x.ProductCode,
+                        CategoryName = x.CategoryName,
+                        ItemName = x.ItemName,
+                        QualityName = x.QualityName,
+                        DesignName = x.DesignName,
+                        ColorName = x.ColorName,
+                        ShadeColorName = x.ShadeColorName,
+                        ShapeName = x.ShapeName,
+                        PrimePhoto = this.GetMainImage(x.PhotoList),
+                        SizeInch = x.SizeInch != null ? x.SizeInch : "",
+
+                    });
+
+                    obj.Data = objItem;
+                    obj.Result = obj.Data.Count() > 0 ? true : false;
+                    obj.Message = obj.Data.Count() > 0 ? "Data Found." : "No Data found.";
+                }
+                return obj;
 
 
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+
+            }
+
+        }
 
 
 

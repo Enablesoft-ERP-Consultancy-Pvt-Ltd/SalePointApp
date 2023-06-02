@@ -28,7 +28,7 @@ namespace SalesApp.WebAPI.Service
 
         public async Task<ServiceResponse<IEnumerable<ProductModel>>> GetProductList(int StoreId, int Count)
         {
-            var result = await data.GetProductList(StoreId,Count);
+            var result = await data.GetProductList(StoreId, Count);
             var modelList = result.Data;
             List<ProductModel> productModels = new List<ProductModel>();
             foreach (var model in modelList)
@@ -137,6 +137,30 @@ namespace SalesApp.WebAPI.Service
         {
             return await data.CancelOrder(_model);
         }
+
+
+
+        public async Task<ServiceResponse<bool>> AddWishItem(WishItemModel _model)
+        {
+            return await data.AddWishItem(_model);
+        }
+
+        public async Task<ServiceResponse<bool>> DelWishItem(int WishId)
+        {
+            return await data.DelWishItem(WishId);
+        }
+
+        public async Task<ServiceResponse<IEnumerable<WishModel>>> GetWishList(int StoreId, int CustomerId)
+        {
+            return await data.GetWishList(StoreId, CustomerId);
+        }
+
+
+
+
+
+
+
 
     }
 }

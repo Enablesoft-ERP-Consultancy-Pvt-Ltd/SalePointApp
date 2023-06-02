@@ -55,7 +55,7 @@ namespace SalesApp.Models.Product
 
         public string Source { get; set; }
         public short PackId { get; set; }
-        
+
 
 
     }
@@ -82,24 +82,48 @@ namespace SalesApp.Models.Product
 
 
     public class CancelOrderModel
-    {      
+    {
         public int OrderId { get; set; }
         public int CreatedBy { get; set; }
         public bool IsActive { get; set; }
         public int PackingDetailId { get; set; }
         public int BillId { get; set; }
         public int SaleStatus { get; set; }
-        public DateTime CreatedOn { get; set; } 
+        public DateTime CreatedOn { get; set; }
 
     }
 
+    public class WishItemModel
+    {
+        public int WishId { get; set; }
+        public int ProductId { get; set; }
+        public int StoreId { get; set; }
+        public int Quantity { get; set; }
+        public int CustomerId { get; set; }
+        public short IsActive { get; set; }
+        public bool IsPublished { get; set; }
+        public DateTime CreatedOn { get; set; }
+    }
 
 
+    public class WishModel
+    {
+        public int WishId { get; set; }
+        public int ProductId { get; set; }
+        public int StoreId { get; set; }
+        public int Quantity { get; set; }
+        public int CustomerId { get; set; }
+        public string SizeInch { get; set; }
+        public string PrimePhoto { get; set; }
+        public string ProductCode { get; set; }
+        public string CategoryName { get; set; }
+        public string ItemName { get; set; }
+        public string QualityName { get; set; }
+        public string DesignName { get; set; }
+        public string ColorName { get; set; }
+        public string ShadeColorName { get; set; }
+        public string ShapeName { get; set; }
 
-
-
-
-
-
+    }
 
 }

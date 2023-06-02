@@ -40,7 +40,7 @@ namespace SalesApp.Controllers
         [HttpGet("getProductList/{StoreId}/{Count}")]
         [ProducesResponseType(typeof(ServiceResponse<List<ProductModel>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ServiceResponse<List<ProductModel>>), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetProductList(int StoreId,int Count)
+        public async Task<IActionResult> GetProductList(int StoreId, int Count)
         {
             return Ok(await prodSrv.GetProductList(StoreId, Count));
         }
@@ -73,12 +73,12 @@ namespace SalesApp.Controllers
                 model.IsActive = true;
                 model.Unit = 1;
                 model.DisCountPer = 10;
-              
+
                 foreach (var item in model.ItemList)
                 {
                     item.TransId = model.TransactionId;
                     item.PackId = 101;
-                    item.PriceINR = item.Price; 
+                    item.PriceINR = item.Price;
                     item.Unit = 1;
                     item.CurrencyType = 6;
                     item.SalesType = (short)SaleType.OF;
@@ -86,7 +86,7 @@ namespace SalesApp.Controllers
                     item.OrderType = 1;
                     item.OrderTypePrefix = SaleType.OF.ToString();
                     item.ConversionRate = 1;
-                    item.SessionYear = DateTime.Now.Year;             
+                    item.SessionYear = DateTime.Now.Year;
                     item.CreatedOn = DateTime.Now;
                     item.IsActive = true;
                     item.Source = "WebSales";
@@ -138,7 +138,7 @@ namespace SalesApp.Controllers
             {
                 model.CreatedBy = 1;
                 model.PackingDetailId = 0;
-                model.BillId = 0;              
+                model.BillId = 0;
                 model.IsActive = false;
                 model.CreatedOn = DateTime.Now;
                 return Ok(await prodSrv.CancelOrder(model));
@@ -149,6 +149,67 @@ namespace SalesApp.Controllers
             }
 
         }
+
+
+
+
+
+
+        [HttpPost("addWishItem")]
+        [ProducesResponseType(typeof(ServiceResponse<bool>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceResponse<bool>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AddWishItem([FromBody] WishItemModel model)
+        {
+            try
+            {
+
+                model.IsActive = 1;
+                model.IsPublished = true;
+                model.CreatedOn = DateTime.Now;
+                return Ok(await prodSrv.AddWishItem(model));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+
+
+        [HttpDelete("delWishItem/{WishId}")]
+        [ProducesResponseType(typeof(ServiceResponse<bool>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceResponse<bool>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> DelWishItem(int WishId)
+        {
+            try
+            {
+                return Ok(await prodSrv.DelWishItem(WishId));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+
+
+        [HttpGet("getWishList/{StoreId}/{CustomerId}")]
+        [ProducesResponseType(typeof(ServiceResponse<List<ProductModel>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceResponse<List<ProductModel>>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetWishList(int StoreId, int CustomerId)
+        {
+            return Ok(await prodSrv.GetWishList(StoreId, CustomerId));
+        }
+
+
+
+
+
+
+
+
 
 
 
