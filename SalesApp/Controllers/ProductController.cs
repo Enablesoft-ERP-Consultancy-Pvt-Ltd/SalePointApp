@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Drawing.Charts;
+﻿
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SalesApp.Models.Product;
@@ -7,14 +7,8 @@ using SalesApp.WebAPI.Service.IService;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
-using Aspose.BarCode.Generation;
-using DocumentFormat.OpenXml.Spreadsheet;
-using DocumentFormat.OpenXml.Wordprocessing;
 using SalesApp.Utility;
-using DocumentFormat.OpenXml.Vml.Wordprocessing;
-using DocumentFormat.OpenXml.Office2010.Excel;
-using SALEERP.Models;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
 
 namespace SalesApp.Controllers
 {
@@ -173,7 +167,7 @@ namespace SalesApp.Controllers
 
 
 
-        [HttpDelete("delWishItem/{WishId}")]
+        [HttpDelete("delWishItem/{WishId}/")]
         [ProducesResponseType(typeof(ServiceResponse<bool>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ServiceResponse<bool>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> DelWishItem(int WishId)

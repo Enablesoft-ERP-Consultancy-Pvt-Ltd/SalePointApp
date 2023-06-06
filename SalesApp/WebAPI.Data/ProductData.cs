@@ -9,17 +9,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using SalesApp.Models;
 using SalesApp.Models.Product;
-using DocumentFormat.OpenXml.Drawing.Charts;
-using DocumentFormat.OpenXml.Wordprocessing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using DocumentFormat.OpenXml.Drawing.Diagrams;
-using Aspose.BarCode.Generation;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using SalesApp.Utility;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+
 using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 

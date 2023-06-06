@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 using SalesApp.Models.Product;
 using SalesApp.Models;
 using System;
-using DocumentFormat.OpenXml.Wordprocessing;
-using DocumentFormat.OpenXml.Drawing.Charts;
+
 using System.Linq;
 using System.Collections;
 using SalesApp.Utility;
-using DocumentFormat.OpenXml.Spreadsheet;
-using ClosedXML.Excel;
+
 
 namespace SalesApp.WebAPI.Service
 {
