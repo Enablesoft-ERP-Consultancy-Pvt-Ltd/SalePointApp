@@ -153,7 +153,7 @@ Where IM.MasterCompanyId=@StoreId";
                 using (var connection = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
                 {
 
-                    string sql = @"SELECT
+                    string sql = @"SELECT Top 50
 IPM.ITEM_FINISHED_ID as ItemFinishId,IM.MasterCompanyId,IPM.Quality_Id as QualityId,
 IPM.Color_Id ColorId, IPM.design_Id DesignId, IPM.Size_Id SizeId,IPM.Shape_Id ShapeId,
 IPM.Shadecolor_Id ShadeColorId,ICM.CATEGORY_ID as CategoryId,IPM.ProductCode, 
@@ -755,14 +755,11 @@ where y.order_id = @OrderId";
                     string sqlQuery = @"IF NOT EXISTS (SELECT 0 FROM tblWishList WHERE CustomerId=@CustomerId and  ProductId=@ProductId and StoreId=@StoreId)
 BEGIN
 INSERT INTO tblWishList(StoreId,ProductId,Quantity,IsActive,CustomerId,IsPublished,CreatedOn)
-VALUES(@StoreId,@ProductId,@Quantity,@IsActive,@CustomerId,@IsPublished,@CreatedOn
-END
+VALUES(@StoreId,@ProductId,@Quantity,@IsActive,@CustomerId,@IsPublished,@CreatedOn)
 END
 ELSE
 BEGIN
 UPDATE tblWishList SET Quantity=@Quantity WHERE CustomerId=@CustomerId and  ProductId=@ProductId and StoreId=@StoreId
-
-
 END";
 
                     int rowsAffected = await cnn.ExecuteAsync(sqlQuery, _model);
@@ -824,7 +821,7 @@ END";
                 using (var connection = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
                 {
 
-                    string sql = @"SELECT wish.WishId,wish.CustomerId ,wish.Quantity,wish.ProductId as ItemFinishId,wish.StoreId,IPM.Quality_Id as QualityId,
+                    string sql = @"SELECT wish.WishId,wish.CustomerId ,wish.Quantity,wish.ProductId,wish.StoreId,IPM.Quality_Id as QualityId,
 IPM.Color_Id ColorId, IPM.design_Id DesignId, IPM.Size_Id SizeId,IPM.Shape_Id ShapeId,
 IPM.Shadecolor_Id ShadeColorId,ICM.CATEGORY_ID as CategoryId,IPM.ProductCode, 
 IM.ITEM_NAME as ItemName, ICM.CATEGORY_NAME as CategoryName, ISNULL(Q.QualityName, '') QualityName, 
@@ -860,7 +857,7 @@ Where wish.CustomerId=@CustomerId and wish.StoreId=@StoreId";
                     {
 
                         WishId = x.WishId,
-                        ProductId = x.ProductId.
+                        ProductId = x.ProductId,
                         Quantity = x.Quantity,
                         StoreId = x.StoreId,
                         CustomerId = x.CustomerId,
