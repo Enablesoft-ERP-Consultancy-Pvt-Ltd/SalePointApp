@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Http;
 
 using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
+using System.Drawing.Drawing2D;
 
 namespace SalesApp.WebAPI.Data
 {
@@ -886,16 +887,55 @@ Where wish.CustomerId=@CustomerId and wish.StoreId=@StoreId";
             {
 
                 throw ex;
-
             }
-
         }
 
 
 
 
 
+        public async Task<ServiceResponse<IEnumerable<BillModel>>> GetAllWebOrder()
+        {
+            ServiceResponse<IEnumerable<BillModel>> obj = new ServiceResponse<IEnumerable<BillModel>>();
+            using (var connection = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
+            {
+                string sql = @"Select y.order_id,IsNull(Max(y.bill_id),00) as BillId 
+  FROM [MirzapurSale].[sales].[Order_Master] x inner join 
+  [MirzapurSale].[sales].[Order_Item_Details] y on x.id=y.order_id and x.description='WebSales'
+  group By y.order_id;";
 
+                var result = (await connection.QueryAsync(sql)).Where(x => x.order_id != null).Select(x => new BillModel { OrderId = (long)x.order_id, BillId = (long)x.BillId });
+
+                obj.Data = result;
+                obj.Result = obj.Data.Count() > 0 ? true : false;
+                obj.Message = obj.Data.Count() > 0 ? "Data Found." : "No Data found.";
+            }
+            return obj;
+        }
+
+        public async Task<ServiceResponse<dynamic>> GetOrderDeatil(long orderId)
+        {
+            ServiceResponse<dynamic> obj = new ServiceResponse<dynamic>();
+            using (var connection = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
+            {
+                string sql = @"Select * FROM [MirzapurSale].[sales].[Order_Master] x Left join 
+[MirzapurSale].[sales].[Order_Item_Details] y on x.id=y.order_id 
+Left join 
+[MirzapurSale].[sales].[Order_Payment] z on x.id=z.order_id 
+Left join 
+[MirzapurSale].[sales].[Customer_Details] p on x.id=p.order_id 
+Left join 
+[MirzapurSale].[sales].[Customer_Details] q on x.id=q.order_id
+Where x.id=@OrderId;";
+
+                var result = (await connection.QueryAsync(sql, new { @OrderId = orderId }));
+
+                obj.Data = result;
+                obj.Result = obj.Data != null ? true : false;
+                obj.Message = obj.Data != null ? "Data Found." : "No Data found.";
+            }
+            return obj;
+        }
 
 
 

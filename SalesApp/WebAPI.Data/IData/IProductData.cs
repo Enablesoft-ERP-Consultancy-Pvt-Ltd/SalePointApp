@@ -3,6 +3,7 @@ using SalesApp.Models;
 using SalesApp.Models.Product;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Threading.Tasks;
 
 
@@ -16,6 +17,10 @@ namespace SalesApp.WebAPI.Data.IData
         Task<ServiceResponse<int>> CreateOrder(OrderModel _model);
         Task<ServiceResponse<bool>> AddPayment(OrderPaymentModel _model);
         Task<ServiceResponse<bool>> CancelOrder(CancelOrderModel _model);
+
+
+        Task<ServiceResponse<IEnumerable<BillModel>>> GetAllWebOrder();
+        Task<ServiceResponse<dynamic>> GetOrderDeatil(long orderId);
 
         Task<ServiceResponse<bool>> AddWishItem(WishItemModel _model);
         Task<ServiceResponse<bool>> DelWishItem(int WishId);

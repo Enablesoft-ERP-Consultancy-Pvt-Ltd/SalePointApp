@@ -155,7 +155,17 @@ namespace SalesApp.WebAPI.Service
 
 
 
+        public async Task<ServiceResponse<IEnumerable<BillModel>>> GetAllWebOrder()
+        {
+            return await data.GetAllWebOrder();
+        }
 
+
+
+        public async Task<ServiceResponse<dynamic>> GetOrderDeatil(long orderId)
+        {
+            return await data.GetOrderDeatil(orderId);
+        }
 
 
 

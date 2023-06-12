@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 using SalesApp.Utility;
+using System.Drawing.Drawing2D;
 
 
 namespace SalesApp.Controllers
@@ -198,7 +199,20 @@ namespace SalesApp.Controllers
 
 
 
-
+        [HttpGet("getAllWebOrder")]
+        [ProducesResponseType(typeof(ServiceResponse<List<BillModel>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceResponse<List<BillModel>>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAllWebOrder()
+        {
+            return Ok(await prodSrv.GetAllWebOrder());
+        }
+        [HttpGet("getOrderDeatil/{OrderId}")]
+        [ProducesResponseType(typeof(ServiceResponse<List<BillModel>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceResponse<List<BillModel>>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetOrderDeatil(long OrderId)
+        {
+            return Ok(await prodSrv.GetOrderDeatil(OrderId));
+        }
 
 
 

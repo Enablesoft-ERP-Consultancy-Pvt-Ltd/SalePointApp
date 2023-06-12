@@ -21,5 +21,8 @@ namespace SalesApp.WebAPI.Service.IService
         Task<ServiceResponse<bool>> DelWishItem(int WishId);
         Task<ServiceResponse<IEnumerable<WishModel>>> GetWishList(int StoreId, int CustomerId);
 
+        Task<ServiceResponse<IEnumerable<BillModel>>> GetAllWebOrder();
+        Task<ServiceResponse<dynamic>> GetOrderDeatil(long orderId);
+
     }
 }

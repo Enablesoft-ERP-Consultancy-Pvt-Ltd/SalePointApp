@@ -45,6 +45,15 @@ namespace SalesApp.Models.Product
         }
     }
 
+
+    public class BillModel
+    {
+
+        public long OrderId { get; set; }
+
+        public long BillId { get; set; }
+    }
+
     public class OrderModel
     {
         public int OrderId { get; set; }
