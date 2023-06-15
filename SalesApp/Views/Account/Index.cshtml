@@ -28,54 +28,89 @@
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="~/css/util.css">
     <link rel="stylesheet" type="text/css" href="~/css/loginmain.css" />
+
 </head>
 
     <body>
-        <div class="limiter">
-            <div class="container-login100" @*style="background-image: url('../images/img-01.jpg')"*@>
-                <div class="wrap-login100 p-t-50 p-b-0">
-                    <div>
-                        <form asp-action="Login" class="login100-form validate-form">
+    <section class="h-100 gradient-form" style="background-color: #fde3e3;">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-xl-10">
+                    <div class="card rounded-3 text-black">
+                        <div class="row g-0">
+                            <div class="col-lg-6">
+                                <div class="card-body p-md-5 mx-md-4">
 
-                            <span class="login100-form-title p-t-20 p-b-45">
-                                    LOGIN TO SALES PANEL
-                                </span>
-                            <!--<a href="" class="small-logo" style="padding-left:120px;">-->@*<img src=@Url.Content("~/img/big-logo.png") />*@</a>
-                            <div class="clearfix"></div>
-                            <div class="wrap-input100 validate-input m-b-10" data-validate="UserName is required" style="padding-top:20px;">
+                                    <div class="text-center">
+                                        <img src="~/images/logo.png" />
+                                      
+                                        <h4 class="mt-3 mb-3 pb-1"><strong>LOGIN TO SALES PANEL</strong></h4>
+                                    </div>
+
+                                    <form asp-action="Login" class="validate-form">                                       
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                @* <div class="wrap-input100 validate-input m-b-10" data-validate="UserName is required" style="padding-top:20px;">
                                 <input asp-for="UserName" class="input100" placeholder="UserName" autofocus style="background-color:lightgrey;font-size:large;font-weight:400;">
                                 <span class="focus-input100"></span>
                                 <span class="symbol-input100">
                                     <i class="fa fa-user"></i>
                                 </span>
-                            </div>
-                            <div class="wrap-input100 validate-input m-b-10" data-validate="Password is required">
+                            </div>*@
+                             <div class="form-floating mb-3 mt-3 validate-input" data-validate="UserName is required">
+                                                    <input asp-for="UserName" class="form-control" placeholder="UserName" autofocus>                                                    
+                                                    <label for="email">User Name</label>
+                                                    <span class="focus-input100"></span>
+                                                </div>
+
+                                               
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                @* <div class="wrap-input100 validate-input m-b-10" data-validate="Password is required">
                             <input asp-for="UserPass" class="input100" type="password" placeholder="Password" style="background-color:lightgrey;font-size:large;font-weight:400;">
                                     <span class="focus-input100"></span>
                                     <span class="symbol-input100">
                                         <i class="fa fa-lock"></i>
                                     </span>
-                                </div>
-                            @*<div class="wrap-input100 validate-input m-b-10" data-validate="Please select Role">
-                                    <select asp-for="RoleId" asp-items="Model.loginroles" class="input100">
-                                        <option value="">-- Please select --</option>
-                                    </select>
                                 </div>*@
-                            <div class="container-login100-form-btn p-t-10">
-                                <input type="submit" value="Login" class="login100-form-btn" style="background-color:cornflowerblue;">
-                            </div>
-                            <div class="text-center w-full p-t-25 p-b-80">
-                                <span class="text-danger">@Html.ValidationSummary(false)</span>
+
+                                                <div class="form-floating mt-3 mb-3 validate-input" data-validate="Password is required">
+                                                    <input asp-for="UserPass" class="form-control" type="password" placeholder="Password">                                                   
+                                                    <label for="pwd">Password</label>
+                                                    <span class="focus-input100"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-10 text-center pt-1 d-grid gap-2 mx-auto">
+                                                <input type="submit" value="Login" class="btn btn-primary fa-lg gradient-custom-2 mb-3">
+                                            
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12 pt-1">
+                                      <span class="text-danger">@Html.ValidationSummary(false)</span>
                                 <span asp-validation-summary="All" class="text-danger"></span>
-                                @*<a href="#" class="txt1">
-                                        Forgot Username / Password?
-                                    </a>*@
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
                             </div>
-                        </form>
+                            <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                                <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                                    <img class="img-fluid" src="~/images/salesapp.png" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
+       
 
         @*<div>
             <form asp-action="Login">
@@ -128,7 +163,7 @@
         <script src="~/vendor/jquery/jquery-3.2.1.min.js"></script>
         <!--===============================================================================================-->
         <script src="~/vendor/bootstrap/js/popper.js"></script>
-        <script src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
         <!--===============================================================================================-->
         <script src="~/vendor/select2/select2.min.js"></script>
         <!--===============================================================================================-->
