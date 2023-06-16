@@ -129,13 +129,13 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ClosedXML">
-      <HintPath>..\..\..\..\Library\ClosedXML.dll</HintPath>
+      <HintPath>..\..\ERP\Library\ClosedXML.dll</HintPath>
     </Reference>
     <Reference Include="Dapper">
       <HintPath>..\..\..\..\netcoreapp3.1\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="DocumentFormat.OpenXml">
-      <HintPath>..\..\..\..\Library\DocumentFormat.OpenXml.dll</HintPath>
+      <HintPath>..\..\ERP\Library\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
