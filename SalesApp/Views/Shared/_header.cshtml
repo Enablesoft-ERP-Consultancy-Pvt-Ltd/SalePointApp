@@ -14,8 +14,15 @@
     @*<p class="float-left sale-date-container"><span class="fregular date-head">Sale Date:</span> <span class="fbold date-val">@Html.DisplayFor(model => model.mirrordate)</span></p>*@
 
     <div class="account-wrap">
-        <p class="cart-display-top"><span class="clients-cart-info"><i class="las la-shopping-cart"></i><span class="cart-notify">@Html.DisplayFor(model => model.itemcount)</span></span></p>
-        <div class="account-item clearfix js-item-menu">
+        <div class="row">
+            <div class="col-lg-4 col-6">
+                <p class="cart-display-top"><span class="clients-cart-info"><i class="las la-shopping-cart"></i><span class="cart-notify">@Html.DisplayFor(model => model.itemcount)</span></span></p>
+            </div>
+            <div class="col-lg-4 d-none d-sm-block">
+                <img src="http://202.91.72.51/salesapp/images/@ViewBag.big-logo" />
+            </div>
+            <div class="col-lg-4 col-6">
+                 <div class="account-item clearfix js-item-menu">
             @*<div class="image" style="width:100px;height:100px;">
             <img src="http://202.91.72.51/salesapp/images/@ViewBag.profilepic"
                      style="width:100px;height:100px;"
@@ -62,5 +69,9 @@
                 </div>
             </div>
         </div>
+            </div>
+        </div>
+        
+       
     </div>
 </div>

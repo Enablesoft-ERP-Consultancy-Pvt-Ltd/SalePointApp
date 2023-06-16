@@ -12,9 +12,9 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
 <nav id="sidebar">
-    <div class="sidebar-header">
-        <a asp-action="Index" asp-controller="Mirror" class="big-logo"><img src=@Url.Content("~/img/big-logo.png") /></a>
-        <a asp-action="Index" asp-controller="Mirror" class="small-logo"><img src=@Url.Content("~/img/small-logo.png") /></a>
+    <div class="sidebar-header"><img src="~/images/logo.png" />
+        <a asp-action="Index" asp-controller="Mirror" class="big-logo"><img src=@Url.Content("~/images/logo.png") /></a>
+        <a asp-action="Index" asp-controller="Mirror" class="small-logo"><img src=@Url.Content("~/images/logo.png") /></a>
     </div>
 
     <div class="sidebar-content" style="overflow:auto">
@@ -22,8 +22,8 @@
             <i class="las la-arrow-left"></i>
         </button>
         <div class="profile-setting">
-            <div class="profile-img big-profile" style="width:100px;height:100px;">
-                <img src="http://202.91.72.51/salesapp/images/@ViewBag.profilepic"
+            <div class="profile-img big-profile" style="width:100px;height:100px;">               
+                <img src="~/images/profile.png"
                      style="width:100px;height:100px;"
                      asp-append-version="true" />
             </div>
