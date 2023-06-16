@@ -68,7 +68,7 @@
                         <img src="img/scan.png"/>
                       </div>
                     </div> -->
-                    <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
                         <div class="form-group">
                             @*<label for="StockNumber">Stock No.</label>
                             <input type="text" class="form-control" asp-for="stockno" required placeholder="" onforminput="GetItemDetails()" onblur="GetItemDetails()">*@
@@ -90,7 +90,24 @@
                                 </ul>
                             </div>*@
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-6">
+                        <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
+                            @*<label for="add" class="lable-head">Type</label>*@
+                            <div class="type-group">
+                                @Html.ValidationMessageFor(model => model._saletype, "", new { @class = "text-danger" })
+                                <div class="inputGroup">
+                                    @Html.RadioButtonFor(m => m._saletype, SaleType.CM, new { @name = "radio", @type = "radio", @id = "CashMemo", htmlAttributes = new { required = "required" } })
+                                    @Html.ValidationMessageFor(model => model._saletype, "", new { @class = "text-danger" })
+
+                                    <label for="CashMemo" class="cm-lable">C/M</label>
+                                </div>
+                                <div class="inputGroup">
+                                    @Html.RadioButtonFor(m => m._saletype, SaleType.OF, new { @name = "radio", @type = "radio", @id = "OrderForm", htmlAttributes = new { required = "required" } })
+                                    <label for="OrderForm" class="of-lable">O/F</label>
+                                </div>
+                                @*@Html.ValidationMessageFor(m => m._saletype, "", new { @class = "text-danger" })*@
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
                         <div class="form-group">
                             <label class="container-init">
                                                     Gift Item
@@ -108,23 +125,7 @@
                                 <input type="text" class="form-control" asp-for="quantity" disabled id="Qty" placeholder="">
                             </div>
                         </div>*@
-                    <div class="col-lg-3 col-md-3 col-sm-4">
-                        @*<label for="add" class="lable-head">Type</label>*@
-                        <div class="type-group">
-                            @Html.ValidationMessageFor(model => model._saletype, "", new { @class = "text-danger" })
-                            <div class="inputGroup">
-                                @Html.RadioButtonFor(m => m._saletype, SaleType.CM, new { @name = "radio", @type = "radio", @id = "CashMemo", htmlAttributes = new { required = "required" } })
-                                @Html.ValidationMessageFor(model => model._saletype, "", new { @class = "text-danger" })
-
-                                <label for="CashMemo" class="cm-lable">C/M</label>
-                            </div>
-                            <div class="inputGroup">
-                                @Html.RadioButtonFor(m => m._saletype, SaleType.OF, new { @name = "radio", @type = "radio", @id = "OrderForm", htmlAttributes = new { required = "required" } })
-                                <label for="OrderForm" class="of-lable">O/F</label>
-                            </div>
-                            @*@Html.ValidationMessageFor(m => m._saletype, "", new { @class = "text-danger" })*@
-                        </div>
-                    </div>
+                   
                 </div>
 
                 <div class="row ">

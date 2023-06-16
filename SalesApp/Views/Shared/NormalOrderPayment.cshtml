@@ -94,15 +94,53 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-12 summary-container">
-                    <div class="" style="margin-top:20px;">
-                        <!-- <p><span class="fbold fdark conversion-head">Conversion Rate:</span> <span class="fbold conversion-val">USD 76</span></p> -->
-                        <p style="margin-left:-6px"><span class="fbold fdark grand-total-head">Grand Total:</span> <span class="fbold grand-total-val" style="width:209px">@Html.DisplayFor(model => model.grandtotalinr)</span></p>
-                        <p style="margin-left:-6px"><span class="fbold fdark grand-total-head">Discount:</span> <span class="fbold grand-total-val" style="width:209px">@Html.DisplayFor(model => model.discountamout)</span></p>
-                        <p style="margin-left:-6px"><span class="fbold fdark grand-total-head">Taxable Amount:</span> <span class="fbold conversion-val" style="color:blue;width:209px">@Html.DisplayFor(model => model.taxableamount)</span></p>
-                            <p style="margin-left:-6px"><span class="fbold fdark grand-total-head">Tax:</span> <span class="fbold conversion-val" style="color:blue;width:209px">@Html.DisplayFor(model => model.tax)</span></p>
-                            <p style="margin-left:-6px"><span class="fbold fdark conversion-head">Total  Balance:</span> <span class="fbold conversion-val" style="color:blue;width:209px">@Html.DisplayFor(model => model.balinr)</span></p>
+                    
+                         <table class="table table-bordered table-striped table-earning table-main">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="50%">
+                                                         <p><span class="fbold fdark grand-total-head">Grand Total:</span> </p>
+                                                    </td>
+                                    <td width="50%"> <span class="fbold grand-total-val">@Html.DisplayFor(model => model.grandtotalinr)</span></td>
+                                                    </tr>
+                                                     <tr>
+                                                    <td width="50%">
+                                        <p><span class="fbold fdark grand-total-head">Discount:</span></p>
 
-                    </div>
+                                                    </td>
+                                               <td width ="50%">
+                                        <span class="fbold grand-total-val">@Html.DisplayFor(model => model.discountamout)</span>
+                                    </td>
+                                                    </tr>
+                                                     <tr>
+                                                    <td width="50%">
+                                                        <p><span class="fbold fdark grand-total-head">Taxable Amount:</span> </p>
+                                                    </td>
+                                               <td width ="50%">
+                                        <span class="fbold conversion-val" style="color:blue;">@Html.DisplayFor(model => model.taxableamount)</span>
+                                    </td>
+                                                    </tr>
+                                                     <tr>
+                                                    <td width="50%">
+                                                        <p><span class="fbold fdark grand-total-head">Tax:</span></p>
+                                                    </td>
+                                               <td width ="50%">
+                                        <span class="fbold conversion-val" style="color:blue;">@Html.DisplayFor(model => model.tax)</span>
+                                    </td>
+                                                    </tr>
+                                                     <tr>
+                                                    <td width="50%">
+                                                         <p><span class="fbold fdark conversion-head">Total  Balance:</span> </p>
+                                                    </td>
+                                               <td width ="50%">
+                                        <span class="fbold conversion-val" style="color:blue;">@Html.DisplayFor(model => model.balinr)</span>
+                                    </td>
+                                                    </tr>
+                                                    
+                                                    </tbody>
+                                                    </table>
+                   
+                  
                 </div>
             </div>
             <div class="row pad-rl-20 payment-paylater-container" id="paylater">
