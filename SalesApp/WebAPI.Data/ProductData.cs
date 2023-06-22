@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Http;
 using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 using System.Drawing.Drawing2D;
+using DocumentFormat.OpenXml.Drawing.Charts;
 
 namespace SalesApp.WebAPI.Data
 {
@@ -936,6 +937,34 @@ Where x.id=@OrderId;";
             }
             return obj;
         }
+
+
+
+        public async Task<ServiceResponse<IEnumerable<dynamic>>> GetFilter(int StoreId)
+        {
+            ServiceResponse<IEnumerable<dynamic>> obj = new ServiceResponse<IEnumerable<dynamic>>();
+            using (var connection = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
+            {
+                string sql = @"Select x.AttributeId,y.AttributeName,x.AttributeValue 
+from tblItemAttributes x Inner Join tblItemAttributeMaster y 
+on x.AttributeId=y.AttributeId
+Group By x.AttributeId,y.AttributeName,x.AttributeValue,y.CompanyId
+Having y.CompanyId=@StoreId";
+
+                var result = (await connection.QueryAsync(sql, new { @StoreId = StoreId }));
+
+                obj.Data = result;
+                obj.Result = obj.Data != null ? true : false;
+                obj.Message = obj.Data != null ? result.Count() + " Record Found." : "No Data found.";
+            }
+            return obj;
+        }
+
+
+
+
+
+
 
 
 

@@ -25,5 +25,18 @@ namespace SalesApp.WebAPI.Data.IData
         Task<ServiceResponse<bool>> AddWishItem(WishItemModel _model);
         Task<ServiceResponse<bool>> DelWishItem(int WishId);
         Task<ServiceResponse<IEnumerable<WishModel>>> GetWishList(int StoreId, int CustomerId);
+
+
+
+        Task<ServiceResponse<IEnumerable<dynamic>>> GetFilter(int StoreId);
+
+
+
+
+
+
+
+
+
     }
 }

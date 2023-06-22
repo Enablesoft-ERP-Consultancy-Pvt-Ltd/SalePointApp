@@ -10,6 +10,7 @@ using System;
 using System.Linq;
 using System.Collections;
 using SalesApp.Utility;
+using DocumentFormat.OpenXml.Drawing.Charts;
 
 
 namespace SalesApp.WebAPI.Service
@@ -167,7 +168,10 @@ namespace SalesApp.WebAPI.Service
             return await data.GetOrderDeatil(orderId);
         }
 
-
+        public async Task<ServiceResponse<IEnumerable<dynamic>>> GetFilter(int StoreId)
+        {
+            return await data.GetFilter(StoreId);
+        }
 
 
     }

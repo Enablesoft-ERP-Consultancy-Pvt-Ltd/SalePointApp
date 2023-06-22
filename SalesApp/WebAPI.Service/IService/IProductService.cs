@@ -24,5 +24,7 @@ namespace SalesApp.WebAPI.Service.IService
         Task<ServiceResponse<IEnumerable<BillModel>>> GetAllWebOrder();
         Task<ServiceResponse<dynamic>> GetOrderDeatil(long orderId);
 
+        Task<ServiceResponse<IEnumerable<dynamic>>> GetFilter(int StoreId);
+
     }
 }

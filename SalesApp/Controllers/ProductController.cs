@@ -215,7 +215,13 @@ namespace SalesApp.Controllers
         }
 
 
-
+        [HttpGet("getfilter/{StoreId}")]
+        [ProducesResponseType(typeof(ServiceResponse<IEnumerable<dynamic>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceResponse<IEnumerable<dynamic>>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetFilter(int StoreId)
+        {
+            return Ok(await prodSrv.GetFilter(StoreId));
+        }
 
 
 
