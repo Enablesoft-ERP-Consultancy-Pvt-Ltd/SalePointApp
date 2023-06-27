@@ -530,10 +530,10 @@ END";
                     string Query;
                     Query = @"INSERT INTO [sales].[Order_Master]
 ([sale_date],[transaction_id],[delievery_type],[port_type],[description],[unit],[created_datetime],
-[created_by],[is_active],[sale_status],[session_year],[DISCOUNTPER])
+[created_by],[is_active],[sale_status],[sale_value],[bill_id],[session_year],[DISCOUNTPER])
 VALUES
 (@SaleDate,@TransactionId,@DelieveryType,@PortType,@Description,@Unit,@CreatedOn,
-@CreatedBy,@IsActive,@SaleStatus,@SessionYear,@DisCountPer);
+@CreatedBy,@IsActive,@SaleStatus,@SaleValue,@BillId,@SessionYear,@DisCountPer);
 select SCOPE_IDENTITY();
 ";
                     _model.OrderId = (await cnn.ExecuteScalarAsync<int>(Query, new
@@ -542,6 +542,8 @@ select SCOPE_IDENTITY();
                         @TransactionId = _model.TransactionId,
                         @SaleDate = _model.SaleDate,
                         @SaleStatus = _model.SaleStatus,
+                        @SaleValue = 0.00,
+                        @BillId = 0,
                         @SessionYear = _model.SessionYear,
                         @DisCountPer = _model.DisCountPer,
                         @Unit = _model.Unit,

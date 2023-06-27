@@ -199,10 +199,10 @@ namespace SalesApp.Repository
                 }
                 return _orderid;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
         }
     }
