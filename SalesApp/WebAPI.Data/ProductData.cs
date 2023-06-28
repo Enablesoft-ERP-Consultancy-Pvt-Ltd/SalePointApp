@@ -675,7 +675,9 @@ END";
                         cnn.Open();
                     transaction = cnn.BeginTransaction();
 
-                    string sqlQuery = @"INSERT INTO [sales].[Order_Payment]
+                    string sqlQuery = @"IF NOT EXISTS (SELECT 0 FROM sales.Order_Payment WHERE order_id=@OrderId)
+BEGIN
+INSERT INTO [sales].[Order_Payment]
 ([order_id],[pay_mode],[card_type],[amount],[amout_hd],[IGST],[GST],[pay_date],[currency_type],[created_datetime]
 ,[created_by],[updated_by],[update_datetime],[is_active],[paylaterstatus],[paylaterdate])
 VALUES
@@ -684,7 +686,8 @@ VALUES
 
 Update [sales].[Order_Master] Set sale_status=1 Where id=@OrderId
 Update x SET x.Pack=1,x.PackingDetailId=y.id,x.PackingID=y.order_id from [dbo].[CarpetNumber] x inner join [sales].Order_Item_Details y on x.TStockNo=y.stock_id
-where y.order_id=@OrderId";
+where y.order_id=@OrderId
+END";
 
                     int rowsAffected = await cnn.ExecuteAsync(sqlQuery, _model, transaction);
                     transaction.Commit();
