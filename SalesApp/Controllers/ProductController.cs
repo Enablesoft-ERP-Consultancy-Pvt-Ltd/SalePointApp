@@ -87,7 +87,7 @@ namespace SalesApp.Controllers
                     item.CurrencyType = 6;
                     item.SalesType = (short)SaleType.OF;
                     item.ItemType = 1;
-                    item.OrderType = 1;
+                    item.OrderType = 2;
                     item.OrderTypePrefix = SaleType.OF.ToString();
                     item.ConversionRate = 1;
                     item.SessionYear = DateTime.Now.Year;
