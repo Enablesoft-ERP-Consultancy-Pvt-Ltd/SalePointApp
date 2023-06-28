@@ -512,6 +512,7 @@ END";
         }
 
 
+
         public async Task<ServiceResponse<int>> CreateOrder(OrderModel _model)
         {
 
@@ -529,21 +530,19 @@ END";
 
                     string Query;
                     Query = @"INSERT INTO [sales].[Order_Master]
-([sale_date],[transaction_id],[delievery_type],[port_type],[description],[unit],[created_datetime],
-[created_by],[is_active],[sale_status],[sale_value],[bill_id],[session_year],[DISCOUNTPER])
+([mirror_id],[sale_date],[transaction_id],[delievery_type],[port_type],[description],[unit],[created_datetime],
+[created_by],[is_active],[sale_status],[session_year],[DISCOUNTPER])
 VALUES
-(@SaleDate,@TransactionId,@DelieveryType,@PortType,@Description,@Unit,@CreatedOn,
-@CreatedBy,@IsActive,@SaleStatus,@SaleValue,@BillId,@SessionYear,@DisCountPer);
+(@MirrorId,@SaleDate,@TransactionId,@DelieveryType,@PortType,@Description,@Unit,@CreatedOn,
+@CreatedBy,@IsActive,@SaleStatus,@SessionYear,@DisCountPer);
 select SCOPE_IDENTITY();
 ";
                     _model.OrderId = (await cnn.ExecuteScalarAsync<int>(Query, new
                     {
-
+                        @MirrorId = _model.MirrorId,
                         @TransactionId = _model.TransactionId,
                         @SaleDate = _model.SaleDate,
                         @SaleStatus = _model.SaleStatus,
-                        @SaleValue = 0.00,
-                        @BillId = 0,
                         @SessionYear = _model.SessionYear,
                         @DisCountPer = _model.DisCountPer,
                         @Unit = _model.Unit,
@@ -555,30 +554,54 @@ select SCOPE_IDENTITY();
                         @CreatedOn = _model.CreatedOn
                     }, transaction));
 
+                    string CustQuery;
+                    CustQuery = @"INSERT INTO [sales].[Customer_Details]([order_id],[title],[name],[address],[state],[city],[country],[zipcode],[shippingaddress],		 
+[mobile],[email],[created_datetime],[created_by],[mob_country_code])
+VALUES(@OrderId,@Title,@Name,@Address,@State,@City,@Country,@ZipCode,@ShippingAddress,
+@ContactNo,@Email,@CreatedOn,@CreatedBy,@CountryCode)";
+
+                    _model.Customer.OrderId = _model.OrderId;
+
+                    var addCust = (await cnn.ExecuteAsync(CustQuery, _model.Customer, transaction));
+
                     _model.ItemList.ForEach(x => x.OrderId = _model.OrderId);
 
-                    //                    string sqlQuery = @"INSERT INTO [sales].[Order_Item_Details]
+                    //string sqlQuery = @"INSERT INTO [sales].[Order_Item_Details]
                     //([trans_id],[stock_id],[order_id],[order_type],[order_type_prefix],[sale_type],[qty],[currency_type],
                     //[price],[price_inr],[conversion_rate],[unit],[item_type],[item_desc],[created_datetime],
                     //[created_by],[is_active],[session_year],[hsncode],[finishedid])
                     //VALUES
                     //(@TransId,@StockId,@OrderId,@OrderType,@OrderTypePrefix,@SalesType,@Qty,@CurrencyType,
                     //@Price,@PriceINR,@ConversionRate,@Unit,@ItemType,@ItemDescription,@CreatedOn,@CreatedBy,@IsActive,@SessionYear,@HsnCode,@FinishedId);
-
                     //Update [dbo].[CarpetNumber] Set PackDate=@CreatedOn,Pack=2,PackSource=@PackSource,PackingDetailId=SCOPE_IDENTITY(),PackingId=@OrderId
                     //Where TStockNo=@StockId;";
 
                     string sqlQuery = @"Declare @Count int
-Update [dbo].[CarpetNumber] Set Pack=0, PackingID=null,Pack_Date=null Where PackingID>=101 and Pack_Date<=GETDATE() and Item_Finished_Id=@FinishedId
+Update x SET x.is_active = 'false',x.updated_by = 1,x.updated_datetime = getDate() ,x.bill_id = 0
+from sales.Order_Master x Inner Join sales.Order_Item_Details y on x.id = y.order_id 
+inner join  [dbo].[CarpetNumber] z on  z.TStockNo = y.stock_id
+Where z.Pack>=101 and z.Item_Finished_Id=@FinishedId and z.PackSource = @Source and z.PackingID=@CustomerId
+
+Update y SET y.is_active = 'false',y.updated_by = 1,y.updated_datetime = getDate() ,y.bill_id = 0
+from sales.Order_Master x Inner Join sales.Order_Item_Details y on x.id = y.order_id 
+inner join  [dbo].[CarpetNumber] z on  z.TStockNo = y.stock_id
+Where z.Pack>=101 and z.Item_Finished_Id=@FinishedId and z.PackSource = @Source and z.PackingID=@CustomerId
+
+Update y SET y.is_active = 'false',y.updated_by = 1
+from sales.Order_Item_Details x Inner Join sales.Order_Payment y on x.order_id = y.order_id 
+inner join  [dbo].[CarpetNumber] z on  z.TStockNo = x.stock_id
+Where z.Pack>=101 and z.Item_Finished_Id=@FinishedId and z.PackSource = @Source and z.PackingID=@CustomerId
+Update x SET x.PackingDetailId = 0,x.PackingID=null,x.packsource = '',x.Pack = 0,x.Pack_Date = null
+from[dbo].[CarpetNumber] x inner join[sales].Order_Item_Details y on x.TStockNo = y.stock_id
+where x.Pack>=101 and x.Item_Finished_Id=@FinishedId and x.PackSource = @Source and x.PackingID=@CustomerId
 SELECT @Count=count(*) FROM CarpetNumber WHERE Item_Finished_Id=@FinishedId AND Pack=0
 IF (@Count>=@Quantity) 
 BEGIN
-
 WITH UpdateStock AS(
 select TOP (select @Quantity)  * from [dbo].[CarpetNumber] Where Item_Finished_Id=@FinishedId AND Pack=0 
 )
 select * into #temp from UpdateStock
-Update p Set p.Pack = @PackId,p.PackingDetailID=@OrderId,p.Pack_Date=@CreatedOn,p.PackSource = @Source  from  
+Update p Set p.Pack = @PackId,p.PackingID=@CustomerId,p.PackingDetailID=@OrderId,p.Pack_Date=@CreatedOn,p.PackSource = @Source  from  
 CarpetNumber p inner join  #temp q on p.TStockNo=q.TStockNo
 
 INSERT INTO [sales].[Order_Item_Details]
@@ -596,16 +619,18 @@ END";
 
                     if (rowsAffected > 0)
                     {
-
-
                         obj.Data = _model.OrderId;
-
 
                     }
                     else
                     {
 
                         obj.Data = -1;
+
+                        if (transaction != null)
+                        {
+                            transaction.Rollback();
+                        }
 
                     }
                     obj.Message = obj.Data > 0 ? "Data Found." : "No Data found.";
@@ -632,6 +657,7 @@ END";
             }
             return obj;
         }
+
 
         public async Task<ServiceResponse<bool>> AddPayment(OrderPaymentModel _model)
         {

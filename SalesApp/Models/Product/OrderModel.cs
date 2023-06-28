@@ -75,13 +75,14 @@ namespace SalesApp.Models.Product
         public int CreatedBy { get; set; }
         public bool IsActive { get; set; }
 
-
+        public CustomerModel Customer { get; set; }
 
     }
 
 
     public class OrderItemModel
     {
+        public int CustomerId { get; set; }
         public int OrderItemId { get; set; }
         public int OrderId { get; set; }
         public string TransId { get; set; }
@@ -109,8 +110,38 @@ namespace SalesApp.Models.Product
 
 
 
-    }
 
+
+
+
+
+
+
+
+
+    }
+    public class CustomerModel
+    {
+        public int OrderId { get; set; }
+
+
+        public string Title { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string Country { get; set; }
+        public string State { get; set; }
+        public string City { get; set; }
+        public string ZipCode { get; set; }
+        public string ShippingAddress { get; set; }
+
+
+        public string CountryCode { get; set; }
+        public string ContactNo { get; set; }
+        public string Email { get; set; }
+        public bool IsActive { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
+    }
 
 
     public class OrderPaymentModel

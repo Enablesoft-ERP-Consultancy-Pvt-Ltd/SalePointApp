@@ -56,6 +56,9 @@ namespace SalesApp.Controllers
         {
             try
             {
+
+                int CustomerId = model.CreatedBy;
+                model.MirrorId = 4;
                 model.CreatedBy = 1;
                 model.CreatedOn = DateTime.Now;
                 model.SaleDate = DateTime.Now;
@@ -68,6 +71,12 @@ namespace SalesApp.Controllers
                 model.IsActive = true;
                 model.Unit = 1;
                 model.DisCountPer = 10;
+                model.Customer.Title = "Mr";
+                model.Customer.CountryCode = "+91";
+                model.Customer.CreatedBy = model.CreatedBy;
+                model.Customer.CreatedOn = DateTime.Now;
+                model.Customer.IsActive = true;
+
 
                 foreach (var item in model.ItemList)
                 {
@@ -85,7 +94,8 @@ namespace SalesApp.Controllers
                     item.CreatedOn = DateTime.Now;
                     item.IsActive = true;
                     item.Source = "WebSales";
-                    item.CreatedBy = 1;
+                    item.CreatedBy = model.CreatedBy;
+                    item.CustomerId = CustomerId;
                 }
                 return Ok(await prodSrv.CreateOrder(model));
             }
@@ -93,6 +103,21 @@ namespace SalesApp.Controllers
             {
                 throw ex;
             }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
 
         [HttpPost("addPayment")]
