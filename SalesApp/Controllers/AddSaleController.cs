@@ -1231,7 +1231,9 @@ namespace SalesApp.Controllers
                 sgstamount = (decimal)(gstamount / 2);
                 finalgrandtotal = Math.Round((decimal)(totalgrandtotal + cgstgrandtotal + sgstgrandtotal));
 
-                balancepaid = finalgrandtotal - _cashsaledetails.paymentdetails.Sum(A => A.payamountinr);
+              //  balancepaid = finalgrandtotal - _cashsaledetails.paymentdetails.Sum(A => A.payamountinr);
+
+                balancepaid = finalgrandtotal - _cashsaledetails.paymentdetails.Where(a => a.paymodeid != 4).Sum(A => A.payamountinr);
 
 
             }
