@@ -743,7 +743,11 @@ namespace SalesApp.Controllers
 
             if (cashdetails.cashsaledetailsCM.Count > 0)
             {
+
                 htmlfile = GenerateHTMLCM(cashdetails);
+
+                
+                
                 //HtmlToPdfConverter converter = new HtmlToPdfConverter();
                 //WebKitConverterSettings settings = new WebKitConverterSettings();
                 //settings.WebKitPath = Path.Combine(_hostingenv.ContentRootPath, "QtBinariesWindows");
@@ -769,7 +773,17 @@ namespace SalesApp.Controllers
             }
             if (cashdetails.cashsaledetailsOF.Count > 0)
             {
-                htmlfileof = GenerateHTMLOFTAX(cashdetails);
+                
+
+
+                if (UID == 1)
+                {
+                    htmlfileof = GenerateHTMLOFTAXForEccomerce(cashdetails);
+                }
+                else
+                {
+                    htmlfileof = GenerateHTMLOFTAX(cashdetails);
+                }
                 //HtmlToPdfConverter converter1 = new HtmlToPdfConverter();
                 //WebKitConverterSettings settings1 = new WebKitConverterSettings();
                 //Set WebKit path
@@ -1146,6 +1160,165 @@ namespace SalesApp.Controllers
         //    return htmlfile.ToString();
 
         //}
+
+
+
+        protected string GenerateHTMLOFTAXForEccomerce(NormalSaleVM _cashsaledetails)
+        {
+            StringBuilder htmlfile = new StringBuilder();
+            StringBuilder htmlfileOF = new StringBuilder();
+            StringBuilder additions = new StringBuilder();
+            decimal? paylater = 0;
+            decimal? paidamount = 0, salevaluinr = 0, salevalue = 0; ;
+            int cnt = 0;
+            string customsp = string.Empty;
+            //  decimal? paidamount = 0.
+            foreach (var pay in _cashsaledetails.paymentdetails)
+            {
+                if (pay.paymodeid == 4)
+                {
+                    paylater += pay.payamountinr;
+                }
+                else { paidamount += pay.payamountinr; }
+
+            }
+            //htmlfile.Append("<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'><html xmlns='http://www.w3.org/1999/xhtml'><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8' /><title>Emailer</title><style>table{border: 0px solid #333;	}td{padding: 5px;}@media print {#printbtn {display:none;}}</style></head><body><table width='900' border='0' align='center' cellpadding='0' cellspacing='0' style='margin-top:35px'><tr><td height='15px' style='padding-left:5px;text-align: center;color: #ffffff!important; '><h3 style='font-family:Arial;font-weight:500;color:#999 !important;margin-top:10px;margin-bottom:10px; font-size:22px;font-family:Gotham,Helvetica, Arial,sans-serif;'>Invoice</h3></td><td align='right' style='padding-top:38px;'><input type='button' id='printbtn' value='Print Invoice' onClick='window.print()' style='outline:0px;box-shadow:none;background: #ff6377;color:#fff;border:2px solid #ff7b8c;border-radius:4px;width:90px;height:45px;'/></td></tr><tr><td height='5'></td></tr><tr><td align='center' height='15'><img src='http://ec2-13-232-169-227.ap-south-1.compute.amazonaws.com/salesapp/img/akb.png' height='60px' width='170px'><img src='http://ec2-13-232-169-227.ap-south-1.compute.amazonaws.com/salesapp/img/int.png' height='40px' width='200px'></td></td></tr>");
+
+            htmlfile.Append("<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'><html xmlns='http://www.w3.org/1999/xhtml'><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8' /><title>Emailer</title><style>table{border: 0px solid #333;	}td{padding: 5px;}@media print {#printbtn {display:none;}}</style></head><body><table width='900' border='0' align='center' cellpadding='0' cellspacing='0' style='margin-top:35px'><tr><td height='15px' style='padding-left:5px;text-align: center;color: #ffffff!important; '><h3 style='font-family:Arial;font-weight:500;color:#999 !important;margin-top:10px;margin-bottom:10px; font-size:22px;font-family:Gotham,Helvetica, Arial,sans-serif;'>Tax Invoice</h3></td><td align='right' style='padding-top:38px;'><input type='button' id='printbtn' value='Print Invoice' onClick='window.print()' style='outline:0px;box-shadow:none;background: #ff6377;color:#fff;border:2px solid #ff7b8c;border-radius:4px;width:90px;height:45px;'/></td></tr><tr><td align='center' height='15'><img src='http://202.91.72.51/salesapp/img/big-logo.png' height='60px' width='170px'></td></td></tr><tr><td align='center' height='10'><h1>Mirzapur Kaleen and Rugs</h1></td></td></tr>");
+            htmlfile.Append("<tr><td align='center' height='0'><strong>Showroom</strong> : Opposite High Court Gate No: -4 Gomti Nagar,</td></td></tr>");
+            htmlfile.Append("<tr><td align='center' height='0'>Kamta Chauraha,Faizabad Road, Lucknow - 226010, U.P(India)</td></td></tr>");
+            htmlfile.Append("<tr><td style='font-family:Arial,Helvetica,sans-serif;font-size:14px;float:left;font-style:normal;'><table width='900' border='0' cellpadding='0' cellspacing='0'><tbody><tr><td width='400' valign='top' style='border-right:solid 0px #333;line-height:20px;'>GST No:09ABSFM5020D1ZA <br>State: Uttar Pradesh<br>State Code: 09 </td><td width='620' valign='top' style='border-right:solid 0px #333;line-height:20px;text-align:center;'><span style='font-size: 14px'><strong>E-mail</strong>:sales@mirzapurkaleenandrugs.com<strong>Tel.No.</strong> : 08874061111 <strong></span><br><span style='font-size: 14px'>www.mirzapurkaleenandrugs.com<br>");
+            if (_cashsaledetails.cashsaledetailsOF.Count > 0)
+            {
+                customsp = _cashsaledetails.cashsaledetailsOF[0].additiondesc;
+                htmlfile.Append("Invoice No.: <strong style='font-size: 18px'>OF/" + _cashsaledetails.cashsaledetailsOF[0].unitid + "/" + _cashsaledetails.cashsaledetailsOF[0].billid + "</strong></td>");
+            }
+
+            htmlfile.Append("<td width='400' valign='top' style='text-align:right'><br><br>Date: " + Convert.ToDateTime(_cashsaledetails.cashsaledetailsOF[0].orderdate).ToString("dd-MM-yyyy") + "<br></td></tr></tbody></table></td></tr><tr><td valign='top' style='font-family: Arial, Helvetica,sans-serif;font-size:15px;float:left;font-style:normal;border-style: groove;border-color:black;'><table width='900' border='0' cellspacing='0' cellpadding='0' style='border:none'><tbody><tr><td width='85'>Name</td><td width='409'><strong style='text-transform:capitalize;'>");
+            htmlfile.Append(_cashsaledetails.cinfo.Title + " " + _cashsaledetails.cinfo.Name);
+            htmlfile.Append("</strong></td><td width='95'>Mobile No.</td><td width='311'><strong style='text-transform:capitalize;'>" + _cashsaledetails.cinfo.MobCountryCode + "" + (_cashsaledetails.cinfo.Mobile) + "</strong></td></tr><tr>");
+            //htmlfile.Append("<td>Address</td><td><strong style='text-transform:capitalize;'>" + _cashsaledetails.cinfo.Address + "</strong></td><td>Country</td><td><strong style='text-transform:capitalize;'>" + _cashsaledetails.cinfo.Country + "</strong></td></tr>");
+            htmlfile.Append("<td>Billing Address</td><td><strong style='text-transform:capitalize;'>" + _cashsaledetails.cinfo.Address + "</strong></td><td>Shipping Address</td><td><strong style='text-transform:capitalize;'>" + _cashsaledetails.cinfo.ShippingAddress + "</strong></td></tr>");
+            //htmlfile.Append("<tr><td>State</td><td><strong style='text-transform:capitalize;'>" + _cashsaledetails.cinfo.State + "</strong></td><td>City</td><td><strong style='text-transform:capitalize;'>" + _cashsaledetails.cinfo.City + "</strong></td></tr><tr><td>Zip code</td><td><strong>" + _cashsaledetails.cinfo.Zipcode + "</strong></td><td>Mobile No.</td><td><strong>" + _cashsaledetails.cinfo.MobCountryCode + "" + (_cashsaledetails.cinfo.Mobile) + "</strong></td></tr>");
+
+            //htmlfile.Append("<tr><td>Phone</td><td><strong>" + _cashsaledetails.cinfo.TeleCountryCode + "" + (_cashsaledetails.cinfo.Telephone) + "</strong></td><td>Passport No.</td><td><strong>" + _cashsaledetails.cinfo.PassportNo + "</strong></td></tr><tr><td>Delivery Type</td><td><strong>" + _cashsaledetails.DelieveryTypeName + "</strong></td><td>Port Type</td><td><strong>" + _cashsaledetails.PortTypeName + "</strong></td></tr><tr><td>Port Name</td><td><strong>" + _cashsaledetails.dinfo.PortName + "</strong></td><td>Delivery From</td><td><strong>" + String.Format("{0:dd/MM/yyyy}", _cashsaledetails.dinfo.DeliveryFrom) + "</strong></td></tr><tr><td>Delivery To</td><td><strong>" + String.Format("{0:dd/MM/yyyy}", _cashsaledetails.dinfo.DeliveryTo) + "</strong></td>");
+            htmlfile.Append("<td>GSTIN</td><td><strong>" + _cashsaledetails.cinfo.GSTIN + "</strong></td><td>Email</td><td><strong style='text-transform:capitalize;'>" + _cashsaledetails.cinfo.Email + "</strong></td></tr></tbody></table></td></tr><tr><td style ='font-family:Arial,Helvetica,sans-serif;font-size:15px;float:left;font-style:normal;'>");
+            //htmlfile.Append("<table width = '900' border = '0' cellspacing = '0' cellpadding='0' style='border:none;padding-top:70px;'><tbody><tr><td width='450'><strong> HSN CODE: 97029000(Original Engraving) </strong></td><td width='450'><strong> HSN CODE: 97039000(Sculptures) </strong></td></tr><tr><td colspan='2' align='center'  style='font-family: Arial, Helvetica, sans-serif; font-size:15px;float:centre;font-style:normal;'><strong></strong></td></tr></tbody></table>");
+            htmlfile.Append("</td></tr><tr><td valign='top' style ='font-family:Arial,Helvetica,sans-serif;font-size:15px;float:left;font-style:normal;'><table width = '900' border = '0' cellspacing = '0' cellpadding='0' style='border:solid 0px #ccc'><tbody><tr><td style='' colspan='4' valign='top'  height='10px'></td></tr><tr><td width='84' valign='top' style='text-align:center'><strong> S N0.</strong></td><td width='419' valign='top'><strong> DESCRIPTION</strong> </td><td width='100' valign='top'><strong>HSN Code</strong></td><td width='198' align='right' valign='top'><strong>QTY</strong></td><td width='134' align='right' valign='top'><strong> INR AMOUNT</strong> </td></tr><tr><td colspan='6' valign='top'  height='8px' style='border-color:black;border-top-style:groove;'></td></tr>");
+            decimal? igst = 5, sgstcgst = 5, gstamount = 0, totalgrandtotal = 0, cgstgrandtotal = 0, sgstgrandtotal = 0, finalgrandtotal = 0, sgstamount = 0, cgstamount = 0, igstamount = 0, balancepaid = 0;
+            double sgst = 2.5, cgst = 2.5;
+            decimal? totalitemsalevalue = 0;
+            foreach (var item in _cashsaledetails.cashsaledetailsOF)
+            {
+                if (item.salevalueinr > 0)
+                {
+                    // totalitemsalevalue = Math.Round((decimal)(item.salevalueinr * 100) / (100 + sgstcgst));
+                    totalitemsalevalue = item.salevalueinr;
+                }
+                cnt++;
+
+                if (!string.IsNullOrEmpty(item.stockid))
+                {
+
+                    htmlfile.Append("<tr style='font-size:16px'><td valign='top' style='text-align:center'>" + cnt + ".</td><td valign='top'>" + item.itemdesc + " <br> (" + item.stockid + ") </td><td align ='right' valign='top'>" + item.hsncode + "</td><td align ='right' valign='top'>1</td><td align='right' valign='top'> INR " + String.Format("{0:G29}", totalitemsalevalue) + "</td></tr>");
+                }
+                else
+                {
+                    htmlfile.Append("<tr style='font-size:16px'><td valign='top' style='text-align:center'>" + cnt + ".</td><td valign='top'>" + item.itemdesc + "<br>(TBM)</td><td align ='right' valign='top'></td><td align='right' valign='top'> INR " + String.Format("{0:G29}", totalitemsalevalue) + "</td></tr>");
+                }
+                salevaluinr += item.salevalueinr;
+                salevalue += item.salevalue;
+            }
+            if (salevaluinr > 0)
+            {
+
+                // totalitemsalevalue = Math.Round((decimal)(item.salevalueinr * 100) / (100 + igst));
+                totalgrandtotal = (_cashsaledetails.cashsaledetailsOF.Sum(a => a.salevalueinr) - _cashsaledetails.discountperof) * 100 / 105;// Math.Round((decimal)(salevaluinr * 100) / (100 + igst));
+
+                cgstgrandtotal = (decimal)(totalgrandtotal * Convert.ToDecimal(cgst)) / 100;
+                sgstgrandtotal = (decimal)(totalgrandtotal * Convert.ToDecimal(sgst)) / 100;
+
+
+                //cgstgrandtotal = (decimal)((_cashsaledetails.cashsaledetailsOF.Sum(a => a.salevalueinr) - _cashsaledetails.discountperof) * Convert.ToDecimal(cgst)) / 100;
+                //sgstgrandtotal = (decimal)((_cashsaledetails.cashsaledetailsOF.Sum(a => a.salevalueinr) - _cashsaledetails.discountperof) * Convert.ToDecimal(sgst)) / 100;
+                gstamount = (decimal)(decimal)(totalgrandtotal * igst) / 100;
+                igstamount = (decimal)(totalgrandtotal * igst) / 100;
+                cgstamount = (decimal)(gstamount / 2);
+                sgstamount = (decimal)(gstamount / 2);
+                finalgrandtotal = Math.Round((decimal)(totalgrandtotal + cgstgrandtotal + sgstgrandtotal));
+
+                //  balancepaid = finalgrandtotal - _cashsaledetails.paymentdetails.Sum(A => A.payamountinr);
+
+                balancepaid = finalgrandtotal - _cashsaledetails.paymentdetails.Where(a => a.paymodeid != 4).Sum(A => A.payamountinr);
+
+
+            }
+
+            htmlfile.Append("</tbody></table></td></tr><tr><td valign='top'  style='font-family:Arial,Helvetica,sans-serif;font-size:15px;float:left;font-style:normal;'><table width='900' border='0' cellspacing='0' cellpadding='0' style ='border:none'><tbody><tr><td colspan='4' valign='top'  height='10px'></td></tr>");
+            foreach (var stand in _cashsaledetails.standsaledetailsOF)
+            {
+                htmlfile.Append("<tr><td colspan='4' valign='top' style='padding-left:90px;'> Stand Details:</td></tr><tr><td width='384' valign='top' style='padding-left:90px;'> Type:<strong>" + stand.standdesc + "</strong>|Colour:<strong>" + stand.color + "</strong>|Height:" + stand.height + "''</td><td width='84' valign='top'></td></tr>");
+            }
+
+            htmlfile.Append("<tr><td valign='top'> &nbsp;</td><td align='left' style='width:140px;'><strong> GROSS TOTAL</strong></td><td align='right' valign='top' style='width:162px;'><strong>" + _cashsaledetails.cashsaledetailsOF.Count() + "</strong></td><td align='right' valign='top'><strong> INR " + _cashsaledetails.cashsaledetailsOF.Sum(a => a.salevalueinr) + " </strong></td></tr>");
+            htmlfile.Append("<tr><td valign='top'> &nbsp;</td> <td valign='top'> DISCOUNT:</td><td align='right' valign='top'><strong>" + _cashsaledetails.cashsaledetailsOF[0].discountper + "%</strong></td><td align='right' valign='top'><strong> INR " + _cashsaledetails.discountperof + " </strong></td></tr>");
+            //htmlfile.Append("<tr><td valign='top'> &nbsp;</td> <td valign='top'> TAXABLE AMOUNT:</td><td align='right' valign='top'></td><td align='right' valign='top'><strong> INR " + String.Format("{0:G29}",(_cashsaledetails.cashsaledetailsOF.Sum(a => a.salevalueinr)) - _cashsaledetails.discountperof) + " </strong></td></tr>");
+
+            htmlfile.Append("<tr><td valign='top'> &nbsp;</td> <td valign='top'> TAXABLE AMOUNT:</td><td align='right' valign='top'></td><td align='right' valign='top'><strong> INR " + String.Format("{0:G29}", Math.Round((decimal)totalgrandtotal, 2)) + " </strong></td></tr>");
+
+
+            if (_cashsaledetails.dinfo.isotherstate)
+            {
+                htmlfile.Append("<tr><td valign='top'> &nbsp;</td><td valign='top'>SGST@.........%</td><td width='196' align='right' valign='top'><strong> </ strong></td><td width='131' align='right' valign='top'><strong></strong></td></tr><tr> <td valign='top'> &nbsp;</td><td valign='top'>  CGST@.........%</td><td align='right' valign='top'><strong></strong></td><td align='right' valign='top'><strong></strong></td></tr>");
+                htmlfile.Append("<tr><td valign='top'> &nbsp;</td><td valign='top'>IGST@.........</td><td align='right' valign='top'><strong> 5%</strong></td><td align='right' valign='top'><strong>" + igstamount + "</strong></td></tr>");
+            }
+            else
+            {
+                htmlfile.Append("<tr><td valign='top'> &nbsp;</td><td valign='top'>SGST@.........</td><td width='196' align='right' valign='top'><strong> 2.5%</ strong></td><td width='131' align='right' valign='top'><strong>" + Convert.ToDecimal(sgstamount).ToString("0.##") + "</strong></td></tr><tr> <td valign='top'> &nbsp;</td><td valign='top'>CGST@.........</td><td align='right' valign='top'><strong>2.5%</strong></td><td align='right' valign='top'><strong>" + Convert.ToDecimal(cgstamount).ToString("0.##") + "</strong></td></tr>"); htmlfile.Append("<tr><td valign='top'> &nbsp;</td><td valign='top'> IGST@.........</td><td align='right' valign='top'><strong></strong></td><td align='right' valign='top'><strong>  </strong></td></tr>");
+            }
+            //htmlfile.Append("<tr><td colspan='4' valign='top'  height='8px'></td></tr><tr><td valign='top'> &nbsp;</td><td align='right' align='right' style='width:112px;'><strong> GROSS TOTAL</strong></td><td align='right' valign='top' style='width:162px;'><strong>" + _cashsaledetails.cashsaledetailsOF[0].currency + " " + String.Format("{0:G29}", _cashsaledetails.grandtotalOF) + "  </strong></td><td align='right' valign='top'><strong> INR " + String.Format("{0:G29}", _cashsaledetails.grandtotalinrOF) + " </strong></td></tr><tr><td colspan='4' valign='top'  height='8px'></td></tr>");
+
+
+            //htmlfile.Append("<tr><td valign='top'> &nbsp;</td><td align='right' style='width:109px;'><strong> GROSS TOTAL</strong></td><td align='right' valign='top' style='width:162px;'><strong> " + _cashsaledetails.cashsaledetailsOF[0].currency + " " + String.Format("{0:G29}", _cashsaledetails.grandtotalOF) + "  </strong></td><td align='right' valign='top'><strong> INR " + String.Format("{0:G29}", _cashsaledetails.grandtotalinrOF) + " </strong></td></tr>");
+
+            //htmlfile.Append("<tr><td valign='top'> &nbsp;</td> <td valign='top'> &nbsp;</td><td align='right' valign='top'><strong> PAID AMOUNT </strong></td><td align='right' valign='top'><strong> INR " + paidamount + " </strong></td></tr>");
+
+            //htmlfile.Append("<tr><td colspan='4' valign='top' height='8px'></td></tr><tr><td valign ='top'> &nbsp;</td><td valign='top'> &nbsp;</td><td align='right' valign='top'><strong> BALANCE TO BE PAID </strong></td><td align='right' valign='top' ><strong> INR " + paylater + " </strong></td></tr></tbody></table></td></tr><tr><td valign='top' style='font-family:Arial,Helvetica,sans-serif;font-size:15px;float:left; font-style:normal;'><table width='900' border='0' cellspacing='0' cellpadding='0' style='border:none'><tbody>");
+            htmlfile.Append("<tr><td valign='top'> &nbsp;</td> <td valign='top'> GRAND TOTAL:</td><td align='right' valign='top'></td><td align='right' valign='top'><strong> INR " + String.Format("{0:G29}", Math.Round((decimal)finalgrandtotal, 2)) + " </strong></td></tr>");
+            if (paylater > 0)
+            {
+                htmlfile.Append("<tr><td colspan='4' valign='top'  height='8px'></td></tr><tr><td valign='top'>PAID AMOUNT</td> <td valign='top'> &nbsp;</td><td align='right' valign='top'><strong>  </strong></td><td align='right' valign='top'><strong> INR " + String.Format("{0:G29}", paidamount) + " </strong></td></tr>");
+            }
+            else
+            {
+
+                htmlfile.Append("<tr><td colspan='4' valign='top'  height='8px'></td></tr><tr><td valign='top'> </td> <td valign='top'> PAID AMOUNT</td><td align='right' valign='top'><strong>  </strong></td><td align='right' valign='top'><strong> INR " + String.Format("{0:G29}", _cashsaledetails.paymentdetails.Sum(A => A.payamountinr)) + " </strong></td></tr>");
+            }
+
+            htmlfile.Append("<tr><td colspan='4' valign='top' height='8px'></td></tr><tr><td valign ='top'> </td><td valign='top'>   BALANCE TO BE PAID</td><td align='right' valign='top'><strong> </strong></td><td align='right' valign='top' ><strong> INR " + String.Format("{0:G29}", balancepaid) + " </strong></td></tr></tbody></table></td></tr><tr><td valign='top' style='font-family:Arial,Helvetica,sans-serif;font-size:15px;float:left; font-style:normal;'><table width='900' border='0' cellspacing='0' cellpadding='0' style='border:none;border-bottom-color:black;border-bottom-style:groove;'><tbody>");
+
+            foreach (var pay in _cashsaledetails.paymentdetails)
+            {
+                htmlfile.Append("<tr><td width='450'><strong> Paid by: " + pay.paymode + "(" + pay.paytype + ") </strong></td>");
+            }
+            htmlfile.Append("<td width='450' align='right'></td></tr></tbody></table></td></tr><tr><td valign='top' style='font-family:Arial,Helvetica,sans-serif;font-size:15px;float:left;font-style:normal;'><table width='900' border='0' cellspacing='0' cellpadding='0' style='border-top:solid 0px #333;border-right:none;border-left:none;border-bottom:none;'><tbody><tr><td width='310' valign='top'><strong>EwayBillNo:</strong>" + _cashsaledetails.dinfo.ewaybill + " </td><td width='310' valign='top'><strong>Transporter Name</strong>:" + _cashsaledetails.dinfo.transportname + " </td><td width='396' align='right' valign='top' style='font-size:18px;padding-right: 0px;'> FOR Mirzapur Kaleen and Rugs LLP</td></tr><tr><td width='310' valign='top'><strong>Vehicle No.</strong>:" + _cashsaledetails.dinfo.vehicleno + " </td><td width='396' valign='top' style='font-size:14px;padding-right: 0px;'><strong>Mode of Transport</strong>:" + _cashsaledetails.dinfo.modeoftransport + " </td></tr><tr><td valign='top' style='padding-top:75px'><strong> Buyers Signature</strong></td><td valign='top' style='padding-top:75px'></td><td align='right' valign='top' style='padding-top:75px'><strong>Sales executive's signature</strong></td></tr></tbody></table></td></tr>");
+            //if (_cashsaledetails.cashsaledetailsOF[0].unitid == 2)
+            //{
+            //    htmlfile.Append("<tr><td height = '5' valign = 'top' style='font-size:14px'><strong>Tel.No.</strong> : 08874061111 <strong> E-mail:sales@mirzapurkaleenandrugs.com</strong> : <strong> website</strong> : http://mirzapurkaleenandrugs.com/</td></tr>");
+
+            //}
+            //else
+            //{
+            htmlfile.Append("<tr><td height = '5' valign = 'top' style='font-size:14px'><strong>Registered Office Address</strong>: Chandra deepa,jangi road,mirzapur,U.P,231001</td></tr>");
+            // }
+            htmlfile.Append("</table></body></html>");
+
+            return htmlfile.ToString();
+
+        }
+
+
+
 
         protected string GenerateHTMLOFTAX(NormalSaleVM _cashsaledetails)
         {
