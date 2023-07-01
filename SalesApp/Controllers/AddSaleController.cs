@@ -810,7 +810,7 @@ namespace SalesApp.Controllers
             invoice.ShowPDFs = true;
             if (cashdetails.cashsaledetailsCM.Count > 0)
             {
-                //invoice.PdfUrl1 = @"https://localhost:44377/uploadedcustomorder/CM/" + orderid + ".html";
+                // invoice.PdfUrl1 = @"https://localhost:44377/uploadedcustomorder/CM/" + orderid + ".html";
                 invoice.PdfUrl1 = @"http://202.91.72.51/salesapp/uploadedcustomorder/CM/" + orderid + ".html";
                 // invoice.PdfUrl1 = @"http://ec2-13-232-169-227.ap-south-1.compute.amazonaws.com/stagingsalesapp/uploadedcustomorder/CM/" + orderid + ".html";
                 invoice.billurl.Add(invoice.PdfUrl1);
@@ -818,7 +818,7 @@ namespace SalesApp.Controllers
             }
             if (cashdetails.cashsaledetailsOF.Count > 0)
             {
-                //invoice.PdfUrl2 = @"https://localhost:44377/uploadedcustomorder/OF/" + orderid + ".html";
+                // invoice.PdfUrl2 = @"https://localhost:44377/uploadedcustomorder/OF/" + orderid + ".html";
                 invoice.PdfUrl2 = @"http://202.91.72.51/salesapp/uploadedcustomorder/OF/" + orderid + ".html";
                 //   invoice.PdfUrl2 = @"http://ec2-13-232-169-227.ap-south-1.compute.amazonaws.com/stagingsalesapp/uploadedcustomorder/OF/" + orderid + ".html";
 
@@ -1217,23 +1217,17 @@ namespace SalesApp.Controllers
             {
 
                 // totalitemsalevalue = Math.Round((decimal)(item.salevalueinr * 100) / (100 + igst));
-                totalgrandtotal = (_cashsaledetails.cashsaledetailsOF.Sum(a => a.salevalueinr) - _cashsaledetails.discountperof) * 100 / 105;// Math.Round((decimal)(salevaluinr * 100) / (100 + igst));
+                totalgrandtotal = (_cashsaledetails.cashsaledetailsOF.Sum(a => a.salevalueinr) - _cashsaledetails.discountperof);// Math.Round((decimal)(salevaluinr * 100) / (100 + igst));
 
-                cgstgrandtotal = (decimal)(totalgrandtotal * Convert.ToDecimal(cgst)) / 100;
-                sgstgrandtotal = (decimal)(totalgrandtotal * Convert.ToDecimal(sgst)) / 100;
-
-
-                //cgstgrandtotal = (decimal)((_cashsaledetails.cashsaledetailsOF.Sum(a => a.salevalueinr) - _cashsaledetails.discountperof) * Convert.ToDecimal(cgst)) / 100;
-                //sgstgrandtotal = (decimal)((_cashsaledetails.cashsaledetailsOF.Sum(a => a.salevalueinr) - _cashsaledetails.discountperof) * Convert.ToDecimal(sgst)) / 100;
+                cgstgrandtotal = (decimal)((_cashsaledetails.cashsaledetailsOF.Sum(a => a.salevalueinr) - _cashsaledetails.discountperof) * Convert.ToDecimal(cgst)) / 100;
+                sgstgrandtotal = (decimal)((_cashsaledetails.cashsaledetailsOF.Sum(a => a.salevalueinr) - _cashsaledetails.discountperof) * Convert.ToDecimal(sgst)) / 100;
                 gstamount = (decimal)(decimal)(totalgrandtotal * igst) / 100;
                 igstamount = (decimal)(totalgrandtotal * igst) / 100;
                 cgstamount = (decimal)(gstamount / 2);
                 sgstamount = (decimal)(gstamount / 2);
-                finalgrandtotal = Math.Round((decimal)(totalgrandtotal + cgstgrandtotal + sgstgrandtotal));
+                finalgrandtotal = Math.Round((decimal)(totalgrandtotal + gstamount));
 
-              //  balancepaid = finalgrandtotal - _cashsaledetails.paymentdetails.Sum(A => A.payamountinr);
-
-                balancepaid = finalgrandtotal - _cashsaledetails.paymentdetails.Where(a => a.paymodeid != 4).Sum(A => A.payamountinr);
+                balancepaid = finalgrandtotal - _cashsaledetails.paymentdetails.Sum(A => A.payamountinr);
 
 
             }
@@ -1246,11 +1240,7 @@ namespace SalesApp.Controllers
 
             htmlfile.Append("<tr><td valign='top'> &nbsp;</td><td align='left' style='width:140px;'><strong> GROSS TOTAL</strong></td><td align='right' valign='top' style='width:162px;'><strong>" + _cashsaledetails.cashsaledetailsOF.Count() + "</strong></td><td align='right' valign='top'><strong> INR " + _cashsaledetails.cashsaledetailsOF.Sum(a => a.salevalueinr) + " </strong></td></tr>");
             htmlfile.Append("<tr><td valign='top'> &nbsp;</td> <td valign='top'> DISCOUNT:</td><td align='right' valign='top'><strong>" + _cashsaledetails.cashsaledetailsOF[0].discountper + "%</strong></td><td align='right' valign='top'><strong> INR " + _cashsaledetails.discountperof + " </strong></td></tr>");
-            //htmlfile.Append("<tr><td valign='top'> &nbsp;</td> <td valign='top'> TAXABLE AMOUNT:</td><td align='right' valign='top'></td><td align='right' valign='top'><strong> INR " + String.Format("{0:G29}",(_cashsaledetails.cashsaledetailsOF.Sum(a => a.salevalueinr)) - _cashsaledetails.discountperof) + " </strong></td></tr>");
-
-            htmlfile.Append("<tr><td valign='top'> &nbsp;</td> <td valign='top'> TAXABLE AMOUNT:</td><td align='right' valign='top'></td><td align='right' valign='top'><strong> INR " + String.Format("{0:G29}", Math.Round((decimal)totalgrandtotal, 2)) + " </strong></td></tr>");
-
-
+            htmlfile.Append("<tr><td valign='top'> &nbsp;</td> <td valign='top'> TAXABLE AMOUNT:</td><td align='right' valign='top'></td><td align='right' valign='top'><strong> INR " + String.Format("{0:G29}", (_cashsaledetails.cashsaledetailsOF.Sum(a => a.salevalueinr)) - _cashsaledetails.discountperof) + " </strong></td></tr>");
             if (_cashsaledetails.dinfo.isotherstate)
             {
                 htmlfile.Append("<tr><td valign='top'> &nbsp;</td><td valign='top'>SGST@.........%</td><td width='196' align='right' valign='top'><strong> </ strong></td><td width='131' align='right' valign='top'><strong></strong></td></tr><tr> <td valign='top'> &nbsp;</td><td valign='top'>  CGST@.........%</td><td align='right' valign='top'><strong></strong></td><td align='right' valign='top'><strong></strong></td></tr>");
@@ -1268,7 +1258,7 @@ namespace SalesApp.Controllers
             //htmlfile.Append("<tr><td valign='top'> &nbsp;</td> <td valign='top'> &nbsp;</td><td align='right' valign='top'><strong> PAID AMOUNT </strong></td><td align='right' valign='top'><strong> INR " + paidamount + " </strong></td></tr>");
 
             //htmlfile.Append("<tr><td colspan='4' valign='top' height='8px'></td></tr><tr><td valign ='top'> &nbsp;</td><td valign='top'> &nbsp;</td><td align='right' valign='top'><strong> BALANCE TO BE PAID </strong></td><td align='right' valign='top' ><strong> INR " + paylater + " </strong></td></tr></tbody></table></td></tr><tr><td valign='top' style='font-family:Arial,Helvetica,sans-serif;font-size:15px;float:left; font-style:normal;'><table width='900' border='0' cellspacing='0' cellpadding='0' style='border:none'><tbody>");
-            htmlfile.Append("<tr><td valign='top'> &nbsp;</td> <td valign='top'> GRAND TOTAL:</td><td align='right' valign='top'></td><td align='right' valign='top'><strong> INR " + String.Format("{0:G29}", Math.Round((decimal)finalgrandtotal, 2)) + " </strong></td></tr>");
+            htmlfile.Append("<tr><td valign='top'> &nbsp;</td> <td valign='top'> GRAND TOTAL:</td><td align='right' valign='top'></td><td align='right' valign='top'><strong> INR " + String.Format("{0:G29}", Math.Round((decimal)(_cashsaledetails.cashsaledetailsOF.Sum(a => a.salevalueinr) + sgstamount + cgstamount) - _cashsaledetails.discountperof)) + " </strong></td></tr>");
             if (paylater > 0)
             {
                 htmlfile.Append("<tr><td colspan='4' valign='top'  height='8px'></td></tr><tr><td valign='top'>PAID AMOUNT</td> <td valign='top'> &nbsp;</td><td align='right' valign='top'><strong>  </strong></td><td align='right' valign='top'><strong> INR " + String.Format("{0:G29}", paidamount) + " </strong></td></tr>");
