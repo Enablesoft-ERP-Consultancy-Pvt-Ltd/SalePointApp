@@ -17,6 +17,8 @@ using Rotativa;
 using Microsoft.Extensions.Configuration;
 using System.Net;
 using Microsoft.Extensions.Logging;
+using DocumentFormat.OpenXml.Office2016.Excel;
+using System.Configuration;
 
 namespace SalesApp.Controllers
 {
@@ -29,14 +31,29 @@ namespace SalesApp.Controllers
         public IConfiguration Configuration { get; }
         //  private readonly IWebHostEnvironment _honstingEnvironment;
         IWebHostEnvironment _hostingenv;
-        public AddSaleController(INormalSaleRepository _cashsale, ICommonRepository commonRepository, IWebHostEnvironment _env, IConfiguration _config, ILogger<AddSaleController> logger)
+
+
+
+        string BaseUrl = string.Empty;
+
+
+        public AddSaleController(INormalSaleRepository _cashsale, ICommonRepository commonRepository, IWebHostEnvironment _env, IConfiguration _config, ILogger<AddSaleController> logger, IHttpContextAccessor httpContextAccessor)
         {
+            var request = httpContextAccessor.HttpContext.Request;
             this._csale = _cashsale;
             this._comm = commonRepository;
             //   _honstingEnvironment = hostingEnvironment;
             this._hostingenv = _env;
             this.Configuration = _config;
             this._logger = logger;
+            //this.BaseUrl = $"{request.Scheme}://{this.Configuration.GetConnectionString("FileHost").ToString()}";
+
+            this.BaseUrl = $"{request.Scheme}://{request.Host}{request.PathBase}";
+
+
+            // ViewData["Message"] = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
+
+
         }
 
         public async Task<IActionResult> Index(int id)
@@ -746,8 +763,8 @@ namespace SalesApp.Controllers
 
                 htmlfile = GenerateHTMLCM(cashdetails);
 
-                
-                
+
+
                 //HtmlToPdfConverter converter = new HtmlToPdfConverter();
                 //WebKitConverterSettings settings = new WebKitConverterSettings();
                 //settings.WebKitPath = Path.Combine(_hostingenv.ContentRootPath, "QtBinariesWindows");
@@ -773,7 +790,7 @@ namespace SalesApp.Controllers
             }
             if (cashdetails.cashsaledetailsOF.Count > 0)
             {
-                
+
 
 
                 if (UID == 1)
@@ -824,16 +841,27 @@ namespace SalesApp.Controllers
             invoice.ShowPDFs = true;
             if (cashdetails.cashsaledetailsCM.Count > 0)
             {
+
+                string fileName = "/uploadedcustomorder/CM/" + orderid + ".html";
+
+
+                invoice.PdfUrl1 = Path.Combine(this.BaseUrl, fileName);
+
+
                 // invoice.PdfUrl1 = @"https://localhost:44377/uploadedcustomorder/CM/" + orderid + ".html";
-                invoice.PdfUrl1 = @"http://202.91.72.51/salesapp/uploadedcustomorder/CM/" + orderid + ".html";
+                //invoice.PdfUrl1 = @"http://202.91.72.51/salesapp/uploadedcustomorder/CM/" + orderid + ".html";
                 // invoice.PdfUrl1 = @"http://ec2-13-232-169-227.ap-south-1.compute.amazonaws.com/stagingsalesapp/uploadedcustomorder/CM/" + orderid + ".html";
                 invoice.billurl.Add(invoice.PdfUrl1);
 
             }
             if (cashdetails.cashsaledetailsOF.Count > 0)
             {
+
+                string fileName = "/uploadedcustomorder/OF/" + orderid + ".html";
+                invoice.PdfUrl2 = Path.Combine(this.BaseUrl, fileName);
+
                 // invoice.PdfUrl2 = @"https://localhost:44377/uploadedcustomorder/OF/" + orderid + ".html";
-                invoice.PdfUrl2 = @"http://202.91.72.51/salesapp/uploadedcustomorder/OF/" + orderid + ".html";
+                //invoice.PdfUrl2 = @"http://202.91.72.51/salesapp/uploadedcustomorder/OF/" + orderid + ".html";
                 //   invoice.PdfUrl2 = @"http://ec2-13-232-169-227.ap-south-1.compute.amazonaws.com/stagingsalesapp/uploadedcustomorder/OF/" + orderid + ".html";
 
                 invoice.billurl.Add(invoice.PdfUrl2);
