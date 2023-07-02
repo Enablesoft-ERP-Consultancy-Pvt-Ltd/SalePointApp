@@ -839,10 +839,13 @@ namespace SalesApp.Controllers
             InvoiceVM invoice = new InvoiceVM();
             invoice.Open2Pdf = true;
             invoice.ShowPDFs = true;
+
             if (cashdetails.cashsaledetailsCM.Count > 0)
             {
 
-                string fileName = "/uploadedcustomorder/CM/" + orderid + ".html";
+
+
+                string fileName = this.Configuration.GetConnectionString("AppPathBase").ToString() + "/uploadedcustomorder/CM/" + orderid + ".html";
 
 
                 invoice.PdfUrl1 = Path.Combine(this.BaseUrl, fileName);
@@ -857,7 +860,7 @@ namespace SalesApp.Controllers
             if (cashdetails.cashsaledetailsOF.Count > 0)
             {
 
-                string fileName = "/uploadedcustomorder/OF/" + orderid + ".html";
+                string fileName = this.Configuration.GetConnectionString("AppPathBase").ToString() + "/uploadedcustomorder/OF/" + orderid + ".html";
                 invoice.PdfUrl2 = Path.Combine(this.BaseUrl, fileName);
 
                 // invoice.PdfUrl2 = @"https://localhost:44377/uploadedcustomorder/OF/" + orderid + ".html";
