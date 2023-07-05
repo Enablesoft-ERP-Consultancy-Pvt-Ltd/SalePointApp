@@ -1717,5 +1717,74 @@ namespace SalesApp.Controllers
             }
         }
 
+
+
+
+
+
+
+
+
+
+        public async Task<IActionResult> CalcDiscount(Decimal DiscountedAmount, int orderid, decimal totalamt)
+        {
+            bool result;
+            int UID = 0;
+            NormalSaleVM cashdetails = new NormalSaleVM();
+            try
+            {
+                //  UID = _comm.GetLoggedInUserId();
+                if (!string.IsNullOrEmpty(HttpContext.Session.GetString("UID")))
+                {
+                    UID = Convert.ToInt32(HttpContext.Session.GetString("UID"));
+                }
+                if (UID > 0)
+                {
+                    result = await _csale.CalcDiscount(orderid, UID, DiscountedAmount, totalamt);
+                    if (result)
+                    {
+
+                        TempData["NormalMessage"] = new MessageVM() { title = "", msg = "Discount added Successfully!!!" };
+                        cashdetails = await _csale.GetSales(orderid, cashdetails);
+
+                    }
+                    else
+                    {
+                        TempData["NormalMessage"] = new MessageVM() { title = "", msg = "Invalid Request!!!" };
+
+                    }
+                    ViewBag.totalbalance = cashdetails.balinr;
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Account", new { area = "" });
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                ModelState.AddModelError("Error", "Error:Finished Sale Item");
+            }
+            //NormalSaleVM cashdetails = new NormalSaleVM();
+            //cashdetails = await _csale.GetSales(orderid, null);
+            //ViewBag.pgno = 5;
+            //ViewBag.totalbalance = cashdetails.balinr;
+            ViewBag.pgno = 1;
+            ViewBag.totalbalance = cashdetails.balinr;
+            return View("Index", cashdetails);
+
+        }
+
+
+
+
+
+
+
+
+
+
     }
 }
