@@ -130,7 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ClosedXML">
-      <HintPath>..\..\ERPWebSite\Bin\ClosedXML.dll</HintPath>
+      <HintPath>..\..\Library\ClosedXML.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
