@@ -31,5 +31,7 @@ namespace SalesApp.Repository.Interface
         public  Task<NormalSaleVM> Invoice(long orderid, int userid);
         public Task<string> IsExist(string stockno);
         public  Task<string> GetTeleCode(int countryid);
+
+        public Task<bool> CalcDiscount(Int64 orderid, int userid, Decimal discount, decimal totalamount);
     }
 }

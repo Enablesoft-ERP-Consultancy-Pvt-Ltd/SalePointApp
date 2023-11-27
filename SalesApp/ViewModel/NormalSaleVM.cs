@@ -139,6 +139,7 @@ namespace SalesApp.ViewModel
         public bool isotheraddress { get; set; }
         public bool isgiftitem { get; set; }
         public bool titlemrs { get; set; }
+        public decimal DiscountedAmount { get ; set; }
         public string titletypevalue
         {
             get { return _titletype.ToString(); }

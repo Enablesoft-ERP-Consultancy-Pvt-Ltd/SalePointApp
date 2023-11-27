@@ -132,8 +132,25 @@
                                                     <td width="50%">
                                                          <p><span class="fbold fdark conversion-head">Total  Balance:</span> </p>
                                                     </td>
+                                    @{
+                                        decimal balance = 0;
+                                        if (Model.balinr != null)
+                                        {
+                                            if (Model.balinr > 0)
+                                            {
+                                                balance = Math.Floor((decimal) Model.balinr);
+
+                                            
+                                            
+                                            }
+
+                                        
+                                        }
+
+
+                                                    }
                                                <td width ="50%">
-                                        <span class="fbold conversion-val" style="color:blue;">@Html.DisplayFor(model => model.balinr)</span>
+                                        <span class="fbold conversion-val" style="color:blue;">@Html.Raw(balance)</span>
                                     </td>
                                                     </tr>
                                                     
@@ -252,11 +269,33 @@
                     </div>
                 </div>
             </div>
+
+              
+
             <input type="hidden" id="hndbalance" value="@ViewBag.totalbalance" />
             <input type="hidden" asp-for="orderid" />
             <input type="hidden" asp-for="billid" />
 
         }
+            <div class="row pad-0 mar-0">
+
+                @using (Html.BeginForm("CalcDiscount", "AddSale", new { orderid = @Model.orderid, DiscountedAmount = Model.DiscountedAmount, totalamt = Model.grandtotalinr }, FormMethod.Post))
+                {
+
+                    @* <input type="hidden" id="hdntotal" value="@Model.totalvalue" />
+                <input type="hidden" asp-for="orderid" />*@
+                    @Html.LabelFor(model => model.DiscountedAmount)
+                    @Html.TextBoxFor(model => model.DiscountedAmount, new { type = "decimal", min = "0.0", step = "1.0", @class = "form-control", placeholder = "Enter Discount if any.." })
+                    @* @Html.ValidationMessageFor(model => model.discountper, "", new { @class = "text-danger" })*@
+                    <button class="btn-pink">Re-Calulate Discount</button>
+                    @*<button class="btn-pink">Finish</button>*@
+
+
+                }
+
+
+            </div>
+
         <div class="col-lg-12 mar-t-20 pad-0">
             <div class="table-responsive table--no-card m-b-30">
                 <table class="table table-borderless table-striped table-earning">

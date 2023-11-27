@@ -2303,6 +2303,82 @@ namespace SalesApp.Repository
         {
             return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(str.ToLower());
         }
+
+
+
+
+
+
+
+        public async Task<bool> CalcDiscount(Int64 orderid, int userid, Decimal discount, decimal totalamount)
+        {
+
+            bool result = false, innerresult = false;
+            NormalSaleVM _cashsaledetails = new NormalSaleVM();
+            try
+            {
+
+                using (var dbusertrans = await this._SALESDBE.Database.BeginTransactionAsync().ConfigureAwait(false))
+                {
+                    var entity = await _SALESDBE.OrderMaster.FirstOrDefaultAsync(item => item.Id == orderid).ConfigureAwait(false);
+                    decimal alreadydiscount = 0, GROSSAMOUNT = 0, NETAMOUNT = 0, gstamount = 0;
+                    if (entity != null)
+                    {
+                        if (entity != null)
+                        {
+                            GROSSAMOUNT = (discount * 5) / 100;
+                            NETAMOUNT = discount - GROSSAMOUNT;
+                            alreadydiscount = totalamount - NETAMOUNT;
+                            gstamount = (GROSSAMOUNT * 5) / 100;
+                            //  alreadydiscount= entity.Discountper;
+                            //  decimal? amount = this._SALESDBE.OrderItemDetails.Where(a => orderid == orderid && a.IsActive == true).Sum(a => a.PriceInr);
+
+                            decimal finalamount = Math.Round(((alreadydiscount - gstamount) / totalamount) * 100, 4);
+
+                            //  decimal? finaldiscountper = Math.Round((finalamount / totalamount) * 100,4)+alreadydiscount;
+                            finalamount = Math.Abs(finalamount);
+
+                            entity.Discountper = finalamount;
+                            entity.UpdatedDatetime = DateTime.Now;
+                            entity.UpdatedBy = userid;
+                            // entity.UpdatedBy=
+                            this._SALESDBE.OrderMaster.Update(entity);
+                            innerresult = await this._SALESDBE.SaveChangesAsync().ConfigureAwait(false) > 0;
+                            if (innerresult)
+                            {
+                                await dbusertrans.CommitAsync().ConfigureAwait(false);
+                            }
+
+                        }
+                        else
+                        { await dbusertrans.RollbackAsync().ConfigureAwait(false); }
+                    }
+
+                }
+
+                return innerresult;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
     
 }
