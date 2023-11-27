@@ -155,8 +155,7 @@ Where IM.MasterCompanyId=@StoreId";
                 using (var connection = new SqlConnection(configuration.GetConnectionString("ERPConnection").ToString()))
                 {
 
-                    string sql = @"SELECT Top 50
-IPM.ITEM_FINISHED_ID as ItemFinishId,IM.MasterCompanyId,IPM.Quality_Id as QualityId,
+                    string sql = @"SELECT IPM.ITEM_FINISHED_ID as ItemFinishId,IM.MasterCompanyId,IPM.Quality_Id as QualityId,
 IPM.Color_Id ColorId, IPM.design_Id DesignId, IPM.Size_Id SizeId,IPM.Shape_Id ShapeId,
 IPM.Shadecolor_Id ShadeColorId,ICM.CATEGORY_ID as CategoryId,IPM.ProductCode, 
 IM.ITEM_NAME as ItemName, ICM.CATEGORY_NAME as CategoryName, ISNULL(Q.QualityName, '') QualityName, 
